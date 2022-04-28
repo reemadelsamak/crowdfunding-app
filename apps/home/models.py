@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 from django.db import models
 
 # Create your models here.
@@ -25,7 +24,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Project(models.Model):
     title = models.CharField(max_length=100)
@@ -46,7 +45,6 @@ class Image(models.Model):
     image = models.ImageField(upload_to="projects/static/projects")
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
 
-    
 
 class Comment(models.Model):
     comment = models.TextField()

@@ -1,5 +1,6 @@
 from django import forms
 from .models import Project
+from django.forms.widgets import NumberInput
 
 
 class Project_Form(forms.Form):
@@ -24,20 +25,25 @@ class Project_Form(forms.Form):
                 "class": "form-control"
             }
         ))
+
     start_time = forms.DateTimeField(
-        widget=forms.DateTimeInput(
+        widget=NumberInput(
             attrs={
-                "placeholder": "Start Time",
-                "class": "form-control"
+                'placeholder': 'Start date & time',
+                'type': 'datetime-local',
+                'class': 'form-control'
             }
         ))
+
     end_time = forms.DateTimeField(
-        widget=forms.DateTimeInput(
+        widget=NumberInput(
             attrs={
-                "placeholder": "End Time",
-                "class": "form-control"
+                'placeholder': 'End date & time',
+                'type': 'datetime-local',
+                'class': 'form-control'
             }
         ))
+
     category = forms.CharField(
         widget=forms.TextInput(
             attrs={
