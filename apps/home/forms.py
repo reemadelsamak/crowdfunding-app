@@ -11,6 +11,7 @@ class Project_Form(forms.ModelForm):
                 "class": "form-control"
             }
         ))
+    
     details = forms.CharField(
         widget=forms.Textarea(
             attrs={
@@ -19,6 +20,7 @@ class Project_Form(forms.ModelForm):
                 'rows': '3'
             }
         ))
+    
     total_target = forms.FloatField(
         widget=forms.NumberInput(
             attrs={
@@ -51,12 +53,14 @@ class Project_Form(forms.ModelForm):
             "class": "form-control"
         }
     ))
+    
     user_id = forms.ModelChoiceField(queryset=User.objects.all(),
                                      widget=forms.Select(
         attrs={
             "class": "form-control"
         }
     ))
+   
     tag_id = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
                                             widget=forms.SelectMultiple(
         attrs={

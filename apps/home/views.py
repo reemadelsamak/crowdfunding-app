@@ -46,7 +46,11 @@ def create_new_project(request):
         form = Project_Form()
     return render(request, "home/input-areas-forms.html", context={"form": form})
 
- 
+
+@login_required(login_url="/login/")
+def show_project_details(request):
+    return render(request, "home/project-details.html")
+
 
 @login_required(login_url="/login/")
 def pages(request):
