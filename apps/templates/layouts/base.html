@@ -43,10 +43,13 @@ Coded by www.creative-tim.com
     <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js"
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
       crossorigin="anonymous"
-    ></script>
-    <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+      referrerpolicy="no-referrer"
+    />
     <!-- CSS Files -->
     <link
       id="pagestyle"
@@ -58,6 +61,7 @@ Coded by www.creative-tim.com
     {% block stylesheets %}{% endblock stylesheets %}
   </head>
   <body class="{% block body_class %}{% endblock body_class %}">
+    {% include "includes/navigation.html" %}
     {% block content %}{% endblock content %} 
     {% include "includes/footer.html"%} {% include "includes/scripts.html" %}
 

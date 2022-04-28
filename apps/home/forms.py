@@ -86,3 +86,17 @@ class Project_Form(forms.ModelForm):
             if end_date <= start_date:
                 msg = "End date should be greater than start date."
                 self._errors["end_date"] = self.error_class([msg])
+
+
+# class Donation_Form(forms.ModelForm):
+#     name = forms.CharField(
+#         widget=forms.TextInput(
+#             attrs={
+#                 "placeholder": "name",
+#                 "class": "form-control"
+#             }
+#         ))
+     
+#     model = Project
+#     fields = ['name']
+   
