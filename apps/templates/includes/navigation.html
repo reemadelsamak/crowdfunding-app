@@ -32,77 +32,29 @@
                   class="dropdown-menu dropdown-menu-animation dropdown-lg dropdown-lg-responsive p-3 border-radius-lg mt-0 mt-lg-3"
                   aria-labelledby="dropdownMenuBlocks">
                   <div class="d-none d-lg-block">
-                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                        <div class="d-flex">
-                          <div class="icon h-10 me-3 d-flex mt-1">
-                            <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+                    {%for category in all_categories%}
+                      <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+                        <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
+                          <div class="d-flex">
+                            <div class="icon h-10 me-3 d-flex mt-1">
+                              <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+                            </div>
+                            <div class="w-100 d-flex align-items-center justify-content-between">
+                              <h6
+                                class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
+                              {{ category.name }}
+                              </h6>
+                            </div>
                           </div>
-                          <div class="w-100 d-flex align-items-center justify-content-between">
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              Page Sections</h6>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                        <div class="d-flex">
-                          <div class="icon h-10 me-3 d-flex mt-1">
-                            <i class="ni ni-laptop text-gradient text-primary"></i>
-                          </div>
-                          <div class="w-100 d-flex align-items-center justify-content-between">
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              Navigation</h6>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                        <div class="d-flex">
-                          <div class="icon h-10 me-3 d-flex mt-1">
-                            <i class="ni ni-badge text-gradient text-primary"></i>
-                          </div>
-                          <div class="w-100 d-flex align-items-center justify-content-between">
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              Input Areas</h6>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                        <div class="d-flex">
-                          <div class="icon h-10 me-3 d-flex mt-1">
-                            <i class="ni ni-notification-70 text-gradient text-primary"></i>
-                          </div>
-                          <div class="w-100 d-flex align-items-center justify-content-between">
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              Attention Catchers</h6>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                        <div class="d-flex">
-                          <div class="icon h-10 me-3 d-flex mt-1">
-                            <i class="ni ni-app text-gradient text-primary"></i>
-                          </div>
-                          <div class="w-100 d-flex align-items-center justify-content-between">
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              Elements</h6>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
+                        </a>
+                      </li>
+
+                    {%empty%}
+                    <h1>No category Found</h1>
+                    {%endfor%}
+                   
                   </div>
+
                   <div class="row d-lg-none">
                     <div class="col-md-12">
                       <div class="d-flex mb-2">
