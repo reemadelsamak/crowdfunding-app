@@ -3,7 +3,7 @@ from .models import Project
 from django.forms.widgets import NumberInput
 
 
-class Project_Form(forms.Form):
+class Project_Form(forms.ModelForm):
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -12,7 +12,7 @@ class Project_Form(forms.Form):
             }
         ))
     details = forms.CharField(
-        widget=forms.TextInput(
+        widget=forms.Textarea(
             attrs={
                 "placeholder": "Details",
                 "class": "form-control"
@@ -22,7 +22,7 @@ class Project_Form(forms.Form):
         widget=forms.NumberInput(
             attrs={
                 "placeholder": "Total Target",
-                "class": "form-control"
+                "class": "form-control",
             }
         ))
 
@@ -44,17 +44,21 @@ class Project_Form(forms.Form):
             }
         ))
 
-    category = forms.CharField(
-        widget=forms.TextInput(
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),
+        widget=forms.Select(
             attrs={
-                "placeholder": "Category",
                 "class": "form-control"
             }
         ))
-    user_id = forms.CharField(
-        widget=forms.TextInput(
+    user_id = forms.ModelChoiceField(queryset=User.objects.all(),
+        widget=forms.Select(
             attrs={
-                "placeholder": "User ID",
+                "class": "form-control"
+            }
+        ))
+    tag_id = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
+        widget=forms.SelectMultiple(
+            attrs={
                 "class": "form-control"
             }
         ))
@@ -67,4 +71,15 @@ class Project_Form(forms.Form):
                   'start_time',
                   'end_time',
                   'category',
-                  'user_id']
+                  'user_id',
+                  'tag_id']
+
+        
+        def clean(self):
+            cleaned_data = super().clean()
+            start_date = cleaned_data.get("start_time")
+            end_date = cleaned_data.get("end_time")
+            if end_date <= start_date:
+                msg = "End date should be greater than start date."
+                self._errors["end_date"] = self.error_class([msg])
+
