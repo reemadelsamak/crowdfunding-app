@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Category, Project, Tag, User
 from django.forms.widgets import NumberInput
 
 
@@ -15,7 +15,8 @@ class Project_Form(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "placeholder": "Details",
-                "class": "form-control"
+                "class": "form-control",
+                'rows': '3'
             }
         ))
     total_target = forms.FloatField(
@@ -45,23 +46,23 @@ class Project_Form(forms.ModelForm):
         ))
 
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                      widget=forms.Select(
+        attrs={
+            "class": "form-control"
+        }
+    ))
     user_id = forms.ModelChoiceField(queryset=User.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                     widget=forms.Select(
+        attrs={
+            "class": "form-control"
+        }
+    ))
     tag_id = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-        widget=forms.SelectMultiple(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                            widget=forms.SelectMultiple(
+        attrs={
+            "class": "form-control"
+        }
+    ))
 
     class Meta:
         model = Project
@@ -74,7 +75,6 @@ class Project_Form(forms.ModelForm):
                   'user_id',
                   'tag_id']
 
-        
         def clean(self):
             cleaned_data = super().clean()
             start_date = cleaned_data.get("start_time")
@@ -82,4 +82,3 @@ class Project_Form(forms.ModelForm):
             if end_date <= start_date:
                 msg = "End date should be greater than start date."
                 self._errors["end_date"] = self.error_class([msg])
-
