@@ -1,0 +1,350 @@
+{% extends 'layouts/base.html' %} {% block title %} Forms {% endblock title %}
+{% block stylesheets %}
+<style>
+  .rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+  }
+  .rate:not(:checked) > input {
+    position: absolute;
+    top: -9999px;
+  }
+  .rate:not(:checked) > label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+  }
+  .rate:not(:checked) > label:before {
+    content: "★ ";
+  }
+  .rate > input:checked ~ label {
+    color: #ffc700;
+  }
+  .rate:not(:checked) > label:hover,
+  .rate:not(:checked) > label:hover ~ label {
+    color: #ffe99c;
+  }
+  .rate > input:checked + label:hover,
+  .rate > input:checked + label:hover ~ label,
+  .rate > input:checked ~ label:hover,
+  .rate > input:checked ~ label:hover ~ label,
+  .rate > label:hover ~ input:checked ~ label {
+    color: #ffe99c;
+  }
+</style>
+{% endblock stylesheets %} {% block content %} 
+{% include "includes/navigation-light.html" %}
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Donation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          You are about to donate for "Title" project. Enter the amount of
+          donation in the text below:
+        </p>
+        <input
+          type="number"
+          placeholder="donation amount"
+          class="form-control"
+        />
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn bg-gradient-dark"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn bg-gradient-primary">Donate</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal -->
+
+<div class="container">
+  <div class="row">
+    <div class="py-4 mx-auto">
+      <div class="row">
+        <div
+          class="col-lg-12 mx-auto d-flex justify-content-center flex-column"
+        >
+          <div class="d-flex justify-content-center p-5 flex-column">
+            <h2 class="mb-5">Project Title</h2>
+            <div
+              class="card card-plain d-flex flex-row justify-content-between"
+            >
+              <div class="col-md-7">
+                {% comment %} <img
+                  src="../../static/assets/img/featured.jpg"
+                  alt="project img"
+                  class="w-100"
+                  style="border-radius: 10px"
+                /> {% endcomment %}
+                <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
+                  <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active" style="height:400px">
+                      <img src="../../static/assets/img/office-dark.jpg" class="d-block w-100" alt="project-image">
+                    </div>
+                    <div class="carousel-item" style="height:400px">
+                      <img src="../../static/assets/img/nastuh.jpg" class="d-block w-100" alt="project-image">
+                    </div>
+                    <div class="carousel-item" style="height:400px">
+                      <img src="../../static/assets/img/card-2.jpg" class="d-block w-100" alt="project-image">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <h5 class="mt-5">What The Funds Are For:</h5>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Diam donec adipiscing tristique risus nec feugiat in fermentum
+                  posuere. Gravida dictum fusce ut placerat. Eget aliquet nibh
+                  praesent tristique magna. Ultricies mi quis hendrerit dolor
+                  magna eget est lorem. Justo eget magna fermentum iaculis eu
+                  non. Massa tincidunt nunc pulvinar sapien et ligula. Volutpat
+                  maecenas volutpat blandit aliquam etiam erat velit. Egestas
+                  egestas fringilla phasellus faucibus. Habitant morbi tristique
+                  senectus et netus et malesuada fames. Mauris commodo quis
+                  imperdiet massa tincidunt nunc pulvinar sapien. Vitae et leo
+                  duis ut diam. Eget gravida cum sociis natoque penatibus et
+                  magnis dis parturient. Arcu non odio euismod lacinia at quis
+                  risus sed vulputate. Amet dictum sit amet justo. Posuere morbi
+                  leo urna molestie at elementum. Vel pharetra vel turpis nunc
+                  eget lorem dolor. In tellus integer feugiat scelerisque
+                  varius. Tortor pretium viverra suspendisse potenti nullam ac
+                  tortor. Pellentesque id nibh tortor id. Pulvinar sapien et
+                  ligula ullamcorper malesuada proin libero. Lacus luctus
+                  accumsan tortor posuere ac ut consequat semper viverra. Eu
+                  consequat ac felis donec et odio pellentesque. Malesuada
+                  bibendum arcu vitae elementum curabitur vitae nunc sed. Sed
+                  cras ornare arcu dui vivamus arcu felis. Sem integer vitae
+                  justo eget. Ultrices dui sapien eget mi proin sed libero.
+                  Vehicula ipsum a arcu cursus vitae congue mauris rhoncus
+                  aenean. Velit dignissim sodales ut eu sem integer vitae justo.
+                  Tincidunt dui ut ornare lectus. Eu consequat ac felis donec.
+                  Imperdiet dui accumsan sit amet. Fringilla urna porttitor
+                  rhoncus dolor purus. Posuere sollicitudin aliquam ultrices
+                  sagittis orci a. Velit dignissim sodales ut eu sem integer
+                  vitae justo. Arcu cursus vitae congue mauris rhoncus aenean
+                  vel. Semper eget duis at tellus. Tortor condimentum lacinia
+                  quis vel eros donec ac odio tempor. Vitae congue mauris
+                  rhoncus aenean vel elit scelerisque mauris pellentesque.
+                  Feugiat in ante metus dictum at tempor. Netus et malesuada
+                  fames ac turpis egestas integer. Non quam lacus suspendisse
+                  faucibus interdum posuere lorem. Consectetur adipiscing elit
+                  duis tristique sollicitudin nibh sit. Ipsum dolor sit amet
+                  consectetur. Sodales ut etiam sit amet. Tellus id interdum
+                  velit laoreet id donec ultrices. Id nibh tortor id aliquet
+                  lectus proin nibh nisl. Et molestie ac feugiat sed. Etiam non
+                  quam lacus suspendisse faucibus. Urna nunc id cursus metus
+                  aliquam eleifend. Arcu cursus euismod quis viverra nibh cras
+                  pulvinar mattis. Arcu cursus euismod quis viverra.
+                </p>
+                <hr class="my-5" />
+                <h5 class="mt-5">Comments (325) :</h5>
+                <ul class="list-unstyled mt-4">
+                  <li class="">
+                    <div class="comment d-flex">
+                      <div class="col-md-1">
+                        <img
+                          class="rounded-circle img-thumbnail"
+                          src="../../static/assets/img/marie.jpg"
+                        />
+                      </div>
+
+                      <div class="col-md-8 mx-3">
+                        <h6 class="comment-header mb-0">
+                          Brendan Mulvey
+                          <a
+                            class="col-md-10 p-2 mx-auto text-secondary text-center"
+                            href="{%url 'create_project'%}"
+                            ><small
+                              ><small class=""
+                                ><i class="fa-solid fa-flag mx-1"></i>Report
+                                comment</small
+                              ></small
+                            ></a
+                          >
+                        </h6>
+                        <p class="comment-time">
+                          <small><small>13/04/2020 - 02:05 PM</small></small>
+                        </p>
+                        <p class="comment-content">
+                          They do great work caring for donkeys in those unusal
+                          times
+                        </p>
+                      </div>
+                    </div>
+                    <hr />
+                  </li>
+                  <li class="">
+                    <div class="comment d-flex">
+                      <div class="col-md-1">
+                        <img
+                          class="rounded-circle img-thumbnail"
+                          src="../../static/assets/img/marie.jpg"
+                        />
+                      </div>
+
+                      <div class="col-md-8 mx-3">
+                        <h6 class="comment-header mb-0">
+                          Brendan Mulvey
+                          <a
+                            class="col-md-10 p-2 mx-auto text-secondary text-center"
+                            href="{%url 'create_project'%}"
+                            ><small
+                              ><small class=""
+                                ><i class="fa-solid fa-flag mx-1"></i>Report
+                                comment</small
+                              ></small
+                            ></a
+                          >
+                        </h6>
+                        <p class="comment-time">
+                          <small><small>13/04/2020 - 02:05 PM</small></small>
+                        </p>
+                        <p class="comment-content">
+                          They do great work caring for donkeys in those unusal
+                          times
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                  <hr />
+                  <form class="d-flex flex-column align-items-end">
+                    <textarea
+                      id=""
+                      name=""
+                      rows="2"
+                      class="col-md-12 form-control"
+                    ></textarea>
+                    <button
+                      type="button"
+                      class="btn bg-gradient-light w-20 mt-2"
+                    >
+                      Comment
+                    </button>
+                  </form>
+                </ul>
+              </div>
+              {% comment %} Donate Card {% endcomment %}
+              <div
+                class="card col-md-4 shadow-lg py-4 h-100 position-sticky"
+                style="top: 1rem"
+              >
+                <div class="col-lg-10 mx-auto">
+                  <h3 class="d-flex align-items-baseline">
+                    €30,802
+                    <span class="text-secondary mx-2">
+                      <p>raised of €65,000 goal</p>
+                    </span>
+                  </h3>
+                  <div class="progress mb-3">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      style="width: 50%"
+                      aria-valuenow="50"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <div class="d-flex justify-content-between py-3">
+                    <div class="d-flex flex-column align-items-center">
+                      <span>45</span>
+                      <span>Donations</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                      <span>4.8</span>
+                      <span>Rating</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                      <span>15</span>
+                      <span>Days to go</span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  class="col-md-10 btn bg-gradient-primary p-2 my-4 mx-auto h6"
+                  href="{%url 'create_project'%}"
+                >
+                  <b>DONATE</b>
+                </button>
+                <div class="rate mx-auto mb-2">
+                  <input type="radio" id="star5" name="rate" value="5" />
+                  <label for="star5" title="text">5 stars</label>
+                  <input type="radio" id="star4" name="rate" value="4" />
+                  <label for="star4" title="text">4 stars</label>
+                  <input type="radio" id="star3" name="rate" value="3" />
+                  <label for="star3" title="text">3 stars</label>
+                  <input type="radio" id="star2" name="rate" value="2" />
+                  <label for="star2" title="text">2 stars</label>
+                  <input type="radio" id="star1" name="rate" value="1" />
+                  <label for="star1" title="text">1 star</label>
+                </div>
+                <a
+                  class="col-md-10 p-2 mx-auto text-secondary text-center"
+                  href="{%url 'create_project'%}"
+                  ><i class="fa-solid fa-flag"></i
+                  ><small class="mx-2">Report this project</small></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script
+  src="/static/assets/js/soft-design-system.min.js?v=1.0.1"
+  type="text/javascript"
+></script>
+
+{% endblock javascripts %}

@@ -9,6 +9,6 @@ urlpatterns = [
     path('/input-areas-forms', views.create_new_project, name='create_project'),
 
     # Matches any html file
-    # re_path(r'^.*\.*', views.pages, name='pages'),
+    re_path(r'^.*\.*', views.pages, name='pages'),
 
 ]
