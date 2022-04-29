@@ -7,14 +7,14 @@ __pycache__/
 .coverage
 
 # database & logs
-*.db
-*.sqlite3
-*.log
+
 
 # venv
+.env
 env
 env__
 venv
+.venv
 
 # other
 .DS_Store
