@@ -1,5 +1,6 @@
 from django import forms
-from .models import Project,Category, Tag,User
+from .models import Category, Project, Tag, User
+from django.forms.widgets import NumberInput
 
 
 class Project_Form(forms.ModelForm):
@@ -10,13 +11,16 @@ class Project_Form(forms.ModelForm):
                 "class": "form-control"
             }
         ))
+    
     details = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 "placeholder": "Details",
-                "class": "form-control"
+                "class": "form-control",
+                'rows': '3'
             }
         ))
+    
     total_target = forms.FloatField(
         widget=forms.NumberInput(
             attrs={
@@ -24,38 +28,45 @@ class Project_Form(forms.ModelForm):
                 "class": "form-control",
             }
         ))
+
     start_time = forms.DateTimeField(
-        widget=forms.DateTimeInput(
+        widget=NumberInput(
             attrs={
-                "placeholder": "Start Time [ yyyy-mm-dd hh:mm:ss ] ",
-                "class": "form-control"
+                'placeholder': 'Start date & time',
+                'type': 'datetime-local',
+                'class': 'form-control'
             }
         ))
+
     end_time = forms.DateTimeField(
-        widget=forms.DateTimeInput(
+        widget=NumberInput(
             attrs={
-                "placeholder": "End Time [ yyyy-mm-dd hh:mm:ss ]",
-                "class": "form-control"
+                'placeholder': 'End date & time',
+                'type': 'datetime-local',
+                'class': 'form-control'
             }
         ))
+
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                      widget=forms.Select(
+        attrs={
+            "class": "form-control"
+        }
+    ))
+    
     user_id = forms.ModelChoiceField(queryset=User.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                     widget=forms.Select(
+        attrs={
+            "class": "form-control"
+        }
+    ))
+   
     tag_id = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-        widget=forms.SelectMultiple(
-            attrs={
-                "class": "form-control"
-            }
-        ))
+                                            widget=forms.SelectMultiple(
+        attrs={
+            "class": "form-control"
+        }
+    ))
 
     class Meta:
         model = Project
@@ -68,7 +79,6 @@ class Project_Form(forms.ModelForm):
                   'user_id',
                   'tag_id']
 
-        
         def clean(self):
             cleaned_data = super().clean()
             start_date = cleaned_data.get("start_time")
@@ -77,3 +87,16 @@ class Project_Form(forms.ModelForm):
                 msg = "End date should be greater than start date."
                 self._errors["end_date"] = self.error_class([msg])
 
+
+# class Donation_Form(forms.ModelForm):
+#     name = forms.CharField(
+#         widget=forms.TextInput(
+#             attrs={
+#                 "placeholder": "name",
+#                 "class": "form-control"
+#             }
+#         ))
+     
+#     model = Project
+#     fields = ['name']
+   

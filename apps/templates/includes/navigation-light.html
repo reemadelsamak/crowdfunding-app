@@ -48,6 +48,10 @@
             aria-labelledby="dropdownMenuBlocks"
           >
             <div class="d-none d-lg-block">
+
+              {%for category in all_categories%}
+
+
               <li class="nav-item dropdown dropdown-hover dropdown-subitem">
                 <a
                   class="dropdown-item py-2 ps-3 border-radius-md"
@@ -65,13 +69,13 @@
                       <h6
                         class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
                       >
-                        Page Sections
+                      {{ category.name }}
                       </h6>
                     </div>
                   </div>
                 </a>
               </li>
-              <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+              {% comment %} <li class="nav-item dropdown dropdown-hover dropdown-subitem">
                 <a
                   class="dropdown-item py-2 ps-3 border-radius-md"
                   href="/presentation.html"
@@ -156,7 +160,12 @@
                     </div>
                   </div>
                 </a>
-              </li>
+              </li> {% endcomment %}
+
+              {%empty%}
+              <h1>No category Found</h1>
+              {%endfor%}
+
             </div>
             <div class="row d-lg-none">
               <div class="col-md-12">

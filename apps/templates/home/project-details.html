@@ -38,7 +38,7 @@
   }
 </style>
 {% endblock stylesheets %} {% block content %} 
-{% include "includes/navigation-light.html" %}
+
 
 <!-- Modal -->
 <div
@@ -59,27 +59,42 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <p>
-          You are about to donate for "Title" project. Enter the amount of
-          donation in the text below:
-        </p>
-        <input
-          type="number"
-          placeholder="donation amount"
-          class="form-control"
-        />
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button
-          type="button"
-          class="btn bg-gradient-dark"
-          data-bs-dismiss="modal"
-        >
-          Cancel
-        </button>
-        <button type="button" class="btn bg-gradient-primary">Donate</button>
-      </div>
+
+      <form role="form"
+      id="contact-form"
+      method="post"
+      autocomplete="off" action={% url 'donate' project.id %}>
+
+      {% csrf_token %}
+
+
+        <div class="modal-body">
+
+          <p>
+            You are about to donate for " {{ project.title }} " project. Enter the amount of
+            donation in the text below:
+          </p>
+          <input
+            type="number" name="donate"
+            placeholder="donation amount"
+            class="form-control"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                              value="" required
+          />
+        </div>
+
+        <div class="modal-footer justify-content-between">
+          <button
+            type="button"
+            class="btn bg-gradient-dark"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn bg-gradient-primary">Donate</button>
+        </div>
+        
+      </form>
     </div>
   </div>
 </div>
@@ -93,7 +108,7 @@
           class="col-lg-12 mx-auto d-flex justify-content-center flex-column"
         >
           <div class="d-flex justify-content-center p-5 flex-column">
-            <h2 class="mb-5">Project Title</h2>
+            <h2 class="mb-5">{{ project.title }}</h2>
             <div
               class="card card-plain d-flex flex-row justify-content-between"
             >
@@ -132,50 +147,7 @@
                 </div>
                 <h5 class="mt-5">What The Funds Are For:</h5>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Diam donec adipiscing tristique risus nec feugiat in fermentum
-                  posuere. Gravida dictum fusce ut placerat. Eget aliquet nibh
-                  praesent tristique magna. Ultricies mi quis hendrerit dolor
-                  magna eget est lorem. Justo eget magna fermentum iaculis eu
-                  non. Massa tincidunt nunc pulvinar sapien et ligula. Volutpat
-                  maecenas volutpat blandit aliquam etiam erat velit. Egestas
-                  egestas fringilla phasellus faucibus. Habitant morbi tristique
-                  senectus et netus et malesuada fames. Mauris commodo quis
-                  imperdiet massa tincidunt nunc pulvinar sapien. Vitae et leo
-                  duis ut diam. Eget gravida cum sociis natoque penatibus et
-                  magnis dis parturient. Arcu non odio euismod lacinia at quis
-                  risus sed vulputate. Amet dictum sit amet justo. Posuere morbi
-                  leo urna molestie at elementum. Vel pharetra vel turpis nunc
-                  eget lorem dolor. In tellus integer feugiat scelerisque
-                  varius. Tortor pretium viverra suspendisse potenti nullam ac
-                  tortor. Pellentesque id nibh tortor id. Pulvinar sapien et
-                  ligula ullamcorper malesuada proin libero. Lacus luctus
-                  accumsan tortor posuere ac ut consequat semper viverra. Eu
-                  consequat ac felis donec et odio pellentesque. Malesuada
-                  bibendum arcu vitae elementum curabitur vitae nunc sed. Sed
-                  cras ornare arcu dui vivamus arcu felis. Sem integer vitae
-                  justo eget. Ultrices dui sapien eget mi proin sed libero.
-                  Vehicula ipsum a arcu cursus vitae congue mauris rhoncus
-                  aenean. Velit dignissim sodales ut eu sem integer vitae justo.
-                  Tincidunt dui ut ornare lectus. Eu consequat ac felis donec.
-                  Imperdiet dui accumsan sit amet. Fringilla urna porttitor
-                  rhoncus dolor purus. Posuere sollicitudin aliquam ultrices
-                  sagittis orci a. Velit dignissim sodales ut eu sem integer
-                  vitae justo. Arcu cursus vitae congue mauris rhoncus aenean
-                  vel. Semper eget duis at tellus. Tortor condimentum lacinia
-                  quis vel eros donec ac odio tempor. Vitae congue mauris
-                  rhoncus aenean vel elit scelerisque mauris pellentesque.
-                  Feugiat in ante metus dictum at tempor. Netus et malesuada
-                  fames ac turpis egestas integer. Non quam lacus suspendisse
-                  faucibus interdum posuere lorem. Consectetur adipiscing elit
-                  duis tristique sollicitudin nibh sit. Ipsum dolor sit amet
-                  consectetur. Sodales ut etiam sit amet. Tellus id interdum
-                  velit laoreet id donec ultrices. Id nibh tortor id aliquet
-                  lectus proin nibh nisl. Et molestie ac feugiat sed. Etiam non
-                  quam lacus suspendisse faucibus. Urna nunc id cursus metus
-                  aliquam eleifend. Arcu cursus euismod quis viverra nibh cras
-                  pulvinar mattis. Arcu cursus euismod quis viverra.
+                  {{ project.details}}
                 </p>
                 <hr class="my-5" />
                 <h5 class="mt-5">Comments (325) :</h5>
@@ -273,7 +245,7 @@
                   <h3 class="d-flex align-items-baseline">
                     €30,802
                     <span class="text-secondary mx-2">
-                      <p>raised of €65,000 goal</p>
+                      <p>raised of €{{ project.total_target }} goal</p>
                     </span>
                   </h3>
                   <div class="progress mb-3">
