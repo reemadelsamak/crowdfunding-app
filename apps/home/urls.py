@@ -4,7 +4,7 @@ from apps.home import views
 
 urlpatterns = [
 
-    # The home page
+    
     path('', views.index, name='home'),
     path('input-areas-forms', views.create_new_project, name='create_project'),
     
