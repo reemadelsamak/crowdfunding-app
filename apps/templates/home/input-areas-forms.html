@@ -23,6 +23,7 @@ forms-sections {% endblock body_class %} {% block content %}
                   id="contact-form"
                   method="post"
                   autocomplete="off"
+                  enctype="multipart/form-data"
                 >
                   {% csrf_token %}
 
@@ -78,6 +79,7 @@ forms-sections {% endblock body_class %} {% block content %}
                   </div>
                   <span class="text-error">{{ form.tag.errors }}</span>
 
+                    <input type="file" name="images" multiple>
                   <div class="text-center">
                     <button
                       type="submit"

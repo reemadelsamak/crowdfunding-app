@@ -41,7 +41,7 @@ class Project(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ManyToManyField(Tag)
     created_at = models.DateTimeField(auto_now_add=True)
-    # image = models.ImageField(upload_to = "projects/static/projects")
+    # images = models.ImageField(upload_to = "projects/static/projects")
 
     def __str__(self):
         return self.title
@@ -49,7 +49,7 @@ class Project(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to="projects/static/projects")
+    images = models.ImageField(upload_to="")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None)
 
 

@@ -122,19 +122,26 @@
                 <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
                   <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                 {%for image in project_images%}
+
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
+                {%endfor%}
+
                   </div>
+                  
                   <div class="carousel-inner">
+                  {%for image in project_images%}
+                  {%if forloop.counter == 1 %}
                     <div class="carousel-item active" style="height:400px">
-                      <img src="../../static/assets/img/office-dark.jpg" class="d-block w-100" alt="project-image">
+                      <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
                     </div>
-                    <div class="carousel-item" style="height:400px">
-                      <img src="../../static/assets/img/nastuh.jpg" class="d-block w-100" alt="project-image">
-                    </div>
-                    <div class="carousel-item" style="height:400px">
-                      <img src="../../static/assets/img/card-2.jpg" class="d-block w-100" alt="project-image">
-                    </div>
+                    {%else%}
+                <div class="carousel-item " style="height:400px">
+                  <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
+                </div>
+                {%endif%}
+                {%endfor%}
+                   
                   </div>
                   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -145,6 +152,7 @@
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
+                
                 <h5 class="mt-5">What The Funds Are For:</h5>
                 <p>
                   {{ project.details}}
