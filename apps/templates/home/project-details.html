@@ -75,7 +75,7 @@
             donation in the text below:
           </p>
           <input
-            type="number" name="donate"
+            type="text" name="donate"
             placeholder="donation amount"
             class="form-control"
             onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
@@ -93,7 +93,7 @@
           </button>
           <button type="submit" class="btn bg-gradient-primary">Donate</button>
         </div>
-        
+
       </form>
     </div>
   </div>
@@ -150,91 +150,70 @@
                   {{ project.details}}
                 </p>
                 <hr class="my-5" />
-                <h5 class="mt-5">Comments (325) :</h5>
+
+                <h5 class="mt-5">Comments ({{ num_of_comments }}) :</h5>
+
                 <ul class="list-unstyled mt-4">
-                  <li class="">
-                    <div class="comment d-flex">
-                      <div class="col-md-1">
-                        <img
-                          class="rounded-circle img-thumbnail"
-                          src="../../static/assets/img/marie.jpg"
-                        />
-                      </div>
+                  
+                  {%for comment in comments%}
 
-                      <div class="col-md-8 mx-3">
-                        <h6 class="comment-header mb-0">
-                          Brendan Mulvey
-                          <a
-                            class="col-md-10 p-2 mx-auto text-secondary text-center"
-                            href="{%url 'create_project'%}"
-                            ><small
-                              ><small class=""
-                                ><i class="fa-solid fa-flag mx-1"></i>Report
-                                comment</small
-                              ></small
-                            ></a
-                          >
-                        </h6>
-                        <p class="comment-time">
-                          <small><small>13/04/2020 - 02:05 PM</small></small>
-                        </p>
-                        <p class="comment-content">
-                          They do great work caring for donkeys in those unusal
-                          times
-                        </p>
-                      </div>
-                    </div>
-                    <hr />
-                  </li>
-                  <li class="">
-                    <div class="comment d-flex">
-                      <div class="col-md-1">
-                        <img
-                          class="rounded-circle img-thumbnail"
-                          src="../../static/assets/img/marie.jpg"
-                        />
-                      </div>
+                    <li class="">
+                      <div class="comment d-flex">
+                        <div class="col-md-1">
+                          <img
+                            class="rounded-circle img-thumbnail"
+                            src="../../static/assets/img/marie.jpg"
+                          />
+                        </div>
 
-                      <div class="col-md-8 mx-3">
-                        <h6 class="comment-header mb-0">
-                          Brendan Mulvey
-                          <a
-                            class="col-md-10 p-2 mx-auto text-secondary text-center"
-                            href="{%url 'create_project'%}"
-                            ><small
-                              ><small class=""
-                                ><i class="fa-solid fa-flag mx-1"></i>Report
-                                comment</small
-                              ></small
-                            ></a
-                          >
-                        </h6>
-                        <p class="comment-time">
-                          <small><small>13/04/2020 - 02:05 PM</small></small>
-                        </p>
-                        <p class="comment-content">
-                          They do great work caring for donkeys in those unusal
-                          times
-                        </p>
+                        <div class="col-md-8 mx-3">
+                          <h6 class="comment-header mb-0">
+                            {{ comment.user.name }}
+                            <a
+                              class="col-md-10 p-2 mx-auto text-secondary text-center"
+                              href="{%url 'create_project'%}"
+                              ><small
+                                ><small class=""
+                                  ><i class="fa-solid fa-flag mx-1"></i>Report
+                                  comment</small
+                                ></small
+                              ></a
+                            >
+                          </h6>
+                          <p class="comment-time">
+                            <small><small>{{ comment.created_at }}</small></small>
+                          </p>
+                          <p class="comment-content">
+                           {{comment.comment}}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </li>
+                      <hr />
+                    </li>
+                    
+                    {%endfor%} 
+      
+                  
                   <hr />
-                  <form class="d-flex flex-column align-items-end">
+                  
+                  <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id %}>
+                    {% csrf_token %}
                     <textarea
                       id=""
-                      name=""
+                      name="comment"
                       rows="2"
                       class="col-md-12 form-control"
                     ></textarea>
                     <button
-                      type="button"
+                      type="submit"
                       class="btn bg-gradient-light w-20 mt-2"
                     >
                       Comment
                     </button>
                   </form>
                 </ul>
+
+
               </div>
               {% comment %} Donate Card {% endcomment %}
               <div
@@ -243,7 +222,7 @@
               >
                 <div class="col-lg-10 mx-auto">
                   <h3 class="d-flex align-items-baseline">
-                    €30,802
+                    €{{ donation }}
                     <span class="text-secondary mx-2">
                       <p>raised of €{{ project.total_target }} goal</p>
                     </span>
@@ -260,7 +239,7 @@
                   </div>
                   <div class="d-flex justify-content-between py-3">
                     <div class="d-flex flex-column align-items-center">
-                      <span>45</span>
+                      <span>{{ donations }}</span>
                       <span>Donations</span>
                     </div>
                     <div class="d-flex flex-column align-items-center">
@@ -268,7 +247,7 @@
                       <span>Rating</span>
                     </div>
                     <div class="d-flex flex-column align-items-center">
-                      <span>15</span>
+                      <span>{{ days }}</span>
                       <span>Days to go</span>
                     </div>
                   </div>

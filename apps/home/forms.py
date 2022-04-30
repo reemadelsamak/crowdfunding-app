@@ -22,10 +22,11 @@ class Project_Form(forms.ModelForm):
         ))
     
     total_target = forms.FloatField(
-        widget=forms.NumberInput(
+        widget=forms.TextInput(
             attrs={
                 "placeholder": "Total Target",
                 "class": "form-control",
+                "onkeypress":"return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
             }
         ))
 
@@ -54,14 +55,14 @@ class Project_Form(forms.ModelForm):
         }
     ))
     
-    user_id = forms.ModelChoiceField(queryset=User.objects.all(),
+    user = forms.ModelChoiceField(queryset=User.objects.all(),
                                      widget=forms.Select(
         attrs={
             "class": "form-control"
         }
     ))
    
-    tag_id = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
+    tag = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
                                             widget=forms.SelectMultiple(
         attrs={
             "class": "form-control"
@@ -70,33 +71,20 @@ class Project_Form(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['title',
+        fields = ('title',
                   'details',
                   'total_target',
                   'start_time',
                   'end_time',
                   'category',
-                  'user_id',
-                  'tag_id']
+                  'user',
+                  'tag')
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_time")
+        end_date = cleaned_data.get("end_time")
+        if end_date <= start_date:
+            msg = "End date should be greater than start date."
+            self._errors["end_time"] = self.error_class([msg])
 
-        def clean(self):
-            cleaned_data = super().clean()
-            start_date = cleaned_data.get("start_time")
-            end_date = cleaned_data.get("end_time")
-            if end_date <= start_date:
-                msg = "End date should be greater than start date."
-                self._errors["end_date"] = self.error_class([msg])
-
-
-# class Donation_Form(forms.ModelForm):
-#     name = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={
-#                 "placeholder": "name",
-#                 "class": "form-control"
-#             }
-#         ))
-     
-#     model = Project
-#     fields = ['name']
-   

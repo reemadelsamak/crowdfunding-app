@@ -30,7 +30,7 @@ forms-sections {% endblock body_class %} {% block content %}
                     <label class="form-label">Project Title</label>
                     {{ form.title }}
                   </div>
-                  <span class="text-error">{{ form.username.errors }}</span>
+                  <span class="text-error">{{ form.title.errors }}</span>
 
                   <div class="mb-3">
                     <label class="form-label">Details</label>
@@ -66,17 +66,17 @@ forms-sections {% endblock body_class %} {% block content %}
 
             
                   <div class="mb-3">
-                    <label class="form-label">User ID</label>
-                    {{ form.user_id }}
+                    <label class="form-label">User</label>
+                    {{ form.user }}
                   </div>
-                  <span class="text-error">{{ form.user_id.errors }}</span>
+                  <span class="text-error">{{ form.user.errors }}</span>
                   
 
                   <div class="mb-3">
-                    <label class="form-label">Category</label>
-                    {{ form.tag_id }}
+                    <label class="form-label">tag</label>
+                    {{ form.tag }}
                   </div>
-                  <span class="text-error">{{ form.tag_id.errors }}</span>
+                  <span class="text-error">{{ form.tag.errors }}</span>
 
                   <div class="text-center">
                     <button
