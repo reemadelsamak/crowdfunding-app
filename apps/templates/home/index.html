@@ -1,4 +1,4 @@
-{% extends 'layouts/base-presentation.html' %} 
+{% extends 'layouts/base-presentation.html' %}
 
 
 {% block title %} Home Page {%endblock title %}
@@ -35,9 +35,9 @@
     background-image: linear-gradient(310deg, #8d0599 0%, #ed3d3d 100%);
   }
 </style>
-{% endblock stylesheets %} 
+{% endblock stylesheets %}
 
-{% block body_class %} index-page {% endblock body_class %} 
+{% block body_class %} index-page {% endblock body_class %}
 
 
 {% block content %}
@@ -50,11 +50,7 @@
         <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
           <!-- Indicators -->
           <ol class="carousel-indicators">
-            <li
-              data-bs-target="#myCarousel"
-              data-bs-slide-to="0"
-              class="active"
-            ></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
             <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
             <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
             <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
@@ -63,46 +59,33 @@
 
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
-            
-              {%for project in last_5_projects%}
 
-                <div class="carousel-item {% if forloop.first %}active{%endif%}">
+            {%for project in last_5_projects%}
 
-                    <div
-                      class="featuredProject-image section-height-75 relative"
-                      style="
+            <div class="carousel-item {% if forloop.first %}active{%endif%}">
+
+              <div class="featuredProject-image section-height-75 relative" style="
                         background-image: url('/static/assets/img/blog7-2.jpg');
                         background-size: cover;
-                      "
-                    ></div>
-                    <div class="carousel-caption d-none d-md-block">
-                      <h3>{{ project.title }}</h3>
-                      <p>
-                        {{ project.details }}
-                      </p>
-                    </div>
-                </div>
-              
-              {%endfor%} 
+                      "></div>
+              <div class="carousel-caption d-none d-md-block">
+                <h3>{{ project.title }}</h3>
+                <p>
+                  {{ project.details }}
+                </p>
+              </div>
+            </div>
+
+            {%endfor%}
 
           </div>
 
           <!-- Left and right controls -->
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide="prev"
-          >
+          <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide="next"
-          >
+          <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
           </button>
@@ -110,57 +93,18 @@
       </div>
     </div>
     <div class="position-absolute w-100 z-index-1 bottom-0">
-      <svg
-        class="waves"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 24 150 40"
-        preserveAspectRatio="none"
-        shape-rendering="auto"
-      >
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 40" preserveAspectRatio="none" shape-rendering="auto">
         <defs>
-          <path
-            id="gentle-wave"
-            d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
-          />
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
         </defs>
         <g class="moving-waves">
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="-1"
-            fill="rgba(255,255,255,0.40"
-          />
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="3"
-            fill="rgba(255,255,255,0.35)"
-          />
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="5"
-            fill="rgba(255,255,255,0.25)"
-          />
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="8"
-            fill="rgba(255,255,255,0.20)"
-          />
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="13"
-            fill="rgba(255,255,255,0.15)"
-          />
-          <use
-            xlink:href="#gentle-wave"
-            x="48"
-            y="16"
-            fill="rgba(255,255,255,0.95"
-          />
+          <use xlink:href="#gentle-wave" x="48" y="-1" fill="rgba(255,255,255,0.40" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.35)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.25)" />
+          <use xlink:href="#gentle-wave" x="48" y="8" fill="rgba(255,255,255,0.20)" />
+          <use xlink:href="#gentle-wave" x="48" y="13" fill="rgba(255,255,255,0.15)" />
+          <use xlink:href="#gentle-wave" x="48" y="16" fill="rgba(255,255,255,0.95" />
         </g>
       </svg>
     </div>
@@ -171,9 +115,7 @@
 <section class="pt-3 pb-4" id="count-stats">
   <div class="container">
     <div class="row">
-      <div
-        class="col-lg-9 z-index-2 border-radius-xl mt-n8 mx-auto py-3 blur shadow-blur"
-      >
+      <div class="col-lg-9 z-index-2 border-radius-xl mt-n8 mx-auto py-3 blur shadow-blur">
         <div class="row">
           <div class="col-md-4 position-relative">
             <div class="p-3 text-center">
@@ -218,16 +160,10 @@
     <div class="row align-items-center">
       <!-- Latest Projects -->
       <div class="col-lg-6 ms-auto me-auto p-lg-2 mt-lg-0 mt-4">
-        <div
-          class="card card-background card-background-mask-primary tilt"
-          data-tilt
-        >
-          <div
-            class="full-background"
-            style="
+        <div class="card card-background card-background-mask-primary tilt" data-tilt>
+          <div class="full-background" style="
               background-image: url('https://images.unsplash.com/photo-1579389083395-4507e98b5e67?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80');
-            "
-          ></div>
+            "></div>
           <div class="card-body pt-5 text-center">
             <h2 class="text-white up mb-4">
               <i class="fa-solid fa-list-check mr-3"></i>Latest Projects
@@ -235,44 +171,34 @@
             <ul class="text-left">
               {%for project in last_5_projects%}
 
-                <li><a>{{ project.title }}</a></li>
+              <li><a href="#" class="text-light">{{ project.title }}</a></li>
               {%empty%}
               <h1>No Projcets Found</h1>
-              {%endfor%} 
+              {%endfor%}
             </ul>
-            <a href="#" class="btn btn-outline-white mt-3 btn-round"
-              >View All</a
-            >
+            <a href="#" class="btn btn-outline-white mt-3 btn-round">View All</a>
           </div>
         </div>
       </div>
 
       <!-- Featured Projects -->
       <div id="featured" class="col-lg-6 ms-auto me-auto p-lg-2 mt-lg-0 mt-4">
-        <div
-          class="card card-background card-background-mask-primary tilt"
-          data-tilt
-        >
-          <div
-            class="full-background"
-            style="
+        <div class="card card-background card-background-mask-primary tilt" data-tilt>
+          <div class="full-background" style="
               background-image: url('../../static/assets/img/featured.jpg');
-            "
-          ></div>
+            "></div>
           <div class="card-body pt-5 text-center">
             <h2 class="text-white up mb-4">
               <i class="fa-solid fa-lightbulb mr-3"></i>Featured Projects
             </h2>
             <ul class="text-left">
-              <li><a>First</a></li>
-              <li><a>Second</a></li>
-              <li><a>Third</a></li>
-              <li><a>Forth</a></li>
-              <li><a>Fifth</a></li>
+              <li><a href="#" class="text-light">First</a></li>
+              <li><a href="#" class="text-light">Second</a></li>
+              <li><a href="#" class="text-light">Third</a></li>
+              <li><a href="#" class="text-light">Forth</a></li>
+              <li><a href="#" class="text-light">Fifth</a></li>
             </ul>
-            <a href="#" class="btn btn-outline-white mt-3 btn-round"
-              >View All</a
-            >
+            <a href="#" class="btn btn-outline-white mt-3 btn-round">View All</a>
           </div>
         </div>
       </div>
@@ -284,13 +210,8 @@
   <div class="container">
     <div class="row justify-space-between text-center py-2">
       <div class="col-12 mx-auto">
-        <a
-          class="btn bg-gradient-primary w-auto me-2 p-3 text-light"
-          {% comment %} href="{%url 'create_project'%}" {% endcomment %}
-          href="/input-areas-forms"
-
-          >Create your own <b>Project</b></a
-        >
+        <a class="btn bg-gradient-primary w-auto me-2 p-3 text-light" href="/create-project">Create your own
+          <b>Project</b></a>
       </div>
     </div>
   </div>
@@ -302,17 +223,10 @@
 {% block javascripts %}
 
 <script src="/static/assets/js/plugins/countup.min.js"></script>
-<script src="/static/assets/js/plugins/choices.min.js"></script>
-<script src="/static/assets/js/plugins/rellax.min.js"></script>
 <script src="/static/assets/js/plugins/tilt.min.js"></script>
-<script src="/static/assets/js/plugins/choices.min.js"></script>
-<script src="/static/assets/js/plugins/slider.js"></script>
+<!-- <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script> -->
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
-<script
-  src="/static/assets/js/soft-design-system.min.js?v=1.0.1"
-  type="text/javascript"
-></script>
+<!-- Counters Script -->
 <script type="text/javascript">
   if (document.getElementById("state1")) {
     const countUp = new CountUp(

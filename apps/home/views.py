@@ -44,7 +44,7 @@ def create_new_project(request):
             return redirect('home')
     else:
         form = Project_Form()
-    return render(request, "home/input-areas-forms.html", context={"form": form})
+    return render(request, "home/create-project.html", context={"form": form})
 
 
 @login_required(login_url="/login/")

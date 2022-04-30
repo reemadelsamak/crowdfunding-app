@@ -1,49 +1,26 @@
 <style>
-  .search-box {
-    width: fit-content;
-    position: relative;
+  .search-container input {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border: 1px solid rgb(164, 164, 164);
+    border-right: none;
+    padding:5px;
   }
-  .input-search {
-    width: 50px;
-    border-style: none;
-    font-size: 18px;
-    outline: none;
-    transition: all 0.5s ease-in-out;
-    background-color: transparent;
-    padding-right: 40px;
-  }
-  .input-search::placeholder {
-    font-size: 12px;
-    letter-spacing: 2px;
-    font-weight: 100;
-  }
-  .btn-search {
-    width: 50px;
-    height: 50px;
-    border-style: none;
-    font-size: 12px;
-    font-weight: bold;
-    outline: none;
+
+  .search-container button {
+    float: right;
+    background: transparent;
+    border: 1px solid rgb(164, 164, 164);
+    border-left: none;
     cursor: pointer;
-    border-radius: 50%;
-    position: absolute;
-    right: 0px;
-    background-color: transparent;
-    pointer-events: painted;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    padding:5px;
+
   }
-  .btn-search:focus ~ .input-search {
-    width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
-  }
-  .input-search:focus {
-    width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+
+  .search-container button:hover {
+    background: rgba(245, 245, 245, 0.553);
   }
 </style>
 
@@ -51,28 +28,16 @@
   <div class="row">
     <div class="col-12">
       <nav
-        class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4"
-      >
+        class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
         <div class="container-fluid">
-          <a
-            class="navbar-brand font-weight-bolder ms-sm-3"
-            href="/"
-            rel="tooltip"
-            title="Designed and Coded by Creative Tim"
-            data-placement="bottom"
-          >
+          <a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip"
+            title="Designed and Coded by Creative Tim" data-placement="bottom">
             Crowdfunding
           </a>
 
-          <button
-            class="navbar-toggler shadow-none ms-2"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navigation"
-            aria-controls="navigation"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+          <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon mt-2">
               <span class="navbar-toggler-bar bar1"></span>
               <span class="navbar-toggler-bar bar2"></span>
@@ -80,280 +45,56 @@
             </span>
           </button>
 
-          <div
-            class="collapse navbar-collapse pt-3 pb-2 py-lg-0"
-            id="navigation"
-          >
+          <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0" id="navigation">
             <ul class="navbar-nav navbar-nav-hover ms-lg-12 ps-lg-5 w-100">
               <li class="nav-item dropdown dropdown-hover mx-2">
-                <a
-                  class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"
-                  id="dropdownMenuBlocks"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"
+                  id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
                   Categories
-                  <img
-                    src="/static/assets/img/down-arrow-dark.svg"
-                    alt="down-arrow"
-                    class="arrow ms-1"
-                  />
+                  <img src="/static/assets/img/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-1" />
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-animation dropdown-lg dropdown-lg-responsive p-3 border-radius-lg mt-0 mt-lg-3"
-                  aria-labelledby="dropdownMenuBlocks"
-                >
+                  aria-labelledby="dropdownMenuBlocks">
                   <div class="d-none d-lg-block">
 
                     {%for category in all_categories%}
-                    
-                      <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                        <a class="dropdown-item py-2 ps-3 border-radius-md" href="/presentation.html">
-                          <div class="d-flex">
-                            <div class="icon h-10 me-3 d-flex mt-1">
-                              <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
-                            </div>
-                            <div class="w-100 d-flex align-items-center justify-content-between">
-                              <h6
-                                class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
-                              {{ category.name }}
-                              </h6>
-                            </div>
+
+                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/category.html">
+                        <div class="d-flex">
+                          <div class="icon h-10 me-3 d-flex mt-1">
+                            <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
                           </div>
-                        </a>
-                      </li>
+                          <div class="w-100 d-flex align-items-center justify-content-between">
+                            <h6
+                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
+                              {{ category.name }}
+                            </h6>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
 
                     {%empty%}
                     <h1>No category Found</h1>
                     {%endfor%}
-                   
-                  </div>
 
-                  <div class="row d-lg-none">
-                    <div class="col-md-12">
-                      <div class="d-flex mb-2">
-                        <div class="icon h-10 me-3 d-flex mt-1">
-                          <i
-                            class="ni ni-single-copy-04 text-gradient text-primary"
-                          ></i>
-                        </div>
-                        <div
-                          class="w-100 d-flex align-items-center justify-content-between"
-                        >
-                          <div>
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                            >
-                              Page Sections
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/page-sections-hero-sections.html"
-                      >
-                        Page Headers
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/page-sections-features.html"
-                      >
-                        Features
-                      </a>
-                      <div class="d-flex mb-2 mt-3">
-                        <div class="icon h-10 me-3 d-flex mt-1">
-                          <i
-                            class="ni ni-laptop text-gradient text-primary"
-                          ></i>
-                        </div>
-                        <div
-                          class="w-100 d-flex align-items-center justify-content-between"
-                        >
-                          <div>
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                            >
-                              Navigation
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/navigation-navbars.html"
-                      >
-                        Navbars
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/navigation-nav-tabs.html"
-                      >
-                        Nav Tabs
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/navigation-pagination.html"
-                      >
-                        Pagination
-                      </a>
-                      <div class="d-flex mb-2 mt-3">
-                        <div class="icon h-10 me-3 d-flex mt-1">
-                          <i class="ni ni-badge text-gradient text-primary"></i>
-                        </div>
-                        <div
-                          class="w-100 d-flex align-items-center justify-content-between"
-                        >
-                          <div>
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                            >
-                              Input Areas
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/input-areas-inputs.html"
-                      >
-                        Inputs
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/input-areas-forms.html"
-                      >
-                        Forms
-                      </a>
-                      <div class="d-flex mb-2 mt-3">
-                        <div class="icon h-10 me-3 d-flex mt-1">
-                          <i
-                            class="ni ni-notification-70 text-gradient text-primary"
-                          ></i>
-                        </div>
-                        <div
-                          class="w-100 d-flex align-items-center justify-content-between"
-                        >
-                          <div>
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                            >
-                              Attention Catchers
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/attention-catchers-alerts.html"
-                      >
-                        Alerts
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/attention-catchers-modals.html"
-                      >
-                        Modals
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/attention-catchers-tooltips-popovers.html"
-                      >
-                        Tooltips & Popovers
-                      </a>
-                      <div class="d-flex mb-2 mt-3">
-                        <div class="icon h-10 me-3 d-flex mt-1">
-                          <i class="ni ni-app text-gradient text-primary"></i>
-                        </div>
-                        <div
-                          class="w-100 d-flex align-items-center justify-content-between"
-                        >
-                          <div>
-                            <h6
-                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                            >
-                              Elements
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-buttons.html"
-                      >
-                        Buttons
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-avatars.html"
-                      >
-                        Avatars
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-dropdowns.html"
-                      >
-                        Dropdowns
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-toggles.html"
-                      >
-                        Toggles
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-breadcrumbs.html"
-                      >
-                        Breadcrumbs
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-badges.html"
-                      >
-                        Badges
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-typography.html"
-                      >
-                        Typography
-                      </a>
-                      <a
-                        class="dropdown-item ps-3 border-radius-md mb-1"
-                        href="/elements-progress-bars.html"
-                      >
-                        Progress Bars
-                      </a>
-                    </div>
                   </div>
                 </ul>
               </li>
 
               <li class="nav-item ms-lg-auto">
-                <div class="search-box">
-                  <button class="btn-search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <input
-                    type="text"
-                    class="input-search"
-                    placeholder="Type to Search..."
-                  />
-                </div>
+                <form class="search-container" action="#">
+                  <input class="bg-transparent" type="text" placeholder="Search.." name="search">
+                  <button type="submit"><i class="fa fa-search" style="color:rgb(164, 164, 164);"></i></button>
+                </form>
               </li>
               <li class="nav-item ms-lg-auto">
-                <a
-                  class="nav-link nav-link-icon me-2"
-                  href="{% url 'logout' %}"
-                >
+                <a class="nav-link nav-link-icon me-2" href="{% url 'logout' %}">
                   <i class="fa fa-sign-out me-1"></i>
-                  <p
-                    class="d-inline text-sm z-index-1 font-weight-bold"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Logout"
-                  >
+                  <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip"
+                    data-bs-placement="bottom" title="Logout">
                     Logout
                   </p>
                 </a>
