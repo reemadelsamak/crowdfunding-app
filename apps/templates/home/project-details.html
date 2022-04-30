@@ -1,8 +1,12 @@
-{% extends 'layouts/base.html' %} {% block title %} Forms {% endblock title %}
+{% extends 'layouts/base.html' %}
+
+{% block title %} Project Details {% endblock title %}
+
 {% block stylesheets %}
 <link rel="stylesheet" href="../../static/assets/css/project-details.css">
-{% endblock stylesheets %} {% block content %}
+{% endblock stylesheets %}
 
+{% block content %}
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -191,10 +195,3 @@
 </div>
 
 {% endblock content %}
-
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-
-<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-
-{% endblock javascripts %}

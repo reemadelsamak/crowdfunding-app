@@ -1,9 +1,8 @@
-{% extends 'layouts/base.html' %} {% block title %} Forms {% endblock title %}
+{% extends 'layouts/base.html' %}
 
-<!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %} {% block body_class %}
-forms-sections {% endblock body_class %} {% block content %}
-{% comment %} {% include "includes/navigation-light.html" %} {% endcomment %}
+{% block title %} Create Project {% endblock title %}
+
+{% block content %}
 <div class="container">
   <div class="py-5 mx-auto">
     <div class="col-md-8 card d-flex shadow-lg p-4 mt-5 mx-auto">
@@ -80,9 +79,3 @@ forms-sections {% endblock body_class %} {% block content %}
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-
-<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-
-{% endblock javascripts %}
