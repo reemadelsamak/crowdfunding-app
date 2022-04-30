@@ -52,27 +52,32 @@
           <h2 class="mb-5">{{ project.title }}</h2>
           <div class="card card-plain d-flex flex-row justify-content-between">
             <div class="col-md-7">
-              {% comment %} <img src="../../static/assets/img/featured.jpg" alt="project img" class="w-100"
-                style="border-radius: 10px" /> {% endcomment %}
+
               <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                   <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+                  {%for image in project_images%}
+
+                  <button type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
+                  {%endfor%}
+
                 </div>
+
                 <div class="carousel-inner">
+                  {%for image in project_images%}
+                  {%if forloop.counter == 1 %}
                   <div class="carousel-item active" style="height:400px">
-                    <img src="../../static/assets/img/office-dark.jpg" class="d-block w-100" alt="project-image">
+                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
                   </div>
-                  <div class="carousel-item" style="height:400px">
-                    <img src="../../static/assets/img/nastuh.jpg" class="d-block w-100" alt="project-image">
+                  {%else%}
+                  <div class="carousel-item " style="height:400px">
+                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
                   </div>
-                  <div class="carousel-item" style="height:400px">
-                    <img src="../../static/assets/img/card-2.jpg" class="d-block w-100" alt="project-image">
-                  </div>
+                  {%endif%}
+                  {%endfor%}
+
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                   data-bs-slide="prev">
