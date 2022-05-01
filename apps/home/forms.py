@@ -1,5 +1,7 @@
 from django import forms
-from .models import Category, Project, Tag, User
+
+from apps.authentication.models import Register
+from .models import Category, Project, Tag
 from django.forms.widgets import NumberInput
 
 
@@ -54,7 +56,7 @@ class Project_Form(forms.ModelForm):
         }
     ))
     
-    user_id = forms.ModelChoiceField(queryset=User.objects.all(),
+    user_id = forms.ModelChoiceField(queryset=Register.objects.all(),
                                      widget=forms.Select(
         attrs={
             "class": "form-control"

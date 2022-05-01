@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User,Category,Tag,Project,Image,Comment,Reply,Rate,Comment_Report,Project_Report,Donation
+from .models import Category,Tag,Project,Image,Comment,Reply,Rate,Comment_Report,Project_Report,Donation
 
 # Register your models here.
-admin.site.register(User)
+
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Project)

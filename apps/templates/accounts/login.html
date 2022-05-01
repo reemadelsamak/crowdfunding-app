@@ -9,7 +9,6 @@
 
 {% block content %}
 
-  
   <section>
     <div class="page-header section-height-100">
       <div class="container">
@@ -33,10 +32,10 @@
                   {% csrf_token %}
 
                   <div class="mb-3">
-                    {{ form.username }}
+                    {{ login_form.email }}
                   </div>
                   <div class="mb-3">
-                    {{ form.password }}
+                    {{ login_form.password }}
                   </div>
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="rememberMe">

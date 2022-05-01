@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <style>
   .search-box {
     width: fit-content;
@@ -342,22 +345,80 @@
                   />
                 </div>
               </li>
-              <li class="nav-item ms-lg-auto">
+
+              {% if 'user_id' in request.session %}
+              <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="{{ user.profile_img.url }}" alt="ewgr5g" width="40" height="30" class="d-inline-block align-text-top rounded-circle">
+                      {{user.first_name}}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark " aria-labelledby="navbarDarkDropdownMenuLink">
+                      <li class="nav-item ms-lg-auto"><a class="nav-link nav-link-icon me-2 " href="{% url 'profile' user.id %}">
+                        <i class="fa-solid fa-user me-1"></i>
+                        <p
+                        class="d-inline text-sm z-index-1 font-weight-bold"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Logout"
+                      >
+                     
+                        Profile
+                      </p></a></li>
+                      <li class="nav-item ms-lg-auto">
+                        <a
+                          class="nav-link nav-link-icon me-2"
+                          href="{% url 'logout' %}"
+                        >
+                          <i class="fa fa-sign-out me-1"></i>
+                          <p
+                            class="d-inline text-sm z-index-1 font-weight-bold"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Logout"
+                          >
+                            Logout
+                          </p>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              {% else %}
+              <li class="nav-item ms-lg-auto ">
                 <a
                   class="nav-link nav-link-icon me-2"
-                  href="{% url 'logout' %}"
+                  href="{% url 'register' %}"
                 >
-                  <i class="fa fa-sign-out me-1"></i>
+              
                   <p
                     class="d-inline text-sm z-index-1 font-weight-bold"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
-                    title="Logout"
+                    title=" Sign Up"
                   >
-                    Logout
+                    Sign Up
                   </p>
                 </a>
               </li>
+              <a
+              class="nav-link nav-link-icon me-2"
+              href="{% url 'login' %}"
+            >
+             
+              <p
+                class="d-inline text-sm z-index-1 font-weight-bold"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Sign In"
+              >
+              Sign In
+              </p>
+            </a>
+              
+              {% endif %}
             </ul>
           </div>
         </div>

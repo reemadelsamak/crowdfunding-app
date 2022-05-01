@@ -1,0 +1,115 @@
+{% extends 'layouts/base-fullscreen.html' %}
+
+{% block title %} Sign UP {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block body_class %} sign-in-illustration {% endblock body_class %}
+
+{% block content %}
+<style>
+    .container {
+        position: absolute;
+        top: 20%;
+        left: -700%;
+        transform: translate((-50%, -50%));
+        width:800px;
+        /* 	height: 200px; */
+        padding: 30px;
+        background: whitesmoke;
+        border-radius: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+        width: 180px;
+        height: 180px;
+        background-color: rgba(0, 0, 0, 0.4);
+        background-image: url({{user.profile_img.url}});
+        background-size: cover;
+        border-radius: 50%;
+        float: left;
+        shape-outside: circle();
+        margin: 30px 20px 30px 0;
+        box-shadow: -2px 2px 50px #808080;
+        transform: translate(-70%, -10%);
+    }
+
+    h1 {
+        font-family: "Marck Script", san-serif;
+        transform: translateX(-85px);
+        margin: 0 0 5px;
+        padding: 0;
+        font-size: 30px;
+    }
+
+    h5 {
+        font-style: italic;
+        font-weight: 600;
+        transform: translateX(-85px);
+        margin: 50;
+        margin-top: 5;
+        padding: 50;
+    }
+
+    .bio {
+        transform: translateX(-95px);
+        font-family: "KoHo", sans-serif;
+        margin: 50;
+        padding: 50;
+        text-align: justify;
+        /* line-height: 28px; */
+    }
+
+    .social {
+        display: grid;
+        line-height: 2.5;
+        transform: translate(260px, -190px);
+        width: 40px;
+    }
+
+    .s-btn {
+        color: black;
+    }
+
+    .hobby {
+        margin-left: 300px;
+    }
+</style>
+<div id="featured" class="col-lg-12 ms-auto me-auto p-lg-2 mt-lg-0 mt-4 ">
+
+    <div class="card card-background card-background-mask-primary  " style="height: 600px;"  >
+        <div class="card-body pt-5 text-center" id="container">
+            <!-- <div id="container" class="container-fluid row justify-content-between align-items-beasline"
+                        v-if="isModalVisible==false" v-if="showCard==true"> -->
+                    
+                        <div class="container" v-if="showCard==true">
+                            <div class="logo"></div>
+                            <h1 class="text-primary">Full Name : <span class="text-secondary"> {{user.first_name}} {{user.last_name}} </span></h1>
+                            <h5 class="text-primary">Email : <span class="text-secondary"> {{user.email}} </span> </h5>
+                            <h5 class="text-primary">Country : <span class="text-secondary"> {{user.country}} </span></h5>
+                            <h5 class="text-primary">Birth Date : <span class="text-secondary"> {{user.birthdate}} </span> </h5>
+                            <h5 class="text-primary">Phone Number: <span class="text-secondary"> {{user.phone}} </span> </h5>
+                            <h5 class="text-primary">Facebook link: <a class="text-secondary" href="{{user.facebook_profile}}"> {{user.facebook_profile}} </a> </h5>
+                         
+                            <div class=" pt-5 text-center">
+                        
+                                <a href="{% url 'editProfile'  user.id %}" class="btn btn-outline-primary mt-3 btn-round">Edit Profile</a>
+                            </div>
+                        </div>
+                        
+                    <!-- </div> -->
+                </div>
+   
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+
+{% endblock javascripts %}

@@ -1,0 +1,13 @@
+{% extends './header/header.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h1 class="text-success w-25 fs-1">
+    welcome to your profile
+    {{user.first_name}}
+        <img class="w-50" src="{{ MEDIA_URL }}{{ user.profile_img.url }}" alt="hmada"/>
+    </h1>
+
+
+{% endblock %}

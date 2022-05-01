@@ -23,11 +23,9 @@
                 <div class="alert alert-warning ">
                   {{ msg | safe }}
                 </div>
-                <p class="mb-0 ">
-                {% else %}
-                Add your credentials
+           
                 {% endif %}
-              </p>
+         
             </div>
             <div class="card-body">
               <form method="post" action="" role="form" enctype="multipart/form-data">
@@ -38,17 +36,23 @@
                   {{ form.first_name }}
                 </div>
                 <span class="text-error text-danger">{{ form.first_name.errors }}</span>
-
+                <span class="text-error text-danger">{{ form.errors.first_name }}</span>
                 <div class="mb-3">
                   {{ form.last_name }}
                 </div>
                 <span class="text-error text-danger">{{ form.last_name.errors }}</span>
 
                 <div class="mb-3">
-                  {{ form.email }}
+                  {{ form.country }}
                 </div>
-                <span class="text-error text-danger">{{ form.email.errors }}</span>
+                <span class="text-error text-danger">{{ form.country.errors }}</span>
 
+                <div class="mb-3">
+                    {{ form.birthdate }}
+                  </div>
+                <span class="text-error text-danger">{{ form.birthdate.errors }}</span>
+
+                
                 <div class="mb-3">
                   {{ form.password }}
                 </div>
@@ -66,48 +70,44 @@
 
                 <div class="mb-3">
                   {{ form.image }}
+
+              
                 </div>
                 <span class="text-error text-danger">{{ form.image.errors }}</span>
+                
 
+                <div class="mb-3">
+                    {{ form.facebook_profile }}
+                  </div>
+                  <span class="text-error text-danger">{{ form.facebook_profile.errors }}</span>
+                
+                {% if form.errors %}
+                  {% for field in form %}
+                      {% for error in field.errors %} 
+                         <div class="alert alert-danger">
+                              <strong>{{ error|escape }}</strong>
+                         </div>
+                      {% endfor %}
+                  {% endfor %}
+                {% endif %}
                 
                 <div class="text-center">
-                  <button type="submit" name="register"
-                    class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Register</button>
+                  <button type="submit" name="submit"
+                    class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Submit</button>
                 </div>
+
+              
               </form>
             </div>
-            <div class="card-footer text-center pt-0 px-lg-2 px-1">
-              <p class="mb-4 text-sm mx-auto">
-                Have an account?
-                <a href="{% url 'login' %}" class="text-primary text-gradient font-weight-bold">Sign IN</a>
-              </p>
-            </div>
+           
           </div>
         </div>
-        <div
-          class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-          <div
-            class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
-            <img src="/static/assets/img/shapes/pattern-lines.svg" alt="pattern-lines"
-              class="position-absolute opacity-4 start-0">
-            <div class="position-relative">
-              <img class="max-width-500 w-100 position-relative z-index-2"
-                src="/static/assets/img/illustrations/chat.png">
-            </div>
-            <h4 class="mt-5 text-white font-weight-bolder">
-              Soft UI Design System
-            </h4>
-            <p class="text-white">
-              &copy; <a target="_blank" class="text-white" href="https://bit.ly/3fKQZaL" target="_blank">Creative
-                Tim</a>
-              - Coded by <a class="text-white" target="_blank" href="https://appseed.us" target="_blank">AppSeed</a>.
-            </p>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
 </section>
+
 
 {% endblock content %}
 
@@ -117,3 +117,7 @@
 <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
 
 {% endblock javascripts %}
+
+
+
+
