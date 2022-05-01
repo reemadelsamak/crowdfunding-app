@@ -165,17 +165,16 @@
             "></div>
           <div class="card-body pt-5 text-center">
             <h2 class="text-white up mb-4">
-              <i class="fa-solid fa-list-check mr-3"></i>Latest Projects
+              <i class="fa-solid fa-list-check mx-3"></i>Latest Projects
             </h2>
             <ul class="text-left">
               {%for project in last_5_projects%}
-
               <li><a href="#" class="text-light font-weight-bold">{{ project.title }}</a></li>
               {%empty%}
-              <h1>No Projcets Found</h1>
+              <h5 class="text-light text-center">No Projects Found</h5>
               {%endfor%}
             </ul>
-            <a href="#" class="btn btn-outline-white mt-3 btn-round">View All</a>
+            <a href="{%url 'all_projects'%}" class="btn btn-outline-white mt-3 btn-round">View All</a>
           </div>
         </div>
       </div>
@@ -188,16 +187,17 @@
             "></div>
           <div class="card-body pt-5 text-center">
             <h2 class="text-white up mb-4">
-              <i class="fa-solid fa-lightbulb mr-3"></i>Featured Projects
+              <i class="fa-solid fa-lightbulb mx-3"></i>Featured Projects
             </h2>
             <ul class="text-left">
-              <li><a href="#" class="text-light font-weight-bold">First</a></li>
-              <li><a href="#" class="text-light font-weight-bold">Second</a></li>
-              <li><a href="#" class="text-light font-weight-bold">Third</a></li>
-              <li><a href="#" class="text-light font-weight-bold">Forth</a></li>
-              <li><a href="#" class="text-light font-weight-bold">Fifth</a></li>
+              {%for project in featured_projects%}
+              <li><a href="#" class="text-light font-weight-bold">{{ project.title }}</a></li>
+              {%empty%}
+              <h5 class="text-light text-center">No Featured Projects</h5>
+              {%endfor%}
             </ul>
-            <a href="#" class="btn btn-outline-white mt-3 btn-round">View All</a>
+            </ul>
+            <a href="{% url 'featured_projects' %}" class="btn btn-outline-white mt-3 btn-round">View All</a>
           </div>
         </div>
       </div>

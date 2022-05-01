@@ -1,4 +1,5 @@
 from itertools import count
+from unicodedata import category
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,12 +19,14 @@ def index(request):
     # return last 5 project
     all_projects = Project.objects.all()
     last_5_projects = Project.objects.all().order_by('-id')[:5]
+    featured_projects = Project.objects.filter(is_featured=1)[:5]
 
     context = {
         'segment': 'index',
         'all_projects': all_projects,
         'count': len(all_projects),
         'last_5_projects': last_5_projects,
+        'featured_projects': featured_projects
     }
 
     html_template = loader.get_template('home/index.html')
@@ -39,7 +42,7 @@ def create_new_project(request):
         return render(request, "home/create-project.html", context={"form": form, 'images': my_images})
 
     if request.method == "POST":
-        form = Project_Form(request.POST,request.FILES)
+        form = Project_Form(request.POST, request.FILES)
         images = request.FILES.getlist('images')
         print(images)
         if form.is_valid():
@@ -75,8 +78,10 @@ def show_project_details(request, project_id):
         # handle date
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
-        start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
-        end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
+        start_date = datetime.strptime(
+            project.start_time.strftime(myFormat), myFormat)
+        end_date = datetime.strptime(
+            project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
         counter = 0
         # relatedProjects = Project.objects.all().filter(category_id=project.category)
@@ -91,6 +96,61 @@ def show_project_details(request, project_id):
                    #    'relatedProjects': relatedProjects,
                    }
         return render(request, "home/project-details.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+# @login_required(login_url="/login/")
+
+
+def get_category_projects(request, category_id):
+    context = {}
+    try:
+        category_projects = Project.objects.filter(
+            category_id=category_id).all()
+
+        for project in category_projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+
+        context = {
+            'category_projects': category_projects,
+            'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
+        }
+        return render(request, "home/category.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+def all_projects(request):
+    context = {}
+    try:
+        projects = Project.objects.all()
+
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+
+        context = {
+            'projects': projects,
+            'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
+        }
+        return render(request, "home/projects.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+def get_featured_projects(request):
+    context = {}
+    try:
+        projects = Project.objects.filter(is_featured=1).all()
+
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+
+        context = {
+            'projects': projects,
+            'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
+        }
+        return render(request, "home/projects.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))

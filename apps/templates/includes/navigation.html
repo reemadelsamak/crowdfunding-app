@@ -4,7 +4,7 @@
     border-bottom-left-radius: 6px;
     border: 1px solid rgb(164, 164, 164);
     border-right: none;
-    padding:5px;
+    padding: 5px;
   }
 
   .search-container button {
@@ -15,7 +15,7 @@
     cursor: pointer;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
-    padding:5px;
+    padding: 5px;
 
   }
 
@@ -58,10 +58,39 @@
                   aria-labelledby="dropdownMenuBlocks">
                   <div class="d-none d-lg-block">
 
-                    {%for category in all_categories%}
-
                     <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="/category.html">
+                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="{% url 'all_projects' %}">
+                        <div class="d-flex">
+                          <div class="icon h-10 me-3 d-flex mt-1">
+                            <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+                          </div>
+                          <div class="w-100 d-flex align-items-center justify-content-between">
+                            <h6
+                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
+                              All
+                            </h6>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="{% url 'featured_projects' %}">
+                        <div class="d-flex">
+                          <div class="icon h-10 me-3 d-flex mt-1">
+                            <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+                          </div>
+                          <div class="w-100 d-flex align-items-center justify-content-between">
+                            <h6
+                              class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">
+                              Featured
+                            </h6>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    {%for category in all_categories%}
+                    <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+                      <a class="dropdown-item py-2 ps-3 border-radius-md" href="{% url 'get_category' category.id %}">
                         <div class="d-flex">
                           <div class="icon h-10 me-3 d-flex mt-1">
                             <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
@@ -75,11 +104,9 @@
                         </div>
                       </a>
                     </li>
-
                     {%empty%}
                     <h1>No category Found</h1>
                     {%endfor%}
-
                   </div>
                 </ul>
               </li>
