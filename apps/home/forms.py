@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Comment_Report, Project, Project_Report, Tag, User
+from .models import Category, Comment_Report, Project, Project_Report, Reply, Tag, User
 from django.forms.widgets import NumberInput
 
 
@@ -99,3 +99,9 @@ class Comment_report_form(forms.ModelForm):
     class Meta:
         model=Comment_Report
         fields=['report']
+
+class Reply_form(forms.ModelForm):
+
+    class Meta:
+        model=Reply
+        fields =['reply']

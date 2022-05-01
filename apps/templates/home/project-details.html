@@ -181,7 +181,7 @@
 
                               <form action="{% url 'create_comment_report' comment.id %}" method="POST">
                                 {%csrf_token%}
-                              
+                            
                               <button type="submit" class=" btn btn-danger p-0"style='width:20%; height: 10%;'><i class="fa-solid fa-flag"></i> Report</button></form>
                           </div>
                             
@@ -193,6 +193,82 @@
                           <p class="comment-content">
                            {{comment.comment}}
                           </p>
+
+                          <p>
+                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                              reply
+                            </a>
+                          
+                          
+                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                              show replies
+                            </a>
+                          
+                          </p>
+                          <div class="collapse" id="collapseExample">
+                            
+                              {%for fields in reply_form%}
+                              <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment_reply' comment.id %}>
+                                {% csrf_token %}
+                                <textarea
+                                  id=""
+                                  name="{{fields.name}}"
+                                  rows="2"
+                                  class="col-md-12 form-control"
+                                ></textarea>
+                                <button
+                                  type="submit"
+                                  class="btn bg-gradient-light w-20 mt-2"
+                                >
+                                  reply
+                                </button>
+                              </form>
+
+                              {%endfor%}
+                          
+                          </div>
+                          <div class="collapse" id="collapseExample2">
+                            
+                            <hr class="my-0" />
+                            
+                          
+                            
+                            <ul class="list-unstyled mt-1">
+                              
+                              {%for reply in replies%}
+                              {%if reply.comment_id == comment.id  %}
+                              
+            
+                                <li class=" mt-1">
+                                  <div class="comment d-flex">
+                                    <div class="col-md-1">
+                                      <img
+                                        class="rounded-circle img-thumbnail"
+                                        src="../../static/assets/img/marie.jpg"
+                                      />
+                                    </div>
+            
+                                    <div class="col-md-8 mx-3">
+                                      <h6 class="comment-header mb-0">
+                                        {{ reply.user.name }}
+                                      
+                                        
+            
+                                      </h6>
+                                      <p class="comment-time">
+                                        <small><small>{{ reply.created_at }}</small></small>
+                                      </p>
+                                      <p class="comment-content">
+                                       {{reply.reply}}
+                                      </p>
+                                      </li>
+            
+                            {%else%}
+                            {%endif%}
+                            {%endfor%}
+                            </ul>
+                        
+                        </div>
                         </div>
                       </div>
                       <hr />
@@ -201,23 +277,35 @@
                     {%endfor%} 
       
                   
-                  <hr />
+               
+                  <p>
+                    <a class="btn bg-gradient-info p-0 " data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
+                      add comment
+                    </a>
                   
-                  <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id %}>
-                    {% csrf_token %}
-                    <textarea
-                      id=""
-                      name="comment"
-                      rows="2"
-                      class="col-md-12 form-control"
-                    ></textarea>
-                    <button
-                      type="submit"
-                      class="btn bg-gradient-light w-20 mt-2"
-                    >
-                      Comment
-                    </button>
-                  </form>
+                  
+                  
+                  </p>
+                  <div class="collapse" id="collapseExample3">
+                    
+                
+                    <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id %}>
+                      {% csrf_token %}
+                      <textarea
+                        id=""
+                        name="comment"
+                        rows="2"
+                        class="col-md-12 form-control"
+                      ></textarea>
+                      <button
+                        type="submit"
+                        class="btn bg-gradient-light w-20 mt-2"
+                      >
+                        Comment
+                      </button>
+                    </form>
+                </div>
+                  
                 </ul>
 
 

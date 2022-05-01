@@ -9,8 +9,8 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report,User,Comment_Report
-from apps.home.forms import Project_Form,Report_form
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report, Reply,User,Comment_Report
+from apps.home.forms import Project_Form,Report_form,Reply_form
 
 
 
@@ -44,7 +44,6 @@ def create_new_project(request):
     if request.method == "POST":
         form = Project_Form(request.POST)
         images = request.FILES.getlist('images')
-        print(images)
         if form.is_valid():
             print('valid')
             project = form.save()  
@@ -64,6 +63,7 @@ def show_project_details(request, project_id):
         donate = project.donation_set.all().aggregate(Sum("donation"))
         donations = len(project.donation_set.all())
         comments = project.comment_set.all()
+        replies= Reply.objects.all()
         
         project_images=project.image_set.all()
         
@@ -75,7 +75,7 @@ def show_project_details(request, project_id):
         end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
         new_report_form=Report_form()
-        print(new_report_form)
+        reply=Reply_form()
         # relatedProjects = Project.objects.all().filter(category_id=project.category)
         context = {'project': project,
                 'donation' : donate["donation__sum"] if donate["donation__sum"] else 0,
@@ -84,8 +84,10 @@ def show_project_details(request, project_id):
                 'comments' : comments,
                 'num_of_comments' : len(comments),
                 'project_images':project_images,
-              
-                'report_form':new_report_form
+                'replies':replies,
+
+                'report_form':new_report_form,
+                'reply_form':reply
                 #    'relatedProjects': relatedProjects,
                 }
         return render(request, "home/project-details.html", context)
@@ -168,6 +170,8 @@ def add_report(request, project_id):
 @login_required(login_url="/login/")
 def add_comment_report(request, comment_id):
     my_comment=Comment.objects.get(id=comment_id)
+    project=Project.objects.all().filter(comment__id=comment_id)[0]
+
     if request.method == "POST":
         # myuser_id=request.user.id
         # check=User.objects.get(id=1).project_report_set.all().id
@@ -180,5 +184,22 @@ def add_comment_report(request, comment_id):
                 # user_id = request.user.id
                 user_id = 1
             )
-        return redirect('show_project',comment_id) # handle to return to project details
+        return redirect('show_project',project.id) # handle to return to project details
 
+
+@login_required(login_url="/login/")
+def create_comment_reply(request, comment_id):
+
+    if request.method == "POST":
+        if request.POST['reply']:
+            project=Project.objects.all().filter(comment__id=comment_id)[0]
+
+            reply = Reply.objects.create(
+                reply = request.POST['reply'],
+                comment_id = comment_id,
+                # user_id = request.user.id
+                user_id = 1
+            )
+
+            return redirect('show_project',project.id) # handle to return to project details
+    return render(request, "home/project-details.html",project.id)
