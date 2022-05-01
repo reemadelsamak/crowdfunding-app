@@ -131,8 +131,7 @@
 
                 <hr />
 
-                <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id
-                  %}>
+                <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id %}>
                   {% csrf_token %}
                   <textarea id="" name="comment" rows="2" class="col-md-12 form-control"></textarea>
                   <button type="submit" class="btn bg-gradient-light w-20 mt-2">

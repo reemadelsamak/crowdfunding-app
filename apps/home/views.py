@@ -39,7 +39,7 @@ def create_new_project(request):
         return render(request, "home/create-project.html", context={"form": form, 'images': my_images})
 
     if request.method == "POST":
-        form = Project_Form(request.POST)
+        form = Project_Form(request.POST,request.FILES)
         images = request.FILES.getlist('images')
         print(images)
         if form.is_valid():
@@ -75,10 +75,8 @@ def show_project_details(request, project_id):
         # handle date
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
-        start_date = datetime.strptime(
-            project.start_time.strftime(myFormat), myFormat)
-        end_date = datetime.strptime(
-            project.end_time.strftime(myFormat), myFormat)
+        start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
+        end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
         counter = 0
         # relatedProjects = Project.objects.all().filter(category_id=project.category)
