@@ -180,13 +180,16 @@
                             <a
                               class="col-md-10 p-2 mx-auto text-secondary text-center"
                               href="{%url 'create_project'%}"
-                              ><small
+                              >
+                              <small
                                 ><small class=""
                                   ><i class="fa-solid fa-flag mx-1"></i>Report
                                   comment</small
                                 ></small
                               ></a
                             >
+                            
+
                           </h6>
                           <p class="comment-time">
                             <small><small>{{ comment.created_at }}</small></small>
@@ -281,12 +284,13 @@
                   <input type="radio" id="star1" name="rate" value="1" />
                   <label for="star1" title="text">1 star</label>
                 </div>
-                <a
-                  class="col-md-10 p-2 mx-auto text-secondary text-center"
-                  href="{%url 'create_project'%}"
-                  ><i class="fa-solid fa-flag"></i
-                  ><small class="mx-2">Report this project</small></a
-                >
+                <div class="mx-auto">
+
+                  <form action="{% url 'create_report' project.id %}" method="POST">
+                    {%csrf_token%}
+                  
+                  <button type="submit" class=" btn btn-danger"style='width:100%;'><i class="fa-solid fa-flag"></i
+                  >  Report this project</button></form>
               </div>
             </div>
           </div>

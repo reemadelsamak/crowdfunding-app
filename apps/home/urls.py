@@ -12,6 +12,7 @@ urlpatterns = [
     path('project-details/<int:project_id>', views.show_project_details, name='show_project'),
     path('project-details/<int:project_id>/donate', views.donate, name = 'donate'),
     path('project-details/<int:project_id>/comment', views.create_comment, name = 'create_comment'),
+    path('project-details/<int:project_id>/report', views.add_report, name = 'create_report'),
 
 
     # Matches any html file

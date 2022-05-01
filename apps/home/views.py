@@ -9,8 +9,8 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project,Image
-from apps.home.forms import Project_Form
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report,User
+from apps.home.forms import Project_Form,Report_form
 
 
 
@@ -51,12 +51,7 @@ def create_new_project(request):
             print('save')
 
             for image in images:
-                print('for====================================')
-
-                Image.objects.create(project_id=project.id,images=image)
-                print('for====================================')
-
-            images = Image.objects.all()     
+                Image.objects.create(project_id=project.id,images=image)    
             return redirect('home')
 
 
@@ -79,7 +74,8 @@ def show_project_details(request, project_id):
         start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
         end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
-        counter=0
+        new_report_form=Report_form()
+        print(new_report_form)
         # relatedProjects = Project.objects.all().filter(category_id=project.category)
         context = {'project': project,
                 'donation' : donate["donation__sum"] if donate["donation__sum"] else 0,
@@ -88,7 +84,8 @@ def show_project_details(request, project_id):
                 'comments' : comments,
                 'num_of_comments' : len(comments),
                 'project_images':project_images,
-                'counter':counter
+              
+                'report_form':new_report_form
                 #    'relatedProjects': relatedProjects,
                 }
         return render(request, "home/project-details.html", context)
@@ -104,6 +101,7 @@ def donate(request, project_id):
             donation = Donation.objects.create(
                 donation = request.POST['donate'],
                 project_id = project_id,
+                # user_id = request.user.id
                 user_id = 1
             )
             return redirect('show_project',project_id) # handle to return to project details
@@ -117,8 +115,10 @@ def create_comment(request, project_id):
             comment = Comment.objects.create(
                 comment = request.POST['comment'],
                 project_id = project_id,
+                # user_id = request.user.id
                 user_id = 1
             )
+
             return redirect('show_project',project_id) # handle to return to project details
     return render(request, "home/project-details.html",project_id)
 
@@ -146,4 +146,21 @@ def pages(request):
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
 
+
+@login_required(login_url="/login/")
+def add_report(request, project_id):
+    my_project=Project.objects.get(id=project_id)
+    if request.method == "POST":
+        # myuser_id=request.user.id
+        # check=User.objects.get(id=1).project_report_set.all().id
+        # print(check)
+    
+
+        Project_Report.objects.create(
+                report = 'ip',
+                project=my_project,
+                # user_id = request.user.id
+                user_id = 1
+            )
+        return redirect('show_project',project_id) # handle to return to project details
 
