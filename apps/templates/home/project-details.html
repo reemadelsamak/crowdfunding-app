@@ -45,41 +45,38 @@
 
 <div class="container">
   <div class="row">
-    <div class="py-4 mx-auto">
-      <div class="row">
-        <div
-          class="col-lg-12 mx-auto d-flex justify-content-center flex-column"
-        >
-          <div class="d-flex justify-content-center p-5 flex-column">
-            <h2 class="mb-5">{{ project.title }}</h2>
-            <div
-              class="card card-plain d-flex flex-row justify-content-between"
-            >
-              <div class="col-md-7">
-                <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
-                  <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                      {%for image in project_images%}
+    <div class="py-4 mx-auto mt-5">
+      <!-- <div class="row"> -->
+      <div class="col-lg-12 mx-auto d-flex justify-content-center flex-column">
+        <div class="d-flex justify-content-center p-5 flex-column">
+          <h2 class="mb-5">{{ project.title }}</h2>
+          <div class="card card-plain d-flex flex-row justify-content-between">
+            <div class="col-md-7">
 
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
-                        {%endfor%}
-
-                  </div>
-                  
-                  <div class="carousel-inner">
-                    {%for image in project_images%}
-                      {%if forloop.counter == 1 %}
-                      <div class="carousel-item active" style="height:400px">
-                        <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
-                      </div>
-                      {%else%}
-                    <div class="carousel-item " style="height:400px">
-                      <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
-                    </div>
-                    {%endif%}
+              <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                  {%for image in project_images%}
+                  <button type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
                   {%endfor%}
-                   
+
+                </div>
+
+                <div class="carousel-inner">
+                  {%for image in project_images%}
+                  {%if forloop.counter == 1 %}
+                  <div class="carousel-item active" style="height:400px">
+                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
                   </div>
+                  {%else%}
+                  <div class="carousel-item " style="height:400px">
+                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
+                  </div>
+                  {%endif%}
+                  {%endfor%}
+
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                   data-bs-slide="prev">
