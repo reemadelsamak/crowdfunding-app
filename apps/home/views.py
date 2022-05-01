@@ -93,10 +93,8 @@ def show_project_details(request, project_id):
                 # handle date
                 myFormat = "%Y-%m-%d %H:%M:%S"
                 today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
-                start_date = datetime.strptime(
-                        project.start_time.strftime(myFormat), myFormat)
-                end_date = datetime.strptime(
-                        project.end_time.strftime(myFormat), myFormat)
+                start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
+                end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
                 days_diff = (end_date-today).days
                 counter = 0
                 # relatedProjects = Project.objects.all().filter(category_id=project.category)
