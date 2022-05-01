@@ -1,7 +1,7 @@
 from django import forms
 
 from apps.authentication.models import Register
-from .models import Category, Project, Tag
+from .models import Category, Project, Project_Report, Tag
 from django.forms.widgets import NumberInput
 
 
@@ -90,3 +90,8 @@ class Project_Form(forms.ModelForm):
             msg = "End date should be greater than start date."
             self._errors["end_time"] = self.error_class([msg])
 
+class Report_form(forms.ModelForm):
+    
+    class Meta:
+        model=Project_Report
+        fields=['report']

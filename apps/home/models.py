@@ -70,7 +70,12 @@ class Donation(models.Model):
 
 
 class Project_Report(models.Model):
-    report = models.TextField()
+    REPOT_DATA=[('ip','inappropriate'),('ags','aggressive')]
+    report =  models.CharField(
+        max_length=200,
+        choices=REPOT_DATA,
+        default='ip',
+    )
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
 
@@ -82,7 +87,7 @@ class Comment_Report(models.Model):
 
 
 class Reply(models.Model):
-    reply = models.TextField()
+    reply = models.CharField(max_length=30)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
 

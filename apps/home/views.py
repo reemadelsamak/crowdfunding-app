@@ -11,8 +11,8 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project, Image
-from apps.home.forms import Project_Form
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report
+from apps.home.forms import Project_Form,Report_form
 
 from apps.authentication.models import Register
 
@@ -171,4 +171,27 @@ def pages(request):
 
                         html_template = loader.get_template('home/page-404.html')
                         return HttpResponse(html_template.render(context, request))
+
+
+def add_report(request, project_id):
+        if 'user_id' not in request.session:
+                user = NULL
+                return redirect('login')
+        else:
+                user = getUser(request)
+                my_project=Project.objects.get(id=project_id)
+                if request.method == "POST":
+                        # myuser_id=request.user.id
+                        # check=User.objects.get(id=1).project_report_set.all().id
+                        # print(check)
+                
+
+                        Project_Report.objects.create(
+                                report = 'ip',
+                                project=my_project,
+                                # user_id = request.user.id
+                                user_id = 1
+                                
+                        )
+                        return redirect('show_project',project_id) # handle to return to project details
 
