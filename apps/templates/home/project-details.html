@@ -177,17 +177,13 @@
                         <div class="col-md-8 mx-3">
                           <h6 class="comment-header mb-0">
                             {{ comment.user.name }}
-                            <a
-                              class="col-md-10 p-2 mx-auto text-secondary text-center"
-                              href="{%url 'create_project'%}"
-                              >
-                              <small
-                                ><small class=""
-                                  ><i class="fa-solid fa-flag mx-1"></i>Report
-                                  comment</small
-                                ></small
-                              ></a
-                            >
+                            <div class="mx-auto">
+
+                              <form action="{% url 'create_comment_report' comment.id %}" method="POST">
+                                {%csrf_token%}
+                              
+                              <button type="submit" class=" btn btn-danger p-0"style='width:20%; height: 10%;'><i class="fa-solid fa-flag"></i> Report</button></form>
+                          </div>
                             
 
                           </h6>

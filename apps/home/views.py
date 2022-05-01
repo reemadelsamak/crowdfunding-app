@@ -9,7 +9,7 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report,User
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report,User,Comment_Report
 from apps.home.forms import Project_Form,Report_form
 
 
@@ -163,4 +163,22 @@ def add_report(request, project_id):
                 user_id = 1
             )
         return redirect('show_project',project_id) # handle to return to project details
+
+
+@login_required(login_url="/login/")
+def add_comment_report(request, comment_id):
+    my_comment=Comment.objects.get(id=comment_id)
+    if request.method == "POST":
+        # myuser_id=request.user.id
+        # check=User.objects.get(id=1).project_report_set.all().id
+        # print(check)
+    
+
+        Comment_Report.objects.create(
+                report = 'ip',
+                comment=my_comment,
+                # user_id = request.user.id
+                user_id = 1
+            )
+        return redirect('show_project',comment_id) # handle to return to project details
 
