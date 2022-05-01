@@ -17,64 +17,70 @@ from apps.home.forms import Project_Form
 from apps.authentication.models import Register
 
 
-def getUser (request):
+def getUser(request):
         user = Register.objects.get(id=request.session['user_id'])
         return user
-    
-   
+
 
 def index(request):
-        if 'user_id'  in request.session :
+        if 'user_id' in request.session:
                 user = getUser(request)
         else:
-                user=NULL
-        all_projects =Project.objects.all()
+                user = NULL
+        all_projects = Project.objects.all()
         last_5_projects = Project.objects.all().order_by('-id')[:5]
-        
+
         context = {
                 'segment': 'index',
-                'all_projects' : all_projects,
+                'all_projects': all_projects,
                 'count': len(all_projects),
-                'last_5_projects' : last_5_projects,
-                'user':user
+                'last_5_projects': last_5_projects,
+                'user': user
                 }
         html_template = loader.get_template('home/index.html')
         return HttpResponse(html_template.render(context, request))
-        
+
 
 def create_new_project(request):
-    my_images = Image.objects.all()
-    if request.method == 'GET':
+        if 'user_id' not in request.session:
+                user = NULL
+                return redirect('login')
+        else:
+                user = getUser(request)
+                my_images = Image.objects.all()
+                if request.method == 'GET':
+                        form = Project_Form()
+                        return render(request, "home/create-project.html", context={"form": form, 'images': my_images , "user":user})
 
-        form = Project_Form()
-        return render(request, "home/create-project.html", context={"form": form, 'images': my_images})
+                if request.method == "POST":
+                        form = Project_Form(request.POST , request.FILES)
+                        images = request.FILES.getlist('images')
+                        
+                        print(images)
+                        if form.is_valid():
+                                print('valid')
+                                project = form.save()
+                                print('save')
 
-    if request.method == "POST":
-        form = Project_Form(request.POST)
-        images = request.FILES.getlist('images')
-        print(images)
-        if form.is_valid():
-            print('valid')
-            project = form.save()
-            print('save')
+                                for image in images:
+                                        print('for====================================')
+                                        Image.objects.create(
+                                                project_id=project.id, images=image)
+                                        print('for====================================')
+                                images = Image.objects.all()
+                                return redirect('home')
+                else:
+                        form = Project_Form()
+                return render(request, "home/create-project.html", context={"form": form  ,"user":user })
 
-            for image in images:
-                print('for====================================')
-
-                Image.objects.create(project_id=project.id, images=image)
-                print('for====================================')
-
-            images = Image.objects.all()
-            return redirect('home')
-    else:
-        form = Project_Form()
-    return render(request, "home/create-project.html", context={"form": form})
 
 
 def show_project_details(request, project_id):
-    if 'user_id' not in request.session :
-        return  redirect('login')
+    if 'user_id' not in request.session:
+        user = NULL
+        return redirect('login')
     else:
+        user = getUser(request)
         context = {}
         try:
                 project = Project.objects.get(id=project_id)
@@ -101,7 +107,9 @@ def show_project_details(request, project_id):
                         'comments': comments,
                         'num_of_comments': len(comments),
                         'project_images': project_images,
-                        'counter': counter
+                        'counter': counter,
+                        "user":user
+
                         #    'relatedProjects': relatedProjects,
                    }
                 return render(request, "home/project-details.html", context)
@@ -111,27 +119,32 @@ def show_project_details(request, project_id):
 
 
 def donate(request, project_id):
-        if 'user_id' not in request.session :
-              return redirect('login')
+        if 'user_id' not in request.session:
+                user = NULL
+                return redirect('login')
         else:
+                user = getUser(request)
                 if request.method == "POST":
                         if request.POST['donate']:
                                 donation = Donation.objects.create(
                                         donation=request.POST['donate'],
                                         project_id=project_id,
-                                        user_id=1
+                                        user_id=1,
+                                        
                                 )
                                 # handle to return to project details
                                 return redirect('show_project', project_id)
-                return render(request, "home/project-details.html", project_id)
+                return render(request, "home/project-details.html", project_id , context={"user":user})
 
 
 
 
 def create_comment(request, project_id):
-        if 'user_id' not in request.session :
-              return redirect('login')
+        if 'user_id' not in request.session:
+                user = NULL
+                return redirect('login')
         else:
+                user = getUser(request)
                 if request.method == "POST":
                         if request.POST['comment']:
                                 comment = Comment.objects.create(
@@ -141,13 +154,11 @@ def create_comment(request, project_id):
                                 )
                                 # handle to return to project details
                                 return redirect('show_project', project_id)
-                return render(request, "home/project-details.html", project_id)
+                return render(request, "home/project-details.html", project_id , context={"user":user})
 
 
 def pages(request):
-        if 'user_id' not in request.session :
-              return redirect('login')
-        else:
+        
                 context = {}
                         # All resource paths end in .html.
                         # Pick out the html file name from the url. And load that template.

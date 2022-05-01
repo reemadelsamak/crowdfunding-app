@@ -1,6 +1,6 @@
-{% extends 'layouts/base-fullscreen.html' %}
+{% extends 'layouts/base.html' %}
 
-{% block title %} Sign UP {% endblock title %}
+{% block title %} Edit Profile {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -9,16 +9,14 @@
 
 {% block content %}
 
-<section>
-  <div class="page-header section-height-100">
-    <div class="container">
+<section >
+  <div class="page-header section-height-100  g-0">
+    <div class="container mt-4 ">
       <div class="row">
         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
           <div class="card card-plain">
             <div class="card-header pb-0 text-left">
-              <h4 class="font-weight-bolder">Sign UP</h4>
-              
-              
+              <h4 class="font-weight-bolder mt-5 ">Edit Profile</h4>
                 {% if msg %}
                 <div class="alert alert-warning ">
                   {{ msg | safe }}

@@ -36,32 +36,24 @@ def user_login (request ):
                 email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
                 encryptpassword=make_password(password)
-                
+
                 try:
                     user = Register.objects.get(email=email , password=encryptpassword)
-                    
                 except (ObjectDoesNotExist):
-                    user = None
-                    
-
-
+                    user = None                    
                 if user is not None:
-                    if   user.is_active:
+                    if  user.is_active:
                         login(request, user)
                         user.last_login = timezone.now()
                         user.is_login= True
                         user.save()
                         request.session['user_id'] = user.id
-                       
                         msg = f"You are now logged in as {user.first_name}"
                         return redirect("/" )
-
-
                     else:
                         msg= "please check your email to activate it !!"
                 else:
                     msg = "user doesn't exist "
-
             else:
                 msg = 'Invalid email or password.'
         form = LoginForm()
@@ -148,11 +140,11 @@ def user_logout(request ):
     return redirect("login" )
 
 
-def EditProfile(request , id):
+def EditProfile(request):
     msg = None
     if 'user_id'  in request.session :
         try:
-            user_object= Register.objects.get(id=id)
+            user_object= Register.objects.get(id=request.session['user_id'])
         except Register.DoesNotExist:
             return redirect('/')
            
@@ -179,20 +171,18 @@ def EditProfile(request , id):
 
 
                 user_object.save()
-              
-                return redirect("profile/" ,id='id')
+                return redirect( 'profile'  )
         else:
             form = EditProfileForm(instance=user_object) 
-        return render(request, 'profile/editProfile.html', {'form': form ,"msg" :msg , "user" :user_object})return render(request, 'profile/editProfile.html', {'form': form ,"msg" :msg , "user" :user_object})
-        
+        return render(request, 'profile/editProfile.html', {'form': form ,"msg" :msg , "user" :user_object})
     else:
         return redirect("/" )
 
 
-def profile (request , id):
+def profile (request):
     if 'user_id'  in request.session :
         try:
-            user_object= Register.objects.get(id=id)
+            user_object= Register.objects.get(id = request.session['user_id']) 
         except Register.DoesNotExist:
             return redirect('/')
 

@@ -17,7 +17,7 @@ urlpatterns = [
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,18})/',
          activate, name='activate'),
     path("logout", user_logout, name="logout"),
-    path("profile/<int:id>" , profile , name="profile"),
-    path('edit/profile/<int:id>', EditProfile, name="editProfile"),
+    path("profile" , profile , name="profile"),
+    path('edit/profile', EditProfile, name="editProfile"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
