@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Project, Tag, User
+from .models import Category, Comment_Report, Project, Project_Report, Reply, Tag, User
 from django.forms.widgets import NumberInput
 
 
@@ -88,3 +88,43 @@ class Project_Form(forms.ModelForm):
             msg = "End date should be greater than start date."
             self._errors["end_time"] = self.error_class([msg])
 
+class Report_form(forms.ModelForm):
+    
+    class Meta:
+        model=Project_Report
+        fields=['report']
+
+class Comment_report_form(forms.ModelForm):
+    
+    class Meta:
+        model=Comment_Report
+        fields=['report']
+
+class Reply_form(forms.ModelForm):
+
+    class Meta:
+        model=Reply
+        fields =['reply']
+
+
+class Category_form(forms.ModelForm):
+
+    class Meta:
+        model=Category
+        fields=['name']
+
+    # def clean(self):
+    #     categories=Category.objects.all()
+    #     cleaned_data = super().clean()
+    #     name = cleaned_data.get("name")
+    #     for category in categories:
+    #         if name == category.name:
+    #             print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+    #             msg = "not valid clean"
+    #             self._errors["name"] = self.error_class([msg])
+    #             break
+    #         else:
+    #             print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+            
+        
+          

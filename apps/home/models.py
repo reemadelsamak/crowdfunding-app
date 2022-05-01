@@ -17,8 +17,7 @@ class User(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=250)
-    # category_icon = models.ImageField(upload_to='projects/static/projects')
-
+    
     def __str__(self):
         return self.name
 
@@ -74,21 +73,33 @@ class Donation(models.Model):
 
 
 class Project_Report(models.Model):
-    report = models.TextField()
+    REPOT_DATA=[('ip','inappropriate'),('ags','aggressive')]
+    report =  models.CharField(
+        max_length=200,
+        choices=REPOT_DATA,
+        default='ip',
+    )
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Comment_Report(models.Model):
-    report = models.TextField()
+    REPOT_DATA=[('ip','inappropriate')]
+    report =  models.CharField(
+        max_length=200,
+        choices=REPOT_DATA,
+        default='ip',
+    )
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Reply(models.Model):
-    reply = models.TextField()
+    reply = models.CharField(max_length=30)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 
 class Rate(models.Model):

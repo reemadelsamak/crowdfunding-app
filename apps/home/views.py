@@ -10,8 +10,8 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project, Image
-from apps.home.forms import Project_Form
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report, Reply,User,Comment_Report
+from apps.home.forms import Project_Form,Report_form,Reply_form,Category_form
 
 
 @login_required(login_url="/login/")
@@ -44,19 +44,10 @@ def create_new_project(request):
     if request.method == "POST":
         form = Project_Form(request.POST, request.FILES)
         images = request.FILES.getlist('images')
-        print(images)
         if form.is_valid():
-            print('valid')
-            project = form.save()
-            print('save')
-
+            project = form.save()  
             for image in images:
-                print('for====================================')
-
-                Image.objects.create(project_id=project.id, images=image)
-                print('for====================================')
-
-            images = Image.objects.all()
+                Image.objects.create(project_id=project.id,images=image)    
             return redirect('home')
     else:
         form = Project_Form()
@@ -72,9 +63,11 @@ def show_project_details(request, project_id):
         donate = project.donation_set.all().aggregate(Sum("donation"))
         donations = len(project.donation_set.all())
         comments = project.comment_set.all()
-
-        project_images = project.image_set.all()
-
+        replies= Reply.objects.all()
+        
+        project_images=project.image_set.all()
+        
+        
         # handle date
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
@@ -83,18 +76,22 @@ def show_project_details(request, project_id):
         end_date = datetime.strptime(
             project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
-        counter = 0
+        new_report_form=Report_form()
+        reply=Reply_form()
         # relatedProjects = Project.objects.all().filter(category_id=project.category)
         context = {'project': project,
-                   'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
-                   'donations': donations,
-                   'days': days_diff,
-                   'comments': comments,
-                   'num_of_comments': len(comments),
-                   'project_images': project_images,
-                   'counter': counter
-                   #    'relatedProjects': relatedProjects,
-                   }
+                'donation' : donate["donation__sum"] if donate["donation__sum"] else 0,
+                'donations' : donations,
+                'days' : days_diff,
+                'comments' : comments,
+                'num_of_comments' : len(comments),
+                'project_images':project_images,
+                'replies':replies,
+
+                'report_form':new_report_form,
+                'reply_form':reply
+                #    'relatedProjects': relatedProjects,
+                }
         return render(request, "home/project-details.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
@@ -204,3 +201,83 @@ def pages(request):
 
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def add_report(request, project_id):
+    my_project=Project.objects.get(id=project_id)
+    if request.method == "POST":
+        # myuser_id=request.user.id
+        # check=User.objects.get(id=1).project_report_set.all().id
+        # print(check)
+    
+
+        Project_Report.objects.create(
+                report = 'ip',
+                project=my_project,
+                # user_id = request.user.id
+                user_id = 1
+            )
+        return redirect('show_project',project_id) # handle to return to project details
+
+
+@login_required(login_url="/login/")
+def add_comment_report(request, comment_id):
+    my_comment=Comment.objects.get(id=comment_id)
+    project=Project.objects.all().filter(comment__id=comment_id)[0]
+
+    if request.method == "POST":
+        # myuser_id=request.user.id
+        # check=User.objects.get(id=1).project_report_set.all().id
+        # print(check)
+    
+
+        Comment_Report.objects.create(
+                report = 'ip',
+                comment=my_comment,
+                # user_id = request.user.id
+                user_id = 1
+            )
+        return redirect('show_project',project.id) # handle to return to project details
+
+
+@login_required(login_url="/login/")
+def create_comment_reply(request, comment_id):
+
+    if request.method == "POST":
+        if request.POST['reply']:
+            project=Project.objects.all().filter(comment__id=comment_id)[0]
+
+            reply = Reply.objects.create(
+                reply = request.POST['reply'],
+                comment_id = comment_id,
+                # user_id = request.user.id
+                user_id = 1
+            )
+
+            return redirect('show_project',project.id) # handle to return to project details
+    return render(request, "home/project-details.html",project.id)
+
+
+@login_required(login_url="/login/")
+def add_category(request):
+
+    categories=Category.objects.all()
+    
+    if request.method=='GET':
+        form=Category_form()
+        return render(request,"home/category_form.html",context={'form':form})
+    if request.method=='POST':
+        form=Category_form(request.POST)
+
+        if form.is_valid():
+            new_category=request.POST['name']
+            for category in categories:
+                if category.name == new_category:
+                    
+                    error=' not valid'
+                    
+                    return render(request,"home/category_form.html",context={'form':form,'form_error':error})
+                
+            form.save()
+            return redirect('home')
