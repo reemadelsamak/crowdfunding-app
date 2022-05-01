@@ -7,7 +7,7 @@ __pycache__/
 .coverage
 
 # database & logs
-
+*.log
 
 # venv
 .env

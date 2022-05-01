@@ -15,10 +15,11 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: CORE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent
 
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -51,13 +52,6 @@ INSTALLED_APPS = [
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
-    # 'django.middleware.security.SecurityMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -131,12 +125,6 @@ EMAIL_HOST_USER = 'nermeen.iti@gmail.com'
 EMAIL_HOST_PASSWORD = 'Nero_iti@984$1'
 EMAIL_PORT = 587  
 
-# EMAIL_USE_TLS = True  
-# EMAIL_HOST = 'smtp.gmail.com'  
-# EMAIL_HOST_USER = 'ahmed.bastawesy97@gmail.com'  
-# EMAIL_HOST_PASSWORD = '1551997364'
-# EMAIL_PORT = 587  
-
 
 
 # Internationalization
@@ -156,6 +144,9 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(CORE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
