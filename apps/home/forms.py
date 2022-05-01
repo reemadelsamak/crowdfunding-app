@@ -57,7 +57,7 @@ class Project_Form(forms.ModelForm):
         }
     ))
     
-    user_id = forms.ModelChoiceField(queryset=Register.objects.all(),
+    user = forms.ModelChoiceField(queryset=Register.objects.all(),
                                      widget=forms.Select(
         attrs={
             "class": "form-control"

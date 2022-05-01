@@ -50,8 +50,7 @@ def create_new_project(request):
                 my_images = Image.objects.all()
                 if request.method == 'GET':
                         form = Project_Form()
-                        return render(request, "home/create-project.html", context={"form": form, 'images': my_images , "user":user})
-
+                        return render(request, "home/create-project.html", context={"form": form, 'images': my_images ,"user":user })
                 if request.method == "POST":
                         form = Project_Form(request.POST , request.FILES)
                         images = request.FILES.getlist('images')
@@ -61,17 +60,15 @@ def create_new_project(request):
                                 print('valid')
                                 project = form.save()
                                 print('save')
-
                                 for image in images:
                                         print('for====================================')
-                                        Image.objects.create(
-                                                project_id=project.id, images=image)
+                                        Image.objects.create(project_id=project.id, images=image)
                                         print('for====================================')
                                 images = Image.objects.all()
                                 return redirect('home')
                 else:
                         form = Project_Form()
-                return render(request, "home/create-project.html", context={"form": form  ,"user":user })
+                return render(request, "home/create-project.html", context={"form": form , "user":user  })
 
 
 

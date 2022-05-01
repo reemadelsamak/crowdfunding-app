@@ -9,7 +9,7 @@
 
 {% block content %}
 <style>
-    .container {
+    /* .container {
         position: absolute;
         top: 20%;
         left: -700%;
@@ -48,14 +48,9 @@
         margin: 50;
         margin-top: 5;
         padding: 50;
-    }
-
-
-   
-  
-
+    } */
 </style>
-<div class="col-lg-12 ms-auto me-auto p-lg-2 mt-lg-0 mt-4 ">
+<!-- <div class="col-lg-12 ms-auto me-auto p-lg-2 mt-lg-0 mt-4 ">
 
     <div class="card card-background card-background-mask-primary  " style="height: 600px; ">
         <div class="card-body pt-5 text-center" >
@@ -81,13 +76,136 @@
         </div>
 
     </div>
-</div>
+</div> -->
+<div class="col-lg-11 ms-auto me-auto p-lg-2 mt-lg-0 mt-4 g-0">
+    <div class="row d-flex justify-content-around mt-5">
+        <div class="col-md-4 mt-5 ">
 
-{% endblock content %}
+            <div class="row">
+                <div class="card text-center bg-dark">
+                    <img src="{{user.profile_img.url}}" class="card-img-top border border-2 rounded-circle ms-4 w-75 mt-2"
+                        alt="profile img">
+                    <div class="card-body">
+                        <h3 class="card-title text-light"> {{user.first_name}} {{user.last_name}}</h3>
+                        <p class="card-text">{{user.email}}</p>
+                        <a href="{% url 'editProfile'  %}" class="btn btn-outline-primary bg-light mt-3 btn-round">Edit
+                            Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <table class="table table-hover ">
+                            <thead>
 
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Donation</th>
+                                    <th scope="col"><i class="fa-solid fa-calendar-check"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for donation in donations%}
 
-<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'show_project'  donation.project_id %}">
+                                            {{donation.project.title|truncatewords:2}}
+                                        </a>
 
-{% endblock javascripts %}
+                                    </td>
+
+                                    <td>{{donation.donation}} $ </td>
+                                    <td>{{donation.created_at | date:"m d,Y"}}</td>
+
+                                </tr>
+
+
+                                {%endfor%}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="col-md-7 mt-5">
+            <div class="card mt-3 ">
+                <div class="card-header bg-light">
+                    Info
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-around">
+                        <div class="col-md-5">
+                            <h5 class="text-primary py-1">First Name : <span class="text-secondary"> {{user.first_name}}
+                                </span> </h5>
+                            <h5 class="text-primary  py-1 ">Email : <span class="text-secondary"> {{user.email}} </span>
+                            </h5>
+                            <h5 class="text-primary  py-1">Phone Number: <span class="text-secondary"> {{user.phone}}
+                                </span> </h5>
+                        </div>
+                        <div class="col-md-5">
+                            <h5 class="text-primary  py-1">last Name : <span class="text-secondary"> {{user.last_name}}
+                                </span> </h5>
+                            <h5 class="text-primary  py-1">Birth Date : <span class="text-secondary"> {{user.birthdate}}
+                                </span> </h5>
+                            <h5 class="text-primary  py-1">Country : <span class="text-secondary"> {{user.country}}
+                                </span></h5>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-md-10">
+                            <h5 class="text-primary  py-1">Facebook link: <a class="text-secondary"
+                                    href="{{user.facebook_profile}}">
+                                    {{user.facebook_profile}} </a> </h5>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-between">
+                {% for project in projects%}
+                <div class="col-md-6">
+                    <a href="{% url 'show_project'  project.id %}">
+
+
+                        <div class="card mt-5 text-center">
+                            <h5 class="card-header bg-light">{{project.title }}</h5>
+                            <div class="card-body">
+                                <h5 class="card-title text-break">{{project.details|truncatewords:15}}</h5>
+                                <p class="card-text"><i class="fa-solid fa-dollar-sign"></i> {{project.total_target}}
+                                </p>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {%endfor%}
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    <!-- Specific JS goes HERE -->
+    {% block javascripts %}
+
+    <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+
+    {% endblock javascripts %}

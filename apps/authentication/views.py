@@ -5,13 +5,13 @@ Copyright (c) 2019 - present AppSeed.us
 
 from asyncio.windows_events import NULL
 from multiprocessing import context
-from django.http import HttpResponse
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import make_password ,check_password
 from apps.authentication.models import Register
 from django.utils.encoding import force_bytes, force_str
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+
 from django.contrib.auth import login , authenticate ,logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -24,6 +24,9 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+
+from apps.home.models import Donation, Project
+
 
   
 def user_login (request ):
@@ -182,10 +185,17 @@ def EditProfile(request):
 def profile (request):
     if 'user_id'  in request.session :
         try:
-            user_object= Register.objects.get(id = request.session['user_id']) 
+            user_object= Register.objects.get(id = request.session['user_id'])
+            projects =Project.objects.filter(user_id =  request.session['user_id'] )
+            donations = Donation.objects.filter(user_id =  request.session['user_id'] )
         except Register.DoesNotExist:
             return redirect('/')
-
-        return render(request, 'profile/Profile.html', {"user" :user_object})
+        
+        
+        return render(request, 'profile/Profile.html', {"user" :user_object ,"projects":projects ,"donations":donations})
     else:
         return redirect("/" )
+
+
+
+
