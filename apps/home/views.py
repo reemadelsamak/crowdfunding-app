@@ -10,7 +10,7 @@ from django.db.models import Avg, Sum
 from datetime import date, datetime
 
 from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report, Reply,User,Comment_Report
-from apps.home.forms import Project_Form,Report_form,Reply_form
+from apps.home.forms import Project_Form,Report_form,Reply_form,Category_form
 
 
 
@@ -45,10 +45,7 @@ def create_new_project(request):
         form = Project_Form(request.POST)
         images = request.FILES.getlist('images')
         if form.is_valid():
-            print('valid')
             project = form.save()  
-            print('save')
-
             for image in images:
                 Image.objects.create(project_id=project.id,images=image)    
             return redirect('home')
@@ -123,8 +120,6 @@ def create_comment(request, project_id):
 
             return redirect('show_project',project_id) # handle to return to project details
     return render(request, "home/project-details.html",project_id)
-
-
 
 
 @login_required(login_url="/login/")
@@ -203,3 +198,31 @@ def create_comment_reply(request, comment_id):
 
             return redirect('show_project',project.id) # handle to return to project details
     return render(request, "home/project-details.html",project.id)
+
+
+
+
+
+
+@login_required(login_url="/login/")
+def add_category(request):
+
+    categories=Category.objects.all()
+    
+    if request.method=='GET':
+        form=Category_form()
+        return render(request,"home/category_form.html",context={'form':form})
+    if request.method=='POST':
+        form=Category_form(request.POST)
+
+        if form.is_valid():
+            new_category=request.POST['name']
+            for category in categories:
+                if category.name == new_category:
+                    
+                    error=' not valid'
+                    
+                    return render(request,"home/category_form.html",context={'form':form,'form_error':error})
+                
+            form.save()
+            return redirect('home')
