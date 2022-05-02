@@ -122,17 +122,17 @@
                           </p>
 
                           <p>
-                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample{{ forloop.counter }}add_replies" role="button" aria-expanded="false" aria-controls="collapseExample">
                               reply
                             </a>
                           
                           
-                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="btn btn-primary p-0" data-toggle="collapse" href="#collapseExample{{ forloop.counter }}show_replies" role="button" aria-expanded="false" aria-controls="collapseExample">
                               show replies
                             </a>
                           
                           </p>
-                          <div class="collapse" id="collapseExample">
+                          <div class="collapse" id="collapseExample{{ forloop.counter }}add_replies">
                             
                               {%for fields in reply_form%}
                               <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment_reply' comment.id %}>
@@ -154,7 +154,8 @@
                               {%endfor%}
                           
                           </div>
-                          <div class="collapse" id="collapseExample2">
+
+                          <div class="collapse" id="collapseExample{{ forloop.counter }}show_replies">
                             
                             <hr class="my-0" />
                             
@@ -206,14 +207,14 @@
                   
                
                   <p>
-                    <a class="btn bg-gradient-info p-0 " data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <a class="btn bg-gradient-info p-0 " data-toggle="collapse" href="#collapseExample{{ forloop.counter }}addcomment" role="button" aria-expanded="false" aria-controls="collapseExample">
                       add comment
                     </a>
                   
                   
                   
                   </p>
-                  <div class="collapse" id="collapseExample3">
+                  <div class="collapse" id="collapseExample{{ forloop.counter }}addcomment">
                     
                 
                     <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id %}>
