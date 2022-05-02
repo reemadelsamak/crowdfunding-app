@@ -12,7 +12,7 @@ from django.db.models import Avg, Sum
 from datetime import date, datetime
 
 from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report, Reply,Comment_Report
-from apps.home.forms import Project_Form,Report_form,Reply_form
+from apps.home.forms import Project_Form,Report_form,Reply_form,Category_form
 
 from apps.authentication.models import Register
 
@@ -226,14 +226,47 @@ def create_comment_reply(request, comment_id):
                 user = getUser(request)
                 if request.method == "POST":
                         if request.POST['reply']:
-                        project=Project.objects.all().filter(comment__id=comment_id)[0]
+                                project=Project.objects.all().filter(comment__id=comment_id)[0]
 
-                        reply = Reply.objects.create(
-                                reply = request.POST['reply'],
-                                comment_id = comment_id,
-                                # user_id = request.user.id
-                                user_id = 1
-                        )
+                                reply = Reply.objects.create(
+                                        reply = request.POST['reply'],
+                                        comment_id = comment_id,
+                                        # user_id = request.user.id
+                                        user_id = 1
+                                )
 
-                        return redirect('show_project',project.id) # handle to return to project details
+                                return redirect('show_project',project.id) # handle to return to project details
                 return render(request, "home/project-details.html",project.id)
+            
+
+
+
+
+
+
+
+def add_category(request):
+   if 'user_id' not in request.session:
+        user = NULL
+        return redirect('login')
+   else:
+        user = getUser(request)
+        categories=Category.objects.all()
+        
+        if request.method=='GET':
+                form=Category_form()
+                return render(request,"home/category_form.html",context={'form':form})
+        if request.method=='POST':
+                form=Category_form(request.POST)
+
+                if form.is_valid():
+                        new_category=request.POST['name']
+                        for category in categories:
+                            if category.name == new_category:
+                    
+                                error=' not valid'
+                    
+                                return render(request,"home/category_form.html",context={'form':form,'form_error':error})
+                
+                        form.save()
+                        return redirect('home')

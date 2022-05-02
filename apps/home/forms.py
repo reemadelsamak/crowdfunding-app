@@ -107,3 +107,26 @@ class Reply_form(forms.ModelForm):
     class Meta:
         model=Reply
         fields =['reply']
+
+
+class Category_form(forms.ModelForm):
+
+    class Meta:
+        model=Category
+        fields=['name']
+
+    # def clean(self):
+    #     categories=Category.objects.all()
+    #     cleaned_data = super().clean()
+    #     name = cleaned_data.get("name")
+    #     for category in categories:
+    #         if name == category.name:
+    #             print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+    #             msg = "not valid clean"
+    #             self._errors["name"] = self.error_class([msg])
+    #             break
+    #         else:
+    #             print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+            
+        
+          
