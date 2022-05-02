@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from asyncio.windows_events import NULL
+
 from multiprocessing import context
 
 from django.shortcuts import redirect, render
@@ -17,7 +18,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 
-from apps.authentication.forms import EditProfileForm, LoginForm ,SignupForm
+from apps.authentication.forms import DeleteAccountForm, EditProfileForm, LoginForm, ResetPasswordEmailForm, ResetPasswordForm ,SignupForm
 from apps.authentication.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -27,7 +28,10 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from apps.home.models import Donation, Project
 
+from django.conf import settings
+from django.core.mail import send_mail
 
+from apps.home.views import getUser
   
 def user_login (request ):
     if 'user_id' not in request.session :
@@ -196,6 +200,108 @@ def profile (request):
     else:
         return redirect("/" )
 
+def emailPasswordReset (request ):
+        if request.method == "POST":
+            form = ResetPasswordEmailForm( request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                try:
+                    user = Register.objects.get(email=email)
+                    
+                except (ObjectDoesNotExist):
+                    messages.error(request ,"Invalid email")
+                    form = ResetPasswordEmailForm()
+                    return render(request=request, template_name="accounts/emailResetPassword.html", context={"form":form})
+                    
+                current_site = get_current_site(request)
+                mail_subject = 'Activation link has been sent to your email id'
+                message = render_to_string('accounts/acc_reset_password.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                to_email = [form.cleaned_data.get('email')]
+                email = EmailMessage(
+                    mail_subject, message, to=[to_email]
+                )
+                from_email=settings.EMAIL_HOST_USER
+                # email.send()
+                send_mail( mail_subject, message, from_email, to_email)
+                return HttpResponse('Please confirm your email address to complete the reset password')
+            else:
+                    messages.error(request,"user doesn't exist ")
 
+        else:
+            form = ResetPasswordEmailForm()
+            return render(request=request, template_name="accounts/emailResetPassword.html", context={"form":form})
 
+def ResetPasswordLink(request, uidb64, token):
+    
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = Register.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError , ObjectDoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        request.session['password_reset-session'] = user.id
+        return redirect( 'passwordReset' , user.id )
+    else:
+        return HttpResponse('Reset Password link is invalid!')
+    
+def ResetPassword(request,id):
+    if 'password_reset-session' in request.session :
+            if request.method == "POST":
+                form = ResetPasswordForm( request.POST)
+                if form.is_valid():
+                    try:
+                        user = Register.objects.get(id=id)
+                    except (ObjectDoesNotExist):
+                        user = None
+                        return redirect('login')
+                    if user is not None:
+                            hashedpassword=make_password(form.cleaned_data['password'])
+                            user.password = hashedpassword
+                            user.save()
+                            del request.session['password_reset-session']
+                            return redirect('login' )
+                else:
+                    return render(request=request, template_name="accounts/passwordReset.html", context={"form":form})
 
+            else:
+                form = ResetPasswordForm()
+                return render(request=request, template_name="accounts/passwordReset.html", context={"form":form})
+    else:
+        return redirect('login')
+
+def deleteAccount(request):
+    if 'user_id'  in  request.session :
+            if request.method == "POST":
+                form = DeleteAccountForm( request.POST)
+                if form.is_valid():
+                    password = form.cleaned_data['password']
+                    encryptpassword=make_password(password)
+                    try:
+                        user = Register.objects.get(id=request.session['user_id'])
+                    except (ObjectDoesNotExist):
+                        user = None  
+                        return redirect('login')
+                    if user is not None:
+                        if user.password == encryptpassword :
+                            user.delete()
+                            del request.session['user_id']
+                            return redirect('login' )
+                        else :
+                            msg='password not correct'
+                            return render(request=request, template_name="accounts/Delete_account.html", context={"form":form ,"msg":msg , "user":user})
+
+                else:
+                    user=getUser(request)
+                    return render(request=request, template_name="accounts/Delete_account.html", context={"form":form , "user":user})
+
+            else:
+                form = DeleteAccountForm()
+                user=getUser(request)
+                return render(request=request, template_name="accounts/Delete_account.html", context={"form":form , "user":user})
+    else:
+        return redirect('login')

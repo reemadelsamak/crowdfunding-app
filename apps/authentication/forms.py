@@ -163,3 +163,38 @@ class EditProfileForm(forms.ModelForm):
         fields = ('first_name','last_name','phone','image','country' , 'password', 'confirmPassword','birthdate','facebook_profile')
         
 
+class ResetPasswordEmailForm(forms.Form):
+    email = forms.EmailField(max_length=200, help_text='Required', widget=forms.EmailInput(attrs={
+        "placeholder": "Email",
+        "class": "form-control"
+    }))
+
+class ResetPasswordForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Password",
+        "class": "form-control"
+    }))
+    #TODO:add regex to password
+    confirmPassword = forms.CharField(label="confirm password", widget=forms.PasswordInput(attrs={
+        "placeholder": "Confirm Password",
+        "class": "form-control"
+    }))
+    def clean(self):
+        errors = {}
+        cleaned_data=super().clean()
+        valpassword=self.cleaned_data.get('password')
+        valconfirmpassword=self.cleaned_data.get("confirmPassword")
+        if valpassword != valconfirmpassword:
+             errors['confirmPassword'] =  ('password not match')
+        if errors:
+            raise forms.ValidationError(errors)
+
+    class Meta:
+        model = Register
+        fields = ('password', 'confirmPassword')
+        
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Password",
+        "class": "form-control"
+    }))
