@@ -95,6 +95,8 @@ class Reply(models.Model):
     reply = models.CharField(max_length=30)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 
 class Rate(models.Model):
