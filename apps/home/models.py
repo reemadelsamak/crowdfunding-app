@@ -81,7 +81,12 @@ class Project_Report(models.Model):
 
 
 class Comment_Report(models.Model):
-    report = models.TextField()
+    REPOT_DATA=[('ip','inappropriate')]
+    report =  models.CharField(
+        max_length=200,
+        choices=REPOT_DATA,
+        default='ip',
+    )
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
 

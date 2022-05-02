@@ -11,7 +11,7 @@ from django.db.models import Avg, Sum
 
 from datetime import date, datetime
 
-from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report
+from apps.home.models import Category, Comment, Donation, Project,Image, Project_Report,Comment_Report
 from apps.home.forms import Project_Form,Report_form
 
 from apps.authentication.models import Register
@@ -194,4 +194,26 @@ def add_report(request, project_id):
                                 
                         )
                         return redirect('show_project',project_id) # handle to return to project details
+
+
+def add_comment_report(request, comment_id):
+        if 'user_id' not in request.session:
+                user = NULL
+                return redirect('login')
+        else:
+                user = getUser(request)
+                my_comment=Comment.objects.get(id=comment_id)
+                if request.method == "POST":
+                        # myuser_id=request.user.id
+                        # check=User.objects.get(id=1).project_report_set.all().id
+                        # print(check)
+                
+
+                        Comment_Report.objects.create(
+                                report = 'ip',
+                                comment=my_comment,
+                                # user_id = request.user.id
+                                user_id = 1
+                        )
+                        return redirect('show_project',comment_id) # handle to return to project details
 

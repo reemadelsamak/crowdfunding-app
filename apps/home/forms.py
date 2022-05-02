@@ -1,7 +1,7 @@
 from django import forms
 
 from apps.authentication.models import Register
-from .models import Category, Project, Project_Report, Tag
+from .models import Category, Comment_Report, Project, Project_Report, Tag
 from django.forms.widgets import NumberInput
 
 
@@ -94,4 +94,10 @@ class Report_form(forms.ModelForm):
     
     class Meta:
         model=Project_Report
+        fields=['report']
+
+class Comment_report_form(forms.ModelForm):
+    
+    class Meta:
+        model=Comment_Report
         fields=['report']
