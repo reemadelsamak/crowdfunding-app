@@ -1,8 +1,3 @@
-# from ctypes import Union
-from itertools import count
-from multiprocessing import Value
-# import re
-from unicodedata import category
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,21 +7,21 @@ from django.urls import reverse
 from django.db.models import Avg, Sum
 from django.db.models import Q
 
-from datetime import date, datetime
+from datetime import datetime
 
-from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Reply, Tag, User, Comment_Report
+from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Rate, Reply, Tag, User, Comment_Report
 from apps.home.forms import Project_Form, Report_form, Reply_form, Category_form
 
 
 @login_required(login_url="/login/")
 def index(request):
-    # return last 5 project
     all_projects = Project.objects.all()
     last_5_projects = Project.objects.all().order_by('-id')[:5]
     featured_projects = Project.objects.filter(is_featured=1)[:5]
+    donations = Donation.objects.all()
+    reviews = Rate.objects.all()
 
     images = []
-
     for project in last_5_projects:
         images.append(project.image_set.all().first())
 
@@ -36,7 +31,9 @@ def index(request):
         'count': len(all_projects),
         'last_5_projects': last_5_projects,
         'featured_projects': featured_projects,
-        'images': images
+        'images': images,
+        'donors': len(donations),
+        'reviews': len(reviews)
     }
 
     html_template = loader.get_template('home/index.html')
@@ -98,6 +95,22 @@ def show_project_details(request, project_id):
         donation_average = (
             donate["donation__sum"] if donate["donation__sum"] else 0)*100/project.total_target
 
+        average_rating = project.rate_set.all().aggregate(Avg('rate'))[
+            'rate__avg']
+
+        # return user rating if found
+        user_rating = 0
+
+        if request.user.is_authenticated:
+            # prev_rating = Project.rate_set.filter(user_id=1)
+            prev_rating = []
+
+            if prev_rating:
+                user_rating = prev_rating[0].value
+
+        if average_rating is None:
+            average_rating = 0
+
         context = {'project': project,
                    'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
                    'donations': donations,
@@ -111,8 +124,14 @@ def show_project_details(request, project_id):
                    'report_form': new_report_form,
                    'reply_form': reply,
                    'related_projects': related_projects,
-                   'donation_average': donation_average
+                   'donation_average': donation_average,
+
+                   'rating': average_rating*20,
+                   'user_rating': user_rating,
+                   'rating_range': range(5, 0, -1),
+                   'average_rating': average_rating,
                    }
+        
         return render(request, "home/project-details.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
@@ -147,15 +166,18 @@ def get_category_projects(request, category_id):
             category_id=category_id).all()
 
         images = []
+        donations = []
         for project in projects:
             donate = project.donation_set.all().aggregate(Sum("donation"))
+            donations.append(project.donation_set.all())
             images.append(project.image_set.all().first())
 
+        print(donations)
         title = Category.objects.get(id=category_id)
         context = {
             'title': title,
             'projects': projects,
-            'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
+            'donations': donations,
             'images': images,
         }
         return render(request, "home/category.html", context)
@@ -362,3 +384,51 @@ def search(request):
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def rate(request, project_id):
+    if request.method == "POST":
+        context = {}
+        try:
+            project = Project.objects.get(id=project_id)
+            if request.POST['rate']:
+                rating = request.POST.get('rate', '')
+
+            if rating and rating.isnumeric():
+                apply_rating(project, 1, rating)
+
+                context = {"project": project}
+            return render(request, "home/project-details.html", context)
+        except Project.DoesNotExist:
+            html_template = loader.get_template('home/page-404.html')
+            return HttpResponse(html_template.render(context, request))
+
+
+def rate(request, project_id):
+
+    if request.method == "POST":
+        project = get_object_or_404(Project, pk=project_id)
+        context = {"project": project}
+
+        rate = request.POST.get('rate', '')
+
+        # validate
+        if rate and rate.isnumeric():
+
+            apply_rating(project, 1, rate)
+
+    return redirect('show_project', project_id)
+
+
+def apply_rating(project, user, rating):
+
+    # If User rated the same project before --> change rate value
+    prev_user_rating = project.rate_set.filter(user_id=user)
+    if prev_user_rating:
+        prev_user_rating[0].rate = int(rating)
+        prev_user_rating[0].save()
+
+    # first time to rate this project
+    else:
+        Rate.objects.create(rate=rating, projcet_id=project.id, user_id=user)

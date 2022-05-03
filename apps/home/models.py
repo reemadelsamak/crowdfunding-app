@@ -103,10 +103,11 @@ class Reply(models.Model):
 
 
 class Rate(models.Model):
-    rate = models.IntegerField(default=1,
-                                validators=[
-                                    MaxValueValidator(5),
-                                    MinValueValidator(1)
-                                ])
+    # rate = models.IntegerField(default=1,
+    #                             validators=[
+    #                                 MaxValueValidator(5),
+    #                                 MinValueValidator(1)
+    #                             ])
+    rate = models.IntegerField()
     projcet = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

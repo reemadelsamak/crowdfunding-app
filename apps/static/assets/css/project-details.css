@@ -30,7 +30,7 @@
 
   .rate:not(:checked)>label:hover,
   .rate:not(:checked)>label:hover~label {
-    color: #ffe99c;
+    color: #f9d75f;
   }
 
   .rate>input:checked+label:hover,
@@ -38,5 +38,5 @@
   .rate>input:checked~label:hover,
   .rate>input:checked~label:hover~label,
   .rate>label:hover~input:checked~label {
-    color: #ffe99c;
+    color: #f9d75f;
   }

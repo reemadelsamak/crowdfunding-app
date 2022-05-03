@@ -1,0 +1,57 @@
+svg {
+    margin-bottom: 2em;
+}
+
+.rating_background {
+    fill: #e8e8e8;
+    height: 100%;
+    width: 100%;
+}
+
+.rating_value {
+    fill: #ffb94b;
+    height: 100%;
+}
+
+.rating {
+    grid-area: rating;
+    width: 5rem;
+}
+
+.rate {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    overflow: hidden;
+    flex-direction: row-reverse;
+    height: 40px;
+    position: relative;
+}
+
+.rate-0 {
+    filter: grayscale(100%);
+}
+
+.rate>input {
+    display: none;
+}
+
+.rate>label {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    margin-top: auto;
+    transition: .3s;
+}
+
+
+.feedback {
+    margin-top: 2vh;
+    align-items: center;
+    width: 100%;
+}
+
+.feedback h4 {
+    margin: auto;
+    width: fit-content;
+}

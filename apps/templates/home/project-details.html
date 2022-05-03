@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" href="../../static/assets/css/project-details.css">
+<link rel="stylesheet" href="../../static/assets/css/rate.css">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -23,7 +24,7 @@
 
         <div class="modal-body">
           <p>
-            You are about to donate for " {{ project.title }} " project. Enter the amount of
+            You are about to donate for " {{ project.title|title }} " project. Enter the amount of
             donation in the text below:
           </p>
           <input type="text" name="donate" placeholder="donation amount" class="form-control"
@@ -46,13 +47,12 @@
 <div class="container">
   <div class="row">
     <div class="py-4 mx-auto mt-5">
-      <!-- <div class="row"> -->
       <div class="col-lg-12 mx-auto d-flex justify-content-center flex-column">
         <div class="d-flex justify-content-center p-5 flex-column">
-          <h2 class="mb-5">{{ project.title }}</h2>
+          <h2 class="mb-5">{{ project.title|title }}</h2>
           <div class="card card-plain d-flex flex-row justify-content-between">
+            <!-- Project Details On Left -->
             <div class="col-md-7">
-
               <div id="carouselExampleIndicators" class="carousel slide w-100" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                   <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
@@ -102,8 +102,28 @@
                 {% endfor %}
               </div>
 
+              <!-- Rating -->
+              <div class="your_rating d-flex mt-3 ">
+                <p class="mb-0 ">Your Rating : </p>
+                <svg viewBox="0 0 1000 200" class="rating mb-0 mx-2">
+                  <defs>
+                    <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 " />
 
-              <hr class="my-5" />
+                    <clipPath id="stars">
+                      <use xlink:href="#star" />
+                      <use xlink:href="#star" x="20%" />
+                      <use xlink:href="#star" x="40%" />
+                      <use xlink:href="#star" x="60%" />
+                      <use xlink:href="#star" x="80%" />
+                    </clipPath>
+                  </defs>
+
+                  <rect class="rating_background" clip-path="url(#stars)"></rect>
+                  <rect width="{{rating}}%" class="rating_value" clip-path="url(#stars)"></rect>
+                </svg>
+              </div>
+
+              <hr class="my-4" />
               <h4 class="">Related Project:</h4>
               <div class="col-md-12 d-flex justify-content-around py-3 flex-wrap">
                 {% for related_project in related_projects %}
@@ -111,42 +131,37 @@
                   <a href="#"><img src="https://via.placeholder.com/600x300" alt="project-img"
                       class="img-fluid rounded"></a>
                   <a href="#" class="text-dark">
-                    <h6 class="my-3 text-center">{{ related_project.title }}</h6>
+                    <h6 class="my-3 text-center">{{ related_project.title|title }}</h6>
                   </a>
                 </div>
                 {% endfor %}
               </div>
               <hr class="my-5" />
 
+              <!-- Number Of Comments -->
               <h5 class="mt-5">Comments ({{ num_of_comments }}) :</h5>
 
+              <!-- Comments Container -->
               <ul class="list-unstyled mt-4">
-
                 {%for comment in comments%}
-
                 <li class="">
                   <div class="comment d-flex">
                     <div class="col-md-1">
                       <img class="rounded-circle img-thumbnail" src="../../static/assets/img/marie.jpg" />
                     </div>
-
                     <div class="col-md-8 mx-3">
-
-
                       <h6 class="comment-header mb-0 d-flex">
                         {{ comment.user.name }}
                         <div class="">
-
+                          <!-- Report Comment -->
                           <form action="{% url 'create_comment_report' comment.id %}" method="POST" class="mx-3">
                             {%csrf_token%}
-
                             <button type="submit" class="btn btn-transparent shadow-none text-center mt-2 p-0"><i
                                 class="fa-solid fa-flag"></i>
                               Report</button>
                           </form>
                         </div>
                       </h6>
-
 
                       <p class="comment-time">
                         <small><small>{{ comment.created_at }}</small></small>
@@ -160,53 +175,37 @@
                           href="#collapseExample{{ forloop.counter }}add_replies" role="button" aria-expanded="false"
                           aria-controls="collapseExample"><small>reply</small></a>
 
-
                         <a class="text-decoration-underline text-secondary" data-toggle="collapse"
                           href="#collapseExample{{ forloop.counter }}show_replies" role="button" aria-expanded="false"
                           aria-controls="collapseExample"><small>show replies</small></a>
-
                       </p>
 
                       <div class="collapse" id="collapseExample{{ forloop.counter }}add_replies">
-
                         {%for fields in reply_form%}
-                        <form class="d-flex flex-column align-items-end" method="post" action={%
-                          url 'create_comment_reply' comment.id %}>
+                        <form class="d-flex flex-column align-items-end" method="post"
+                          action="{% url 'create_comment_reply' comment.id %}">
                           {% csrf_token %}
                           <textarea id="" name="{{fields.name}}" rows="2" class="col-md-12 form-control"></textarea>
                           <button type="submit" class="btn bg-gradient-light w-20 mt-2">
                             reply
                           </button>
                         </form>
-
                         {%endfor%}
-
                       </div>
 
                       <div class="collapse" id="collapseExample{{ forloop.counter }}show_replies">
-
                         <hr class="my-0" />
-
-
-
                         <ul class="list-unstyled mt-1">
-
                           {%for reply in replies%}
                           {%if reply.comment_id == comment.id %}
-
-
                           <li class=" mt-1">
                             <div class="comment d-flex">
                               <div class="col-md-1">
                                 <img class="rounded-circle img-thumbnail" src="../../static/assets/img/marie.jpg" />
                               </div>
-
                               <div class="col-md-8 mx-3">
                                 <h6 class="comment-header mb-0">
                                   {{ reply.user.name }}
-
-
-
                                 </h6>
                                 <p class="comment-time">
                                   <small><small>{{ reply.created_at }}</small></small>
@@ -214,25 +213,24 @@
                                 <p class="comment-content">
                                   {{reply.reply}}
                                 </p>
+                              </div>
+                            </div>
                           </li>
-
                           {%else%}
                           {%endif%}
                           {%endfor%}
                         </ul>
-
                       </div>
                     </div>
                   </div>
                   <hr />
                 </li>
-
                 {%endfor%}
 
                 <hr />
 
-                <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id
-                  %}>
+                <form class="d-flex flex-column align-items-end" method="post"
+                  action="{% url 'create_comment' project.id %}">
                   {% csrf_token %}
                   <textarea id="" name="comment" rows="2" class="col-md-12 form-control"></textarea>
                   <button type="submit" class="btn bg-gradient-light w-20 mt-2">
@@ -241,12 +239,9 @@
                 </form>
               </ul>
 
-
             </div>
-            {% comment %} Donate Card {% endcomment %}
-
+            <!-- Donate Card On Right -->
             <div class="card col-md-4 shadow-lg py-4 h-100 position-sticky" style="top: 6rem">
-
               <div class="col-lg-10 mx-auto">
                 <h3 class="d-flex align-items-baseline">
                   €{{ donation }}
@@ -257,7 +252,8 @@
                 <!-- {{ donation_average }} -->
                 <div class="progress mb-3">
                   <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ donation }}"
-                    aria-valuemin="0" aria-valuemax="{{ project.total_target }}" style="width:{{ donation_average }}%"></div>
+                    aria-valuemin="0" aria-valuemax="{{ project.total_target }}" style="width:{{ donation_average }}%">
+                  </div>
                 </div>
                 <div class="d-flex justify-content-between py-3">
                   <div class="d-flex flex-column align-items-center">
@@ -265,7 +261,7 @@
                     <span>Donations</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <span>4.8</span>
+                    <span>{{ average_rating }}</span>
                     <span>Rating</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
@@ -276,21 +272,27 @@
               </div>
 
               <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                class="col-md-10 btn bg-gradient-primary p-2 my-4 mx-auto h6" href="{%url 'create_project'%}">
+                class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" href="{%url 'create_project'%}">
                 <b>DONATE</b>
               </button>
 
-              <div class="rate mx-auto mb-2">
-                <input type="radio" id="star5" name="rate" value="5" />
-                <label for="star5" title="text">5 stars</label>
-                <input type="radio" id="star4" name="rate" value="4" />
-                <label for="star4" title="text">4 stars</label>
-                <input type="radio" id="star3" name="rate" value="3" />
-                <label for="star3" title="text">3 stars</label>
-                <input type="radio" id="star2" name="rate" value="2" />
-                <label for="star2" title="text">2 stars</label>
-                <input type="radio" id="star1" name="rate" value="1" />
-                <label for="star1" title="text">1 star</label>
+              <div class="feedback d-flex flex-column align-items-center">
+                <form method="post" action="{% url 'project_rate' project.id %}">
+                  {% csrf_token %}
+                  <div class="rate">
+                    {% for level in rating_range %}
+                    {% if user_rating == level %}
+                    <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}" checked>
+                    {% else %}
+                    <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}">
+                    {% endif %}
+                    <label for="rate-{{level}}"></label>
+                    {% endfor %}
+                  </div>
+                  <div class="text-center">
+                    <button class="btn mt-3 p-2 w-100 text-primary" role="button">Rate</button>
+                  </div>
+                </form>
               </div>
 
               <form action="{% url 'create_report' project.id %}" method="POST" class="text-center">

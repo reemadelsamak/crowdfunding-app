@@ -75,10 +75,8 @@
               {% endif%}
               {% endfor %}
               <div class="carousel-caption d-none d-md-block">
-                <h3 class="text-light font-weight-bolder">{{ project.title }}</h3>
-                <p class="w-75 mx-auto">
-                  {{ project.details }}
-                </p>
+                <h3 class="text-light font-weight-bolder">{{ project.title|title }}</h3>
+                <p class="w-75 mx-auto text-uppercase">Click and start donating now</p>
               </div>
             </div>
 
@@ -126,7 +124,7 @@
           <div class="col-md-4 position-relative">
             <div class="p-3 text-center">
               <h3 class="text-gradient text-primary">
-                <span id="state1" countTo="70">0</span>+
+                <span id="state1" countTo="{{ donors }}"></span>+
               </h3>
               <h5 class="mt-3">Donors</h5>
               <p class="text-sm">
@@ -147,11 +145,11 @@
           </div>
           <div class="col-md-4">
             <div class="p-3 text-center">
-              <h3 class="text-gradient text-primary" id="state3" countTo="4">
-                0
+              <h3 class="text-gradient text-primary">
+                <span id="state3" countTo="{{ reviews }}"></span>+
               </h3>
-              <h5 class="mt-3">Anything</h5>
-              <p class="text-sm">Anything</p>
+              <h5 class="mt-3">Reviews</h5>
+              <p class="text-sm">Feel free to rate projects and give us a feedback</p>
             </div>
           </div>
         </div>
@@ -176,7 +174,11 @@
             </h2>
             <ul class="text-left">
               {%for project in last_5_projects%}
-              <li><a href="{% url 'show_project' project.id%}" class="text-light font-weight-bold">{{ project.title }}</a></li>
+              <li>
+                <a href="{% url 'show_project' project.id %}" class="text-light font-weight-bold">
+                  {{ project.title|title }}
+                </a>
+              </li>
               {%empty%}
               <h5 class="text-light text-center">No Projects Found</h5>
               {%endfor%}
@@ -198,7 +200,11 @@
             </h2>
             <ul class="text-left">
               {%for project in featured_projects%}
-              <li><a href="{% url 'show_project' project.id %}" class="text-light font-weight-bold">{{ project.title }}</a></li>
+              <li>
+                <a href="{% url 'show_project' project.id %}" class="text-light font-weight-bold">
+                  {{ project.title|title }}
+                </a>
+              </li>
               {%empty%}
               <h5 class="text-light text-center">No Featured Projects</h5>
               {%endfor%}
