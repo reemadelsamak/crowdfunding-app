@@ -129,7 +129,7 @@ def show_project_details(request, project_id):
                    'reply_form': reply,
                    'related_projects': related_projects,
                    'images': related_projects_images,
-                   
+
                    'donation_average': donation_average,
 
                    'rating': average_rating*20,
@@ -175,10 +175,11 @@ def get_category_projects(request, category_id):
         donations = []
         for project in projects:
             donate = project.donation_set.all().aggregate(Sum("donation"))
-            donations.append(project.donation_set.all())
+            test = donate["donation__sum"] if donate["donation__sum"] else 0
+            donations.append(test)
+
             images.append(project.image_set.all().first())
 
-        print(donations)
         title = Category.objects.get(id=category_id)
         context = {
             'title': title,
@@ -208,7 +209,7 @@ def all_projects(request):
             'images': images,
             'title': 'All Projects'
         }
-        return render(request, "home/projects.html", context)
+        return render(request, "home/all_projects.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
@@ -230,7 +231,7 @@ def get_featured_projects(request):
             'images': images,
             'title': 'Featured Projects'
         }
-        return render(request, "home/projects.html", context)
+        return render(request, "home/all_projects.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
@@ -372,43 +373,27 @@ def search(request):
     try:
         search_post = request.GET.get('search')
 
-        print(len(search_post.strip()) == 0)
-
         if len(search_post.strip()) > 0:
-            projects = Project.objects.filter(
-                Q(title__icontains=search_post) | Q(details__icontains=search_post))
+            projects = Project.objects.filter(title__icontains=search_post)
+            searched_tags = Tag.objects.filter(name__icontains=search_post)
 
-            if(len(projects) > 0):
-                context = {'projects': projects}
-            else:
-                context = {'projects': projects,
-                           'title': 'No Projects Found for "'+search_post+'"'}
+            context = {'projects': projects, 'tags': searched_tags}
+
+            if(len(projects) <= 0):
+                context.update(
+                    {'title': 'No Projects Found for "'+search_post+'"'})
+            if(len(searched_tags) <= 0):
+                context.update(
+                    {'title_tags': 'No Tags Found for "'+search_post + '"'})
+
             return render(request, "home/search-result.html", context)
+
         else:
             return render(request, "home/index.html", context)
 
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')
         return HttpResponse(html_template.render(context, request))
-
-
-@login_required(login_url="/login/")
-def rate(request, project_id):
-    if request.method == "POST":
-        context = {}
-        try:
-            project = Project.objects.get(id=project_id)
-            if request.POST['rate']:
-                rating = request.POST.get('rate', '')
-
-            if rating and rating.isnumeric():
-                apply_rating(project, 1, rating)
-
-                context = {"project": project}
-            return render(request, "home/project-details.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
 
 
 def rate(request, project_id):
@@ -419,7 +404,6 @@ def rate(request, project_id):
 
         rate = request.POST.get('rate', '')
 
-        # validate
         if rate and rate.isnumeric():
 
             apply_rating(project, 1, rate)
@@ -437,4 +421,5 @@ def apply_rating(project, user, rating):
 
     # first time to rate this project
     else:
-        Rate.objects.create(rate=rating, projcet_id=project.id, user_id=user)
+        Rate.objects.create(
+            rate=rating, projcet_id=project.id, user_id=user)

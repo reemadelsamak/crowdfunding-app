@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns = [
 
-
     path('', views.index, name='home'),
+
     path('create-project', views.create_new_project, name='create_project'),
 
     path('category_form', views.add_category, name='create_category'),
