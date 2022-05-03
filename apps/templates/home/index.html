@@ -75,8 +75,10 @@
               {% endif%}
               {% endfor %}
               <div class="carousel-caption d-none d-md-block">
-                <h3 class="text-light font-weight-bolder">{{ project.title|title }}</h3>
-                <p class="w-75 mx-auto text-uppercase">Click and start donating now</p>
+                <a href="{% url 'show_project' project.id %}">
+                  <h3 class="text-light font-weight-bolder">{{ project.title|title }}</h3>
+                  <p class="w-75 mx-auto text-uppercase text-light">Click and start donating now</p>
+                </a>
               </div>
             </div>
 

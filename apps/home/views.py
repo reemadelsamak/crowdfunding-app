@@ -82,6 +82,10 @@ def show_project_details(request, project_id):
         related_projects = Project.objects.none().union(
             *related_projects_tags)[:4]
 
+        related_projects_images = []
+        for project in related_projects:
+            related_projects_images.append(project.image_set.all().first())
+
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
         start_date = datetime.strptime(
@@ -124,6 +128,8 @@ def show_project_details(request, project_id):
                    'report_form': new_report_form,
                    'reply_form': reply,
                    'related_projects': related_projects,
+                   'images': related_projects_images,
+                   
                    'donation_average': donation_average,
 
                    'rating': average_rating*20,
@@ -131,7 +137,7 @@ def show_project_details(request, project_id):
                    'rating_range': range(5, 0, -1),
                    'average_rating': average_rating,
                    }
-        
+
         return render(request, "home/project-details.html", context)
     except Project.DoesNotExist:
         html_template = loader.get_template('home/page-404.html')

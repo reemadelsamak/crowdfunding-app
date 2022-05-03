@@ -68,11 +68,11 @@
                   {%for image in project_images%}
                   {%if forloop.counter == 1 %}
                   <div class="carousel-item active" style="height:400px">
-                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
+                    <img src="{{image.images.url}}" class="d-block w-100 h-100" alt="project-image">
                   </div>
                   {%else%}
                   <div class="carousel-item " style="height:400px">
-                    <img src="{{image.images.url}}" class="d-block w-100" alt="project-image">
+                    <img src="{{image.images.url}}" class="d-block w-100 h-100" alt="project-image">
                   </div>
                   {%endif%}
                   {%endfor%}
@@ -124,13 +124,25 @@
               </div>
 
               <hr class="my-4" />
+
+              <!-- Related Projects -->
               <h4 class="">Related Project:</h4>
               <div class="col-md-12 d-flex justify-content-around py-3 flex-wrap">
                 {% for related_project in related_projects %}
                 <div class="col-md-5 card p-3 mt-2">
-                  <a href="#"><img src="https://via.placeholder.com/600x300" alt="project-img"
-                      class="img-fluid rounded"></a>
-                  <a href="#" class="text-dark">
+                  <a href="{% url 'show_project' related_project.id%}">
+                    <div style="height:150px">
+                      {% for image in images %}
+                      {% if image %}
+                      {% if image.project_id == related_project.id %}
+                      <img src="{{ image.images.url }}" alt="project-img" class="img-fluid rounded"
+                        style="height: inherit; width: 100%;">
+                      {% endif%}
+                      {% endif%}
+                      {% endfor %}
+                    </div>
+                  </a>
+                  <a href="{% url 'show_project' related_project.id%}" class="text-dark">
                     <h6 class="my-3 text-center">{{ related_project.title|title }}</h6>
                   </a>
                 </div>
@@ -138,10 +150,8 @@
               </div>
               <hr class="my-5" />
 
-              <!-- Number Of Comments -->
+              <!-- Comments -->
               <h5 class="mt-5">Comments ({{ num_of_comments }}) :</h5>
-
-              <!-- Comments Container -->
               <ul class="list-unstyled mt-4">
                 {%for comment in comments%}
                 <li class="">
