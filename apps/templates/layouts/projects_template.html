@@ -19,7 +19,7 @@
       {%for project in projects%}
       <div class="category-page-container col-md-3 mx-3 mt-5">
         <div class="category-project-content p-4" style="border-radius: 10px; height:662.65px;">
-          <a href="#">
+          <a href="{% url 'show_project' project.id%}">
             <div style="height:300px">
               {% for image in images %}
               {% if image %}
@@ -31,7 +31,7 @@
               {% endfor %}
             </div>
           </a>
-          <a href="#" class="text-dark">
+          <a href="{% url 'show_project' project.id%}" class="text-dark">
             <h3 class="my-3">{{ project.title }}</h3>
           </a>
           <div class="d-flex justify-content-between my-2">

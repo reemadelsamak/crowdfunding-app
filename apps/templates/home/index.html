@@ -62,11 +62,18 @@
             {%for project in last_5_projects%}
 
             <div class="carousel-item {% if forloop.first %}active{%endif%}">
+              {% for image in images %}
+              {% if image %}
+              {% if image.project_id == project.id %}
 
               <div class="featuredProject-image section-height-75 relative" style="
-                        background-image: url('/static/assets/img/blog7-2.jpg');
+                        background-image: url('{{ image.images.url }}');
                         background-size: cover;
                       "></div>
+
+              {% endif%}
+              {% endif%}
+              {% endfor %}
               <div class="carousel-caption d-none d-md-block">
                 <h3 class="text-light font-weight-bolder">{{ project.title }}</h3>
                 <p class="w-75 mx-auto">

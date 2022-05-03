@@ -28,12 +28,18 @@ def index(request):
     last_5_projects = Project.objects.all().order_by('-id')[:5]
     featured_projects = Project.objects.filter(is_featured=1)[:5]
 
+    images = []
+
+    for project in last_5_projects:
+        images.append(project.image_set.all().first())
+
     context = {
         'segment': 'index',
         'all_projects': all_projects,
         'count': len(all_projects),
         'last_5_projects': last_5_projects,
-        'featured_projects': featured_projects
+        'featured_projects': featured_projects,
+        'images': images
     }
 
     html_template = loader.get_template('home/index.html')
@@ -154,7 +160,6 @@ def get_category_projects(request, category_id):
             'projects': projects,
             'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
             'images': images,
-            'flag': 0
         }
         return render(request, "home/category.html", context)
     except Project.DoesNotExist:
