@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('projects', views.all_projects, name = 'all_projects'),
     path('projects/category/<int:category_id>', views.get_category_projects, name = 'get_category'),
+    path('projects/tag/<int:tag_id>', views.get_tag_projects, name = 'get_tag'),
     path('projects/featured', views.get_featured_projects, name = 'featured_projects'),
 
     # Matches any html file

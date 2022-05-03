@@ -96,6 +96,26 @@
                 {{ project.details}}
               </p>
 
+              <div class="tags_container">
+                {%for tag in tags%}
+                <a href="{% url 'get_tag' tag.id%}" class="bg-light py-1 px-2 rounded">{{ tag }}</a>
+                {% endfor %}
+              </div>
+
+
+              <hr class="my-5" />
+              <h4 class="">Related Project:</h4>
+              <div class="col-md-12 d-flex justify-content-around py-3 flex-wrap">
+                {% for related_project in related_projects %}
+                <div class="col-md-5 card p-3 mt-2">
+                  <a href="#"><img src="https://via.placeholder.com/600x300" alt="project-img"
+                      class="img-fluid rounded"></a>
+                  <a href="#" class="text-dark">
+                    <h6 class="my-3 text-center">{{ related_project.title }}</h6>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
               <hr class="my-5" />
 
               <h5 class="mt-5">Comments ({{ num_of_comments }}) :</h5>
@@ -120,7 +140,8 @@
                           <form action="{% url 'create_comment_report' comment.id %}" method="POST" class="mx-3">
                             {%csrf_token%}
 
-                            <button type="submit" class=" btn btn-danger p-1"><i class="fa-solid fa-flag"></i>
+                            <button type="submit" class="btn btn-transparent shadow-none text-center mt-2 p-0"><i
+                                class="fa-solid fa-flag"></i>
                               Report</button>
                           </form>
                         </div>
@@ -135,26 +156,22 @@
                       </p>
 
                       <p>
-                        <a class="btn btn-primary p-0" data-toggle="collapse"
+                        <a class="text-decoration-underline text-secondary" data-toggle="collapse"
                           href="#collapseExample{{ forloop.counter }}add_replies" role="button" aria-expanded="false"
-                          aria-controls="collapseExample">
-                          reply
-                        </a>
+                          aria-controls="collapseExample"><small>reply</small></a>
 
 
-                        <a class="btn btn-primary p-0" data-toggle="collapse"
+                        <a class="text-decoration-underline text-secondary" data-toggle="collapse"
                           href="#collapseExample{{ forloop.counter }}show_replies" role="button" aria-expanded="false"
-                          aria-controls="collapseExample">
-                          show replies
-                        </a>
+                          aria-controls="collapseExample"><small>show replies</small></a>
 
                       </p>
 
                       <div class="collapse" id="collapseExample{{ forloop.counter }}add_replies">
 
                         {%for fields in reply_form%}
-                        <form class="d-flex flex-column align-items-end" method="post"
-                          action={% url 'create_comment_reply' comment.id %}>
+                        <form class="d-flex flex-column align-items-end" method="post" action={%
+                          url 'create_comment_reply' comment.id %}>
                           {% csrf_token %}
                           <textarea id="" name="{{fields.name}}" rows="2" class="col-md-12 form-control"></textarea>
                           <button type="submit" class="btn bg-gradient-light w-20 mt-2">
@@ -175,7 +192,7 @@
                         <ul class="list-unstyled mt-1">
 
                           {%for reply in replies%}
-                          {%if reply.comment_id == comment.id  %}
+                          {%if reply.comment_id == comment.id %}
 
 
                           <li class=" mt-1">
@@ -212,17 +229,16 @@
 
                 {%endfor%}
 
+                <hr />
 
-              <hr />
-
-              <form class="d-flex flex-column align-items-end" method="post"
-                action={% url 'create_comment' project.id %}>
-                {% csrf_token %}
-                <textarea id="" name="comment" rows="2" class="col-md-12 form-control"></textarea>
-                <button type="submit" class="btn bg-gradient-light w-20 mt-2">
-                  Comment
-                </button>
-              </form>
+                <form class="d-flex flex-column align-items-end" method="post" action={% url 'create_comment' project.id
+                  %}>
+                  {% csrf_token %}
+                  <textarea id="" name="comment" rows="2" class="col-md-12 form-control"></textarea>
+                  <button type="submit" class="btn bg-gradient-light w-20 mt-2">
+                    Comment
+                  </button>
+                </form>
               </ul>
 
 
@@ -238,12 +254,11 @@
                     <p>raised of €{{ project.total_target }} goal</p>
                   </span>
                 </h3>
-
+                <!-- {{ donation_average }} -->
                 <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
-                    aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ donation }}"
+                    aria-valuemin="0" aria-valuemax="{{ project.total_target }}" style="width:{{ donation_average }}%"></div>
                 </div>
-
                 <div class="d-flex justify-content-between py-3">
                   <div class="d-flex flex-column align-items-center">
                     <span>{{ donations }}</span>
@@ -280,7 +295,7 @@
 
               <form action="{% url 'create_report' project.id %}" method="POST" class="text-center">
                 {%csrf_token%}
-                <button class="btn btn-danger text-center mt-2" href="{%url 'create_project'%}"><i
+                <button class="btn btn-transparent shadow-none text-center mt-2 p-0" href="{%url 'create_project'%}"><i
                     class="fa-solid fa-flag"></i><small class="mx-2">Report this project</small>
                 </button>
               </form>

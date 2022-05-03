@@ -69,7 +69,7 @@
                       "></div>
               <div class="carousel-caption d-none d-md-block">
                 <h3 class="text-light font-weight-bolder">{{ project.title }}</h3>
-                <p>
+                <p class="w-75 mx-auto">
                   {{ project.details }}
                 </p>
               </div>
@@ -169,7 +169,7 @@
             </h2>
             <ul class="text-left">
               {%for project in last_5_projects%}
-              <li><a href="#" class="text-light font-weight-bold">{{ project.title }}</a></li>
+              <li><a href="{% url 'show_project' project.id%}" class="text-light font-weight-bold">{{ project.title }}</a></li>
               {%empty%}
               <h5 class="text-light text-center">No Projects Found</h5>
               {%endfor%}
@@ -191,7 +191,7 @@
             </h2>
             <ul class="text-left">
               {%for project in featured_projects%}
-              <li><a href="#" class="text-light font-weight-bold">{{ project.title }}</a></li>
+              <li><a href="{% url 'show_project' project.id %}" class="text-light font-weight-bold">{{ project.title }}</a></li>
               {%empty%}
               <h5 class="text-light text-center">No Featured Projects</h5>
               {%endfor%}

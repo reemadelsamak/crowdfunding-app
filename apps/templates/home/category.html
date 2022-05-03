@@ -1,45 +1,5 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/projects_template.html' %}
 
-{% block title %} Category Page {% endblock title %}
-
-{% block stylesheets %}
-<link rel="stylesheet" href="../../static/assets/css/category-page.css">
-{% endblock stylesheets %}
-
-{% block content %}
-
-<div class="container">
-  <div class="py-5 mx-auto">
-    <div class="d-flex justify-content-center py-5 flex-wrap">
-      <!-- Project -->
-      {%for project in category_projects%}
-
-      <div class="category-page-container col-md-4">
-        <div class="category-project-content p-4" style="border-radius: 10px;">
-          <a href="#"><img src="https://via.placeholder.com/600x300" alt="project-img" class="img-fluid"></a>
-          <a href="#" class="text-dark">
-            <h3 class="my-3">{{ project.title }}</h3>
-          </a>
-          <div class="d-flex justify-content-between my-2">
-            <span><small><i class="fa fa-calendar mr-1 text-muted"></i><span class="text-muted mx-1">Ends
-                  by:</span>{{ project.end_time }}</small></span>
-          </div>
-          <p class="text-secondary">{{ project.details }}</p>
-          <h4 class="d-flex align-items-baseline mt-2">
-            €{{ donation }}
-            <span class="text-secondary mx-2">  
-              <p>raised of €{{ project.total_target }} goal</p>
-            </span>
-          </h4>
-          <div class="progress mb-3 h-auto">
-            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
-              aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <a href="{%url 'show_project' project.id%}" class="btn btn-outline-secondary btn-sm">Read More</a>
-        </div>
-      </div>
-      {%endfor%}
-    </div>
-  </div>
-
-  {% endblock content %}
+{% block project_type %}
+Category :
+{% endblock project_type %}
