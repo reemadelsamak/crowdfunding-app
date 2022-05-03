@@ -105,15 +105,15 @@
                       </a>
                     </li>
                     {%empty%}
-                    <h1>No category Found</h1>
+                    <h6>No category Found</h6>
                     {%endfor%}
                   </div>
                 </ul>
               </li>
 
               <li class="nav-item ms-lg-auto">
-                <form class="search-container" action="#">
-                  <input class="bg-transparent" type="text" placeholder="Search.." name="search">
+                <form class="search-container" action="{% url 'search-result' %}">
+                  <input class="bg-transparent" type="search" placeholder="Search.." name="search" required>
                   <button type="submit"><i class="fa fa-search" style="color:rgb(164, 164, 164);"></i></button>
                 </form>
               </li>

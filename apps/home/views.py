@@ -1,8 +1,7 @@
-from ctypes import Union
+# from ctypes import Union
 from itertools import count
 from multiprocessing import Value
-import re
-# from operator import concat
+# import re
 from unicodedata import category
 from django import template
 from django.contrib.auth.decorators import login_required
@@ -11,8 +10,6 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.db.models import Avg, Sum
-# from django.db.models.functions import Concat
-from itertools import chain
 from django.db.models import Q
 
 from datetime import date, datetime
@@ -340,3 +337,28 @@ def add_category(request):
 
             form.save()
             return redirect('home')
+
+
+def search(request):
+    context = {}
+    try:
+        search_post = request.GET.get('search')
+
+        print(len(search_post.strip()) == 0)
+
+        if len(search_post.strip()) > 0:
+            projects = Project.objects.filter(
+                Q(title__icontains=search_post) | Q(details__icontains=search_post))
+
+            if(len(projects) > 0):
+                context = {'projects': projects}
+            else:
+                context = {'projects': projects,
+                           'title': 'No Projects Found for "'+search_post+'"'}
+            return render(request, "home/search-result.html", context)
+        else:
+            return render(request, "home/index.html", context)
+
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
