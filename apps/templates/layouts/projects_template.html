@@ -13,7 +13,7 @@
 <div class="py-5 mx-auto">
   <h3 class="mt-5 pt-4 text-center">
     {% block project_type %}{% endblock project_type %}
-    <span class="text-lg text-secondary">{{ title }}</span>
+    <span class="">{{ title|title }}</span>
   </h3>
   <div class="d-flex justify-content-center flex-wrap">
     <!-- Project -->
@@ -22,14 +22,10 @@
       <div class="category-project-content p-4" style="border-radius: 10px; height:650px;">
         <a href="{% url 'show_project' project.id%}">
           <div style="height:300px">
-            {% for image in images %}
-            {% if image %}
-            {% if image.project_id == project.id %}
-            <img src="{{ image.images.url }}" alt="project-img" class="img-fluid rounded"
+
+            <img src="{{ images|index:forloop.counter0 }}" alt="project-img" class="img-fluid rounded"
               style="height: inherit; width: 100%;">
-            {% endif%}
-            {% endif%}
-            {% endfor %}
+
           </div>
         </a>
         <a href="{% url 'show_project' project.id%}" class="text-dark">
@@ -41,11 +37,15 @@
         </div>
         <p class="text-secondary" style="height:80px; overflow-y: auto; word-wrap: break-word;">{{ project.details }}
         </p>
-
-
+        <h4 class="d-flex align-items-baseline mt-2">
+          {{ donations|index:forloop.counter0 }} L.E.
+          <span class="text-secondary text-sm mx-2">raised of {{ project.total_target }} L.E. goal</span>
+        </h4>
         <div class="progress mb-3 h-auto">
-          <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
-            aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ donations|index:forloop.counter0 }}"
+            aria-valuemin="0" aria-valuemax="{{ project.total_target }}"
+            style="width:{{ progress_values|index:forloop.counter0 }}%">
+          </div>
         </div>
         <a href="{%url 'show_project' project.id%}" class="btn btn-outline-secondary btn-sm">Read More</a>
       </div>
@@ -53,10 +53,11 @@
     {%endfor%}
   </div>
 
+  <!-- Extra Container For Tag Search Purposes -->
   {% block extra_content %}
   <h3 class="mt-5 pt-4 text-center">
     {% block extra_content_title %}{% endblock extra_content_title %}
-    <span class="text-lg text-secondary">{{ title_tags }}</span>
+    <span class="">{{ title_tags|title }}</span>
   </h3>
   <div class="tags_container d-flex justify-content-center">
     {%for tag in tags%}

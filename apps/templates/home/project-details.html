@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load index %}
 
 {% block title %} Project Details {% endblock title %}
 
@@ -132,14 +133,8 @@
                 <div class="col-md-5 card p-3 mt-2">
                   <a href="{% url 'show_project' related_project.id%}">
                     <div style="height:150px">
-                      {% for image in images %}
-                      {% if image %}
-                      {% if image.project_id == related_project.id %}
-                      <img src="{{ image.images.url }}" alt="project-img" class="img-fluid rounded"
+                      <img src="{{ images|index:forloop.counter0 }}" alt="project-img" class="img-fluid rounded"
                         style="height: inherit; width: 100%;">
-                      {% endif%}
-                      {% endif%}
-                      {% endfor %}
                     </div>
                   </a>
                   <a href="{% url 'show_project' related_project.id%}" class="text-dark">

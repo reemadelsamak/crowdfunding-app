@@ -23,7 +23,7 @@ def index(request):
 
     images = []
     for project in last_5_projects:
-        images.append(project.image_set.all().first())
+        images.append(project.image_set.all().first().images.url)
 
     context = {
         'segment': 'index',
@@ -84,7 +84,7 @@ def show_project_details(request, project_id):
 
         related_projects_images = []
         for project in related_projects:
-            related_projects_images.append(project.image_set.all().first())
+            related_projects_images.append(project.image_set.all().first().images.url)
 
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
@@ -150,14 +150,23 @@ def get_tag_projects(request, tag_id):
         tag = Tag.objects.get(id=tag_id)
         projects = tag.project_set.all()
 
+        donations = []
+        progress_values = []
         images = []
         for project in projects:
-            images.append(project.image_set.all().first())
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
         context = {
             'title': tag,
             'projects': projects,
-            'images': images
+            'images': images,
+            'donations': donations,
+            'progress_values': progress_values
         }
         return render(request, "home/tag-projects.html", context)
     except Project.DoesNotExist:
@@ -171,14 +180,17 @@ def get_category_projects(request, category_id):
         projects = Project.objects.filter(
             category_id=category_id).all()
 
-        images = []
         donations = []
+        progress_values = []
+        images = []
         for project in projects:
             donate = project.donation_set.all().aggregate(Sum("donation"))
-            test = donate["donation__sum"] if donate["donation__sum"] else 0
-            donations.append(test)
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
 
-            images.append(project.image_set.all().first())
+            donations.append(total_donation)
+
+            images.append(project.image_set.all().first().images.url)
 
         title = Category.objects.get(id=category_id)
         context = {
@@ -186,6 +198,7 @@ def get_category_projects(request, category_id):
             'projects': projects,
             'donations': donations,
             'images': images,
+            'progress_values': progress_values
         }
         return render(request, "home/category.html", context)
     except Project.DoesNotExist:
@@ -198,16 +211,23 @@ def all_projects(request):
     try:
         projects = Project.objects.all()
 
+        donations = []
+        progress_values = []
         images = []
         for project in projects:
             donate = project.donation_set.all().aggregate(Sum("donation"))
-            images.append(project.image_set.all().first())
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
         context = {
             'projects': projects,
             'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
             'images': images,
-            'title': 'All Projects'
+            'title': 'All Projects',
+            'donations': donations,
+            'progress_values': progress_values
         }
         return render(request, "home/all_projects.html", context)
     except Project.DoesNotExist:
@@ -220,16 +240,23 @@ def get_featured_projects(request):
     try:
         projects = Project.objects.filter(is_featured=1).all()
 
+        donations = []
+        progress_values = []
         images = []
         for project in projects:
             donate = project.donation_set.all().aggregate(Sum("donation"))
-            images.append(project.image_set.all().first())
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
         context = {
             'projects': projects,
             'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
             'images': images,
-            'title': 'Featured Projects'
+            'title': 'Featured Projects',
+            'donations': donations,
+            'progress_values': progress_values
         }
         return render(request, "home/all_projects.html", context)
     except Project.DoesNotExist:
@@ -387,7 +414,6 @@ def search(request):
                     {'title_tags': 'No Tags Found for "'+search_post + '"'})
 
             return render(request, "home/search-result.html", context)
-
         else:
             return render(request, "home/index.html", context)
 
