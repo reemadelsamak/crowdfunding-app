@@ -43,6 +43,7 @@
 {% block content %}
 
 <!-- slider -->
+
 <header class="header-2">
   <div class="page-header section-height-75 relative">
     <div class="col-md-12 p-0">
@@ -212,18 +213,19 @@
     </div>
   </div>
 </section>
-
+{% if 'user_id' in request.session %}
 <section class="py-3 mt-3">
   <div class="container">
     <div class="row justify-space-between text-center py-2">
       <div class="col-12 mx-auto">
-        <a class="btn bg-gradient-primary w-auto me-2 p-3 text-light" href="/create-project">Create your own
+        <a class="btn bg-gradient-primary w-auto me-2 p-3 text-light" href="{% url 'create_project'%}">Create your own
           <b>Project</b></a>
+          
       </div>
     </div>
   </div>
 </section>
-
+{%endif%}
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->

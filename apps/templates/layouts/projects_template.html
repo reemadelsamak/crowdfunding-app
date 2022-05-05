@@ -17,7 +17,7 @@
   </h3>
   <div class="d-flex justify-content-center flex-wrap">
     <!-- Project -->
-    {%for project in projects%}
+    {%for project in projects %}
     <div class="category-page-container col-md-3 mx-3 mt-5">
       <div class="category-project-content p-4" style="border-radius: 10px; height:650px;">
         <a href="{% url 'show_project' project.id%}">

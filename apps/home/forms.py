@@ -1,5 +1,7 @@
 from django import forms
-from .models import Category, Comment_Report, Project, Project_Report, Reply, Tag, User
+
+from apps.authentication.models import Register
+from .models import Category, Comment_Report, Project, Project_Report, Reply, Tag
 from django.forms.widgets import NumberInput
 
 
@@ -54,13 +56,6 @@ class Project_Form(forms.ModelForm):
             "class": "form-control"
         }
     ))
-    
-    user = forms.ModelChoiceField(queryset=User.objects.all(),
-                                     widget=forms.Select(
-        attrs={
-            "class": "form-control"
-        }
-    ))
    
     tag = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
                                             widget=forms.SelectMultiple(
@@ -77,7 +72,6 @@ class Project_Form(forms.ModelForm):
                   'start_time',
                   'end_time',
                   'category',
-                  'user',
                   'tag')
         
     def clean(self):
@@ -105,7 +99,6 @@ class Reply_form(forms.ModelForm):
     class Meta:
         model=Reply
         fields =['reply']
-
 
 class Category_form(forms.ModelForm):
 

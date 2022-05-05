@@ -9,7 +9,6 @@
 
 {% block content %}
 
-  
   <section>
     <div class="page-header section-height-100">
       <div class="container">
@@ -20,7 +19,9 @@
                 <h4 class="font-weight-bolder">Sign In</h4>
                 <p class="mb-0">
                   {% if msg %}
-                      {{ msg | safe }}
+                      <div class="alert alert-warning ">
+                        {{ msg | safe }}
+                      </div>
                   {% else %}
                       Add your credentials
                   {% endif %}                 
@@ -28,15 +29,15 @@
               </div>
               <div class="card-body">
 
-                <form method="post" action="" role="form">
+                <form method="post" role="form">
 
                   {% csrf_token %}
 
                   <div class="mb-3">
-                    {{ form.username }}
+                    {{ login_form.email }}
                   </div>
                   <div class="mb-3">
-                    {{ form.password }}
+                    {{ login_form.password }}
                   </div>
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="rememberMe">
@@ -53,6 +54,11 @@
                   Don't have an account?
                   <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign UP</a>
                 </p>
+                <p class="mb-4 text-sm mx-auto">
+                  Forget Your Password?
+                  <a  class="text-primary text-gradient font-weight-bold" href="{% url 'emailReset'  %}">Reset Passowrd</a>
+                </p>
+
               </div>
             </div>
           </div>
