@@ -3,7 +3,6 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from asyncio.windows_events import NULL
 
 from multiprocessing import context
 
@@ -106,11 +105,18 @@ def signup(request):
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 })
-                to_email = form.cleaned_data.get('email')
+                # to_email = form.cleaned_data.get('email')
+                # email = EmailMessage(
+                #     mail_subject, message, to=[to_email]
+                # )
+                # email.send()
+                to_email = [form.cleaned_data.get('email')]
                 email = EmailMessage(
                     mail_subject, message, to=[to_email]
                 )
-                email.send()
+                from_email=settings.EMAIL_HOST_USER
+                # email.send()
+                send_mail( mail_subject, message, from_email, to_email)
 
                 msg='Please confirm your email address to complete the registration'
         else:

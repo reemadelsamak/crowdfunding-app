@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,14 +6,14 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.db.models import Avg, Sum
-
-
+from collections import defaultdict
 from datetime import datetime
 
 from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Rate, Reply, Tag, Comment_Report
 from apps.home.forms import Project_Form, Report_form, Reply_form, Category_form
 
 from apps.authentication.models import Register
+NULL={}
 
 def getUser(request):
         user = Register.objects.get(id=request.session['user_id'])
@@ -59,9 +59,16 @@ def create_new_project(request):
         if request.method == 'GET':
 
             form = Project_Form()
+            
             return render(request, "home/create-project.html", context={"form": form, 'images': my_images, "user":user})
 
         if request.method == "POST":
+            if "tag" in request.POST:
+                    if(request.POST['newTag']!= ''):
+                        new_tag=Tag.objects.create(name=request.POST['newTag']).id
+                        
+                    
+                    
             form = Project_Form(request.POST, request.FILES)
             images = request.FILES.getlist('images')
             if form.is_valid():
