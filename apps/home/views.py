@@ -59,6 +59,7 @@ def create_new_project(request):
         if request.method == 'GET':
 
             form = Project_Form()
+            print(form)
             
             return render(request, "home/create-project.html", context={"form": form, 'images': my_images, "user":user})
 
