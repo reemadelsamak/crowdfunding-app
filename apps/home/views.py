@@ -11,7 +11,7 @@ from datetime import datetime
 import re
 from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Rate, Reply, Tag, Comment_Report
 from apps.home.forms import Project_Form, Report_form, Reply_form, Category_form
-
+from django.forms.utils import ErrorList
 from apps.authentication.models import Register
 NULL={}
 
@@ -59,24 +59,31 @@ def create_new_project(request):
         if request.method == 'GET':
 
             form = Project_Form()
-            print(form)
+           
             
             return render(request, "home/create-project.html", context={"form": form, 'images': my_images, "user":user})
 
         if request.method == "POST":
-            if "tag" in request.POST:
-                    if(request.POST['newTag']!= ''):
-
-                        newTag=re.sub("\s+","_",request.POST['newTag'].strip())
-                        
-                        new_tag=Tag.objects.create(name=newTag).id
-                        request.POST = request.POST.copy()
-                        request.POST.update({
-	                    "tag":new_tag
-                        })
+            tag_error=''
                     
+            if "tag" in request.POST or request.POST['newTag']!="":
+                print('========================================')
+                if(request.POST['newTag']!= ''):
+                    newTag=re.sub("\s+","_",request.POST['newTag'].strip())
+                    new_tag=Tag.objects.create(name=newTag).id
+                    request.POST = request.POST.copy()
+                    request.POST.update({
+	                "tag":new_tag
+                    })
+            else:
+                tag_error="Please add tag"
+            
                     
             form = Project_Form(request.POST, request.FILES)
+            if tag_error!="":
+                
+               form.add_error('tag',tag_error)
+               
             images = request.FILES.getlist('images')
             if form.is_valid():
                 project = form.save(commit=False)
