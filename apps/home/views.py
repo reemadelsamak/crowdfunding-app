@@ -83,231 +83,229 @@ def create_new_project(request):
 def show_project_details(request, project_id):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            project = Project.objects.get(id=project_id)
-            donate = project.donation_set.all().aggregate(Sum("donation"))
-            donations = len(project.donation_set.all())
-            comments = project.comment_set.all()
-            replies = Reply.objects.all()
+    try:
+        project = Project.objects.get(id=project_id)
+        
+        donate = project.donation_set.all().aggregate(Sum("donation"))
+        donations = len(project.donation_set.all())
+        comments = project.comment_set.all()
+        replies = Reply.objects.all()
 
-            project_images = project.image_set.all()
-            tags = project.tag.all()
+        project_images = project.image_set.all()
+        tags = project.tag.all()
 
-            related_projects_tags = []
-            for tag in tags:
-                related_projects_tags.append(tag.project_set.all())
 
-            related_projects = Project.objects.none().union(
-                *related_projects_tags)[:4]
+        related_projects_tags = []
+        for tag in tags:
+            related_projects_tags.append(tag.project_set.all())
 
-            related_projects_images = []
-            for project in related_projects:
-                related_projects_images.append(project.image_set.all().first().images.url)
 
-            myFormat = "%Y-%m-%d %H:%M:%S"
-            today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
-            start_date = datetime.strptime(
-                project.start_time.strftime(myFormat), myFormat)
-            end_date = datetime.strptime(
-                project.end_time.strftime(myFormat), myFormat)
-            days_diff = (end_date-today).days
-            new_report_form = Report_form()
-            reply = Reply_form()
+        related_projects = Project.objects.none().union(*related_projects_tags)[:4]
 
-            donation_average = (
-                donate["donation__sum"] if donate["donation__sum"] else 0)*100/project.total_target
+        related_projects_images = []
+        for related_project in related_projects:
+            related_projects_images.append(related_project.image_set.all().first().images.url)
 
-            average_rating = project.rate_set.all().aggregate(Avg('rate'))[
-                'rate__avg']
 
-            # return user rating if found
-            user_rating = 0
+        myFormat = "%Y-%m-%d %H:%M:%S"
+        today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
+        start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
+        end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
+        days_diff = (end_date-today).days
+        
+        new_report_form = Report_form()
+        reply = Reply_form()
 
-            if request.user.is_authenticated:
-                # prev_rating = Project.rate_set.filter(user_id=1)
-                prev_rating = []
 
-                if prev_rating:
-                    user_rating = prev_rating[0].value
+        donation_average = (donate["donation__sum"] if donate["donation__sum"] else 0)*100/project.total_target
 
-            if average_rating is None:
-                average_rating = 0
+        average_rating = project.rate_set.all().aggregate(Avg('rate'))['rate__avg']
 
-            context = {'project': project,
-                    'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
-                    'donations': donations,
-                    'days': days_diff,
-                    'comments': comments,
-                    'num_of_comments': len(comments),
-                    'project_images': project_images,
-                    'replies': replies,
-                    'tags': tags,
+        # return user rating if found
+        user_rating = 0
 
-                    'report_form': new_report_form,
-                    'reply_form': reply,
-                    'related_projects': related_projects,
-                    'images': related_projects_images,
+        if request.user.is_authenticated:
+            # prev_rating = Project.rate_set.filter(user_id=1)
+            prev_rating = []
 
-                    'donation_average': donation_average,
+            if prev_rating:
+                user_rating = prev_rating[0].value
 
-                    'rating': average_rating*20,
-                    'user_rating': user_rating,
-                    'rating_range': range(5, 0, -1),
-                    'average_rating': average_rating,
-                    
-                    'user':user
-                    }
-            return render(request, "home/project-details.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+        if average_rating is None:
+            average_rating = 0
+
+        context = {
+            'project': project,
+            'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
+            'donations': donations,
+            'days': days_diff,
+            'comments': comments,
+            'num_of_comments': len(comments),
+            'project_images': project_images,
+            'replies': replies,
+            'tags': tags,
+
+            'report_form': new_report_form,
+            'reply_form': reply,
+            'related_projects': related_projects,
+            'images': related_projects_images,
+            
+            'check_target': project.total_target*.25,
+            
+            'donation_average': donation_average,
+
+            'rating': average_rating*20,
+            'user_rating': user_rating,
+            'rating_range': range(5, 0, -1),
+            'average_rating': average_rating,
+            
+            'user':user
+            }
+
+        return render(request, "home/project-details.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
  
 
 def get_tag_projects(request, tag_id):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            tag = Tag.objects.get(id=tag_id)
-            projects = tag.project_set.all()
+    context = {}
+    try:
+        tag = Tag.objects.get(id=tag_id)
+        projects = tag.project_set.all()
 
-            donations = []
-            progress_values = []
-            images = []
-            for project in projects:
-                donate = project.donation_set.all().aggregate(Sum("donation"))
-                total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
-                
-                progress_values.append(total_donation * 100/project.total_target)
-                donations.append(total_donation)
-                images.append(project.image_set.all().first().images.url)
+        donations = []
+        progress_values = []
+        images = []
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
-            context = {
-                'title': tag,
-                'projects': projects,
-                'images': images,
-                'donations': donations,
-                'progress_values': progress_values,
-                'user':user
-            }
-            return render(request, "home/tag-projects.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+        context = {
+            'title': tag,
+            'projects': projects,
+            'images': images,
+            'donations': donations,
+            'progress_values': progress_values,
+            'user':user
+        }
+        return render(request, "home/tag-projects.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 def get_category_projects(request, category_id):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            projects = Project.objects.filter(
-                category_id=category_id).all()
+    context = {}
+    try:
+        projects = Project.objects.filter(
+            category_id=category_id).all()
 
-            donations = []
-            progress_values = []
-            images = []
-            for project in projects:
-                donate = project.donation_set.all().aggregate(Sum("donation"))
-                total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
-                progress_values.append(total_donation * 100/project.total_target)
+        donations = []
+        progress_values = []
+        images = []
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
 
-                donations.append(total_donation)
+            donations.append(total_donation)
 
-                images.append(project.image_set.all().first().images.url)
+            images.append(project.image_set.all().first().images.url)
 
-            title = Category.objects.get(id=category_id)
-            context = {
-                'title': title,
-                'projects': projects,
-                'donations': donations,
-                'images': images,
-                'progress_values': progress_values,
-                'user':user
-            }
-            return render(request, "home/category.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+        title = Category.objects.get(id=category_id)
+        context = {
+            'title': title,
+            'projects': projects,
+            'donations': donations,
+            'images': images,
+            'progress_values': progress_values,
+            'user':user
+        }
+        return render(request, "home/category.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 def all_projects(request):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            projects = Project.objects.all()
+    context = {}
+    try:
+        projects = Project.objects.all()
 
-            donations = []
-            progress_values = []
-            images = []
-            for project in projects:
-                donate = project.donation_set.all().aggregate(Sum("donation"))
-                total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
-                progress_values.append(total_donation * 100/project.total_target)
-                donations.append(total_donation)
-                images.append(project.image_set.all().first().images.url)
+        donations = []
+        progress_values = []
+        images = []
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
-            context = {
-                'projects': projects,
-                'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
-                'images': images,
-                'title': 'All Projects',
-                'donations': donations,
-                'progress_values': progress_values,
-                'user':user
-            }
-            return render(request, "home/all_projects.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+        context = {
+            'projects': projects,
+            'images': images,
+            'title': 'All Projects',
+            'donations': donations,
+            'progress_values': progress_values,
+            'user':user
+        }
+        return render(request, "home/all_projects.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 def get_featured_projects(request):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            projects = Project.objects.filter(is_featured=1).all()
+    context = {}
+    try:
+        projects = Project.objects.filter(is_featured=1).all()
 
-            donations = []
-            progress_values = []
-            images = []
-            for project in projects:
-                donate = project.donation_set.all().aggregate(Sum("donation"))
-                total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
-                progress_values.append(total_donation * 100/project.total_target)
-                donations.append(total_donation)
-                images.append(project.image_set.all().first().images.url)
+        donations = []
+        progress_values = []
+        images = []
+        for project in projects:
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            progress_values.append(total_donation * 100/project.total_target)
+            donations.append(total_donation)
+            images.append(project.image_set.all().first().images.url)
 
-            context = {
-                'projects': projects,
-                'images': images,
-                'title': 'Featured Projects',
-                'donations': donations,
-                'progress_values': progress_values,
-                'user':user
-            }
-            return render(request, "home/all_projects.html", context)
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+        context = {
+            'projects': projects,
+            'images': images,
+            'title': 'Featured Projects',
+            'donations': donations,
+            'progress_values': progress_values,
+            'user':user
+        }
+        return render(request, "home/all_projects.html", context)
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 def donate(request, project_id):
@@ -427,51 +425,50 @@ def add_category(request):
 def search(request):
     if 'user_id' not in request.session:
         user = NULL
-        return redirect('login')
     else:
         user = getUser(request)
-        context = {}
-        try:
-            search_post = request.GET.get('search')
+    context = {}
+    try:
+        search_post = request.GET.get('search')
 
-            if len(search_post.strip()) > 0:
-                projects = Project.objects.filter(title__icontains=search_post)
-                searched_tags = Tag.objects.filter(name__icontains=search_post)
+        if len(search_post.strip()) > 0:
+            projects = Project.objects.filter(title__icontains=search_post)
+            searched_tags = Tag.objects.filter(name__icontains=search_post)
 
-                donations = []
-                progress_values = []
-                images = []
-                for project in projects:
-                    donate = project.donation_set.all().aggregate(Sum("donation"))
-                    total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            donations = []
+            progress_values = []
+            images = []
+            for project in projects:
+                donate = project.donation_set.all().aggregate(Sum("donation"))
+                total_donation = donate["donation__sum"] if donate["donation__sum"] else 0
 
-                    progress_values.append(
-                        total_donation * 100/project.total_target)
-                    donations.append(total_donation)
-                    images.append(project.image_set.all().first().images.url)
+                progress_values.append(
+                    total_donation * 100/project.total_target)
+                donations.append(total_donation)
+                images.append(project.image_set.all().first().images.url)
 
-                context = {
-                    'projects': projects, 
-                    'tags': searched_tags, 
-                    'images': images,
-                    'donations': donations,
-                    'progress_values': progress_values,
-                    'user':user}
+            context = {
+                'projects': projects, 
+                'tags': searched_tags, 
+                'images': images,
+                'donations': donations,
+                'progress_values': progress_values,
+                'user':user}
 
-                if(len(projects) <= 0):
-                    context.update(
-                        {'title': 'No Projects Found for "'+search_post+'"'})
-                if(len(searched_tags) <= 0):
-                    context.update(
-                        {'title_tags': 'No Tags Found for "'+search_post + '"'})
+            if(len(projects) <= 0):
+                context.update(
+                    {'title': 'No Projects Found for "'+search_post+'"'})
+            if(len(searched_tags) <= 0):
+                context.update(
+                    {'title_tags': 'No Tags Found for "'+search_post + '"'})
 
-                return render(request, "home/search-result.html", context)
-            else:
-                return render(request, "home/index.html", context)
+            return render(request, "home/search-result.html", context)
+        else:
+            return render(request, "home/index.html", context)
 
-        except Project.DoesNotExist:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponse(html_template.render(context, request))
+    except Project.DoesNotExist:
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 def rate(request, project_id):
@@ -507,13 +504,39 @@ def apply_rating(project, user, rating):
             rate=rating, projcet_id=project.id, user_id=user)
 
 
-def pages(request):       
+def cancel_project(request, project_id):
+    if 'user_id' not in request.session:
+        user = NULL
+        return redirect('login')
+    else:
+        user = getUser(request)
+        if request.method == 'POST':
+            project = get_object_or_404(Project, pk=project_id)
+
+            donate = project.donation_set.all().aggregate(Sum("donation"))
+            donation = donate["donation__sum"] if donate["donation__sum"] else 0
+            total_target = project.total_target
+            
+            if donation < total_target*.25:
+                project.delete()
+                return redirect("profile")
+            else:
+                return redirect('show_project', project_id)
+                
+           
+
+def pages(request):  
+    if 'user_id' not in request.session:
+        user = NULL
+    else:
+        user = getUser(request)     
     context = {}
     try : 
         load_template = request.path.split('/')[-1]
         if load_template == 'admin':
                 return HttpResponseRedirect(reverse('admin:index'))
         context['segment'] = load_template
+        context['user'] = user
 
         html_template = loader.get_template('home/' + load_template)
         return HttpResponse(html_template.render(context, request))

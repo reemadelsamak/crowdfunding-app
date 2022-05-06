@@ -272,42 +272,69 @@
                     <span>Rating</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <span>{{ days }}</span>
-                    <span>Days to go</span>
+
+                    {% if days < 0 %}
+                      <span> 0 </span>
+                    {% elif days == 0 %}
+                      <span> 0 </span>
+                    {% elif days > 0 %}
+                      <span> {{ days }} </span>
+                    {% endif %}
+                      <span>Days to go</span>
                   </div>
                 </div>
               </div>
 
-              <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" href="{%url 'create_project'%}">
-                <b>DONATE</b>
-              </button>
+              {% if project.user == user %}
 
-              <div class="feedback d-flex flex-column align-items-center">
-                <form method="post" action="{% url 'project_rate' project.id %}">
-                  {% csrf_token %}
-                  <div class="rate">
-                    {% for level in rating_range %}
-                    {% if user_rating == level %}
-                    <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}" checked>
-                    {% else %}
-                    <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}">
-                    {% endif %}
-                    <label for="rate-{{level}}"></label>
-                    {% endfor %}
-                  </div>
-                  <div class="text-center">
-                    <button class="btn mt-3 p-2 w-100 text-primary" role="button">Rate</button>
-                  </div>
+                <form action="{% url 'cancel_project' project.id %}" method="POST" class="text-center">
+                  {%csrf_token%}
+                  <button class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" {% if donation > check_target %}disabled{% endif %}><i class="fa-solid fa-trash"></i><small class="mx-2">Cancel Project</small>
+                  </button>
                 </form>
-              </div>
 
-              <form action="{% url 'create_report' project.id %}" method="POST" class="text-center">
-                {%csrf_token%}
-                <button class="btn btn-transparent shadow-none text-center mt-2 p-0" href="{%url 'create_project'%}"><i
-                    class="fa-solid fa-flag"></i><small class="mx-2">Report this project</small>
+                {% if donation > check_target %}
+                  <h3 class="d-flex align-items-baseline w-75 mx-auto text-center">
+                    <span class="text-danger mx-2">
+                      <p>Cannot cancel project while donation greater than 25% of the total target !!</p>
+                    </span>
+                  </h3>
+                {% endif %}
+
+              {% else %}
+
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if days < 0 %}disabled{% endif %} class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" href="{%url 'create_project'%}">
+                  <b>DONATE</b>
                 </button>
-              </form>
+
+                <div class="feedback d-flex flex-column align-items-center">
+                  <form method="post" action="{% url 'project_rate' project.id %}">
+                    {% csrf_token %}
+                    <div class="rate">
+                      {% for level in rating_range %}
+                      {% if user_rating == level %}
+                      <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}" checked>
+                      {% else %}
+                      <input type="radio" name="rate" id="rate-{{level}}" value="{{level}}">
+                      {% endif %}
+                      <label for="rate-{{level}}"></label>
+                      {% endfor %}
+                    </div>
+                    <div class="text-center">
+                      <button class="btn mt-3 p-2 w-100 text-primary" role="button">Rate</button>
+                    </div>
+                  </form>
+                </div>
+
+                <form action="{% url 'create_report' project.id %}" method="POST" class="text-center">
+                  {%csrf_token%}
+                  <button class="btn btn-transparent shadow-none text-center mt-2 p-0" href="{%url 'create_project'%}"><i
+                      class="fa-solid fa-flag"></i><small class="mx-2">Report this project</small>
+                  </button>
+                </form>
+
+              {% endif %}
+
 
             </div>
           </div>
