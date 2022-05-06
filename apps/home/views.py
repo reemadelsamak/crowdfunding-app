@@ -1,6 +1,4 @@
-
 from asyncio.windows_events import NULL
-from itertools import count
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,7 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.db.models import Avg, Sum
-from django.db.models import Q
+
 
 from datetime import datetime
 
@@ -34,6 +32,7 @@ def index(request):
     reviews = Rate.objects.all()
 
     images = []
+    print(last_5_projects)
     for project in last_5_projects:
         images.append(project.image_set.all().first().images.url)
 
@@ -72,6 +71,7 @@ def create_new_project(request):
                 project = form.save(commit=False)
                 project.user = user
                 project.save()
+                form.save_m2m()
                 for image in images:
                     Image.objects.create(project_id=project.id, images=image)
                 return redirect('home')
@@ -161,7 +161,6 @@ def show_project_details(request, project_id):
                     
                     'user':user
                     }
-
             return render(request, "home/project-details.html", context)
         except Project.DoesNotExist:
             html_template = loader.get_template('home/page-404.html')
