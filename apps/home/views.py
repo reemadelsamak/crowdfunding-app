@@ -66,7 +66,10 @@ def create_new_project(request):
             if "tag" in request.POST:
                     if(request.POST['newTag']!= ''):
                         new_tag=Tag.objects.create(name=request.POST['newTag']).id
-                        
+                        request.POST = request.POST.copy()
+                        request.POST.update({
+	                    "tag":new_tag
+                        })
                     
                     
             form = Project_Form(request.POST, request.FILES)
