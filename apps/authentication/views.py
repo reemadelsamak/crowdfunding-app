@@ -6,12 +6,13 @@ Copyright (c) 2019 - present AppSeed.us
 from asyncio.windows_events import NULL
 
 from multiprocessing import context
-
-from django.shortcuts import redirect, render
+from django.template import loader , RequestContext
+from django.shortcuts import redirect, render 
 from django.contrib.auth.hashers import make_password ,check_password
+from django.urls import reverse
 from apps.authentication.models import Register
 from django.utils.encoding import force_bytes, force_str
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth import login , authenticate ,logout
 from django.contrib.sites.shortcuts import get_current_site
@@ -132,8 +133,9 @@ def activate(request, uidb64, token):
         user.save()
         return redirect("login")
     else:
-        form = SignupForm()
-        return render(request, 'accounts/register.html', {'form': form ,"msg" :'Activation link is invalid!'})
+        # form = SignupForm()
+        # return render(request, 'accounts/register.html', {'form': form ,"msg" :'Activation link is invalid!'})
+        return HttpResponse('Activation link is invalid!')
     
 
 
@@ -159,19 +161,24 @@ def EditProfile(request):
             
             form = EditProfileForm(request.POST, request.FILES , instance=user_object)
             if form.is_valid():
-
-                hashedpassword=make_password(form.cleaned_data['password'])
+                user_object= Register.objects.get(id=request.session['user_id'])
+                
                 
                 user_object.first_name = form.cleaned_data['first_name']
                 user_object.last_name = form.cleaned_data['last_name']
-                user_object.password = hashedpassword
                 user_object.phone = form.cleaned_data['phone']
                 image = form.cleaned_data['image']
+                
                 print(image)
                 if image == None:
                     user_object.profile_img=user_object.profile_img
                 else:
                     user_object.profile_img = form.cleaned_data['image']
+                if form.cleaned_data['password']=="":
+                    user_object.password =user_object.password
+                else:
+                    hashedpassword=make_password(form.cleaned_data['password'])
+                    user_object.password = hashedpassword 
                 user_object.country=form.cleaned_data['country']
                 user_object.birthdate=form.cleaned_data['birthdate']
                 user_object.facebook_profile=form.cleaned_data['facebook_profile']

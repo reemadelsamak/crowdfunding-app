@@ -119,12 +119,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# EMAIL_USE_TLS = True  
+# EMAIL_HOST = 'smtp.gmail.com'  
+# EMAIL_HOST_USER = 'nermeen.iti@gmail.com'  
+# EMAIL_HOST_PASSWORD = 'Nero_iti@984$1'
+# EMAIL_PORT = 587  
+
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_HOST_USER = 'gymlaravel@gmail.com'  
 EMAIL_HOST_PASSWORD = 'gym123456789'
 EMAIL_PORT = 587  
-
 
 
 # Internationalization
