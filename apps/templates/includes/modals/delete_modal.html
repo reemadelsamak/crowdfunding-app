@@ -1,0 +1,26 @@
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Donation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <form role="form" id="contact-form" method="post" autocomplete="off" action="{% url 'cancel_project' project.id %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <p>
+              You are about to delete " {{ project.title|title }} " project.<br/> Be careful, You will NOT be able to undo this action
+            </p>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">
+              Close
+            </button>
+              <button  type="submit" class="btn bg-gradient-primary text-regular" {% if donation > check_target %}disabled{% endif %}><i class="fa-solid fa-trash"></i><small class="mx-2">Delete Project</small>
+              </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

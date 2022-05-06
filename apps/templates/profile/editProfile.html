@@ -2,120 +2,98 @@
 
 {% block title %} Edit Profile {% endblock title %}
 
-<!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block body_class %} sign-in-illustration {% endblock body_class %}
-
 {% block content %}
 
-<section >
-  <div class="page-header section-height-100  g-0">
-    <div class="container mt-4 ">
-      <div class="row">
-        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-          <div class="card card-plain">
-            <div class="card-header pb-0 text-left">
-              <h4 class="font-weight-bolder mt-5 ">Edit Profile</h4>
-                {% if msg %}
-                <div class="alert alert-warning ">
-                  {{ msg | safe }}
-                </div>
-           
-                {% endif %}
-         
-            </div>
-            <div class="card-body">
-              <form method="post" action="" role="form" enctype="multipart/form-data">
-
-                {% csrf_token %}
-
-                <div class="mb-3">
-                  {{ form.first_name }}
-                </div>
-                <span class="text-error text-danger">{{ form.first_name.errors }}</span>
-                <span class="text-error text-danger">{{ form.errors.first_name }}</span>
-                <div class="mb-3">
-                  {{ form.last_name }}
-                </div>
-                <span class="text-error text-danger">{{ form.last_name.errors }}</span>
-
-                <div class="mb-3">
-                  {{ form.country }}
-                </div>
-                <span class="text-error text-danger">{{ form.country.errors }}</span>
-
-                <div class="mb-3">
-                    {{ form.birthdate }}
-                  </div>
-                <span class="text-error text-danger">{{ form.birthdate.errors }}</span>
-
-                
-                <div class="mb-3">
-                  {{ form.password }}
-                </div>
-                <span class="text-error text-danger">{{ form.password.errors }}</span>
-
-                <div class="mb-3">
-                  {{ form.confirmPassword }}
-                </div>
-                <span class="text-error text-danger">{{ form.confirmPassword.errors }}</span>
-
-                <div class="mb-3">
-                  {{ form.phone }}
-                </div>
-                <span class="text-error text-danger">{{ form.phone.errors }}</span>
-
-                <div class="mb-3">
-                  {{ form.image }}
-
-              
-                </div>
-                <span class="text-error text-danger">{{ form.image.errors }}</span>
-                
-
-                <div class="mb-3">
-                    {{ form.facebook_profile }}
-                  </div>
-                  <span class="text-error text-danger">{{ form.facebook_profile.errors }}</span>
-                
-                {% if form.errors %}
-                  {% for field in form %}
-                      {% for error in field.errors %} 
-                         <div class="alert alert-danger">
-                              <strong>{{ error|escape }}</strong>
-                         </div>
-                      {% endfor %}
-                  {% endfor %}
-                {% endif %}
-                
-                <div class="text-center">
-                  <button type="submit" name="submit"
-                    class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Submit</button>
-                </div>
-
-              
-              </form>
-            </div>
-           
+<section>
+  <div class="container">
+    <div class="py-5 mx-auto">
+      <div class="col-md-8 card d-flex shadow-lg p-4 mt-5 mx-auto">
+        <div class="text-center">
+          <h3 class="font-weight-bolder">Edit Profile</h3>
+          {% if msg %}
+          <div class="alert alert-warning ">
+            {{ msg | safe }}
           </div>
+          {% endif %}
         </div>
-        
+        <div class="card card-plain">
+          <form method="post" action="" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">First Name</label>
+              {{ form.first_name }}
+            </div>
+            <span class="text-error text-danger">{{ form.first_name.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              {{ form.last_name }}
+            </div>
+            <span class="text-error text-danger">{{ form.last_name.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Country</label>
+              {{ form.country }}
+            </div>
+            <span class="text-error text-danger">{{ form.country.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Birthdate</label>
+              {{ form.birthdate }}
+            </div>
+            <span class="text-error text-danger">{{ form.birthdate.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              {{ form.password }}
+            </div>
+            <span class="text-error text-danger">{{ form.password.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Confirm Password</label>
+              {{ form.confirmPassword }}
+            </div>
+            <span class="text-error text-danger">{{ form.confirmPassword.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Mobile</label>
+              {{ form.phone }}
+            </div>
+            <span class="text-error text-danger">{{ form.phone.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Avatar</label>
+              {{ form.image }}
+            </div>
+            <span class="text-error text-danger">{{ form.image.errors }}</span>
+
+            <div class="mb-3">
+              <label class="form-label">Facebook Account</label>
+              {{ form.facebook_profile }}
+            </div>
+            <span class="text-error text-danger">{{ form.facebook_profile.errors }}</span>
+
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+
+            <div class="text-center">
+              <button type="submit" name="submit"
+                class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Update</button>
+            </div>
+
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-
 {% endblock content %}
-
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-
-<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-
-{% endblock javascripts %}
-
-
-
-

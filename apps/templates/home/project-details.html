@@ -10,40 +10,11 @@
 
 {% block content %}
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirm Donation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+<!-- Donate Modal -->
+{% include "includes/modals/donate_modal.html" %}
 
-      <form role="form" id="contact-form" method="post" autocomplete="off" action={% url 'donate' project.id %}>
-
-        {% csrf_token %}
-
-        <div class="modal-body">
-          <p>
-            You are about to donate for " {{ project.title|title }} " project. Enter the amount of
-            donation in the text below:
-          </p>
-          <input type="text" name="donate" placeholder="donation amount" class="form-control"
-            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-            value="" required />
-        </div>
-
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <button type="submit" class="btn bg-gradient-primary">Donate</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- End Modal -->
+<!-- Delete Modal -->
+{% include "includes/modals/delete_modal.html" %}
 
 <div class="container">
   <div class="row">
@@ -62,18 +33,17 @@
                   <button type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter }}"></button>
                   {%endfor%}
-
                 </div>
 
                 <div class="carousel-inner">
                   {%for image in project_images%}
                   {%if forloop.counter == 1 %}
                   <div class="carousel-item active" style="height:400px">
-                    <img src="{{image.images.url}}" class="d-block w-100 h-100" alt="project-image">
+                    <img src="{{image.images.url}}" class="d-block w-100 h-100 rounded" alt="project-image">
                   </div>
                   {%else%}
                   <div class="carousel-item " style="height:400px">
-                    <img src="{{image.images.url}}" class="d-block w-100 h-100" alt="project-image">
+                    <img src="{{image.images.url}}" class="d-block w-100 h-100 rounded" alt="project-image">
                   </div>
                   {%endif%}
                   {%endfor%}
@@ -96,6 +66,8 @@
               <p>
                 {{ project.details}}
               </p>
+              <p class=" text-secondary"><span class="text-sm text-dark">from: </span>{{ project.start_time }} <span class="text-sm text-dark"> to: </span>{{ project.end_time }}</p>
+
 
               <div class="tags_container">
                 {%for tag in tags%}
@@ -146,7 +118,7 @@
               <hr class="my-5" />
 
               <!-- Comments -->
-              <h5 class="mt-5">Comments ({{ num_of_comments }}) :</h5>
+              <h5 class="mt-5">Comments ({{ comments|length }}) :</h5>
               <ul class="list-unstyled mt-4">
                 {%for comment in comments%}
                 <li class="">
@@ -286,21 +258,15 @@
               </div>
 
               {% if project.user == user %}
-
-                <form action="{% url 'cancel_project' project.id %}" method="POST" class="text-center">
-                  {%csrf_token%}
-                  <button class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" {% if donation > check_target %}disabled{% endif %}><i class="fa-solid fa-trash"></i><small class="mx-2">Cancel Project</small>
-                  </button>
-                </form>
-
+                  <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" {% if donation > check_target %}disabled{% endif %}><i class="fa-solid fa-trash"></i><small class="mx-2">Cancel Project</small></button>
                 {% if donation > check_target %}
-                  <h3 class="d-flex align-items-baseline w-75 mx-auto text-center">
-                    <span class="text-danger mx-2">
-                      <p>Cannot cancel project while donation greater than 25% of the total target !!</p>
-                    </span>
-                  </h3>
+                  <div class="d-flex align-items-center w-75 mx-auto">
+                    <i class="fa fa-circle-info text-secondary"></i>
+                    <p class="mx-2 text-sm mb-0 text-center">
+                    Cannot cancel project while donation greater than 25% of the total target !!
+                    </p>
+                  </div>
                 {% endif %}
-
               {% else %}
 
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" {% if days < 0 %}disabled{% endif %} class="col-md-10 btn bg-gradient-primary p-2 mt-4 mx-auto h6" href="{%url 'create_project'%}">

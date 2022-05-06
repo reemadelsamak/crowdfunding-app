@@ -35,7 +35,7 @@
           <span><small><i class="fa fa-calendar mr-1 text-muted"></i><span class="text-muted mx-1">Ends
                 by:</span>{{ project.end_time }}</small></span>
         </div>
-        <p class="text-secondary" style="height:80px; overflow-y: auto; word-wrap: break-word;">{{ project.details }}
+        <p class="text-secondary" style="height:80px;  word-wrap: break-word;">{{ project.details|truncatewords:20 }}
         </p>
         <h4 class="d-flex align-items-baseline mt-2">
           {{ donations|index:forloop.counter0 }} L.E.

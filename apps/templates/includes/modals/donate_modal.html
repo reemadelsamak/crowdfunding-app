@@ -1,0 +1,32 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Donation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form role="form" id="contact-form" method="post" autocomplete="off" action={% url 'donate' project.id %}>
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+                    <p>
+                        You are about to donate for " {{ project.title|title }} " project. Enter the amount of
+                        donation in the text below:
+                    </p>
+                    <input type="text" name="donate" placeholder="donation amount" class="form-control"
+                        onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                        value="" required />
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn bg-gradient-primary">Donate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

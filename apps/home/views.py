@@ -25,26 +25,23 @@ def index(request):
     else:
         user = NULL
         
-    all_projects = Project.objects.all()
+    highest_rated_projects = Project.objects.annotate(
+       avg_rate=Avg('rate__rate')).order_by('-avg_rate')[:5]
     last_5_projects = Project.objects.all().order_by('-id')[:5]
     featured_projects = Project.objects.filter(is_featured=1)[:5]
-    donations = Donation.objects.all()
-    reviews = Rate.objects.all()
 
     images = []
-    print(last_5_projects)
-    for project in last_5_projects:
+    for project in highest_rated_projects:
         images.append(project.image_set.all().first().images.url)
 
     context = {
-        'segment': 'index',
-        'all_projects': all_projects,
-        'count': len(all_projects),
-        'last_5_projects': last_5_projects,
+        'highest_rated_projects':highest_rated_projects,
+        'latest_5_projects': last_5_projects,
         'featured_projects': featured_projects,
         'images': images,
-        'donors': len(donations),
-        'reviews': len(reviews),
+        'projects_count': len(Project.objects.all()),
+        'donors_count': len(Donation.objects.all()),
+        'reviews_count': len(Rate.objects.all()),
         'user': user
     }
     
@@ -87,23 +84,18 @@ def show_project_details(request, project_id):
         user = getUser(request)
     try:
         project = Project.objects.get(id=project_id)
-        
         donate = project.donation_set.all().aggregate(Sum("donation"))
-        donations = len(project.donation_set.all())
+        donations_count = len(project.donation_set.all())
         comments = project.comment_set.all()
         replies = Reply.objects.all()
-
         project_images = project.image_set.all()
+        
         tags = project.tag.all()
-
-
         related_projects_tags = []
         for tag in tags:
             related_projects_tags.append(tag.project_set.all())
 
-
         related_projects = Project.objects.none().union(*related_projects_tags)[:4]
-
         related_projects_images = []
         for related_project in related_projects:
             related_projects_images.append(related_project.image_set.all().first().images.url)
@@ -111,27 +103,24 @@ def show_project_details(request, project_id):
 
         myFormat = "%Y-%m-%d %H:%M:%S"
         today = datetime.strptime(datetime.now().strftime(myFormat), myFormat)
-        start_date = datetime.strptime(project.start_time.strftime(myFormat), myFormat)
         end_date = datetime.strptime(project.end_time.strftime(myFormat), myFormat)
         days_diff = (end_date-today).days
         
         new_report_form = Report_form()
         reply = Reply_form()
 
-
         donation_average = (donate["donation__sum"] if donate["donation__sum"] else 0)*100/project.total_target
-
         average_rating = project.rate_set.all().aggregate(Avg('rate'))['rate__avg']
 
         # return user rating if found
         user_rating = 0
-
-        if request.user.is_authenticated:
-            # prev_rating = Project.rate_set.filter(user_id=1)
-            prev_rating = []
+    
+        if 'user_id' in request.session:
+            # prev_rating = Project.rate_set.get(user_id=user.id)
+            prev_rating=[]
 
             if prev_rating:
-                user_rating = prev_rating[0].value
+                user_rating = prev_rating[0].rate
 
         if average_rating is None:
             average_rating = 0
@@ -139,10 +128,9 @@ def show_project_details(request, project_id):
         context = {
             'project': project,
             'donation': donate["donation__sum"] if donate["donation__sum"] else 0,
-            'donations': donations,
+            'donations': donations_count,
             'days': days_diff,
             'comments': comments,
-            'num_of_comments': len(comments),
             'project_images': project_images,
             'replies': replies,
             'tags': tags,
@@ -153,7 +141,6 @@ def show_project_details(request, project_id):
             'images': related_projects_images,
             
             'check_target': project.total_target*.25,
-            
             'donation_average': donation_average,
 
             'rating': average_rating*20,

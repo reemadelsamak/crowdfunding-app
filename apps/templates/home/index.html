@@ -61,7 +61,7 @@
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
 
-            {%for project in last_5_projects%}
+            {%for project in highest_rated_projects%}
 
             <div class="carousel-item {% if forloop.first %}active{%endif%}">
               <div class="featuredProject-image section-height-75 relative" style="
@@ -120,7 +120,7 @@
           <div class="col-md-4 position-relative">
             <div class="p-3 text-center">
               <h3 class="text-gradient text-primary">
-                <span id="state1" countTo="{{ donors }}"></span>+
+                <span id="state1" countTo="{{ donors_count }}"></span>+
               </h3>
               <h5 class="mt-3">Donors</h5>
               <p class="text-sm">
@@ -132,7 +132,7 @@
           <div class="col-md-4 position-relative">
             <div class="p-3 text-center">
               <h3 class="text-gradient text-primary">
-                <span id="state2" countTo="{{ count }}"></span>+
+                <span id="state2" countTo="{{ projects_count }}"></span>+
               </h3>
               <h5 class="mt-3">Projects</h5>
               <p class="text-sm">Various Projects that deserve to be donated</p>
@@ -142,7 +142,7 @@
           <div class="col-md-4">
             <div class="p-3 text-center">
               <h3 class="text-gradient text-primary">
-                <span id="state3" countTo="{{ reviews }}"></span>+
+                <span id="state3" countTo="{{ reviews_count }}"></span>+
               </h3>
               <h5 class="mt-3">Reviews</h5>
               <p class="text-sm">Feel free to rate projects and give us a feedback</p>
@@ -169,7 +169,7 @@
               <i class="fa-solid fa-list-check mx-3"></i>Latest Projects
             </h2>
             <ul class="text-left">
-              {%for project in last_5_projects%}
+              {%for project in latest_5_projects%}
               <li>
                 <a href="{% url 'show_project' project.id %}" class="text-light font-weight-bold">
                   {{ project.title|title }}

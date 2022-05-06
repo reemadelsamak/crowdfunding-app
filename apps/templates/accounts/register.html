@@ -17,13 +17,13 @@
           <div class="card card-plain">
             <div class="card-header pb-0 text-left">
               <h4 class="font-weight-bolder">Sign UP</h4>
-              
-              
-                {% if msg %}
-                <div class="alert alert-warning ">
-                  {{ msg | safe }}
-                </div>
-                <p class="mb-0 ">
+
+
+              {% if msg %}
+              <div class="alert alert-warning ">
+                {{ msg | safe }}
+              </div>
+              <p class="mb-0 ">
                 {% else %}
                 Add your credentials
                 {% endif %}
@@ -69,7 +69,7 @@
                 </div>
                 <span class="text-error text-danger">{{ form.image.errors }}</span>
 
-                
+
                 <div class="text-center">
                   <button type="submit" name="register"
                     class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Register</button>
@@ -94,14 +94,6 @@
               <img class="max-width-500 w-100 position-relative z-index-2"
                 src="/static/assets/img/illustrations/chat.png">
             </div>
-            <h4 class="mt-5 text-white font-weight-bolder">
-              Soft UI Design System
-            </h4>
-            <p class="text-white">
-              &copy; <a target="_blank" class="text-white" href="https://bit.ly/3fKQZaL" target="_blank">Creative
-                Tim</a>
-              - Coded by <a class="text-white" target="_blank" href="https://appseed.us" target="_blank">AppSeed</a>.
-            </p>
           </div>
         </div>
       </div>
@@ -110,10 +102,3 @@
 </section>
 
 {% endblock content %}
-
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-
-<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-
-{% endblock javascripts %}
