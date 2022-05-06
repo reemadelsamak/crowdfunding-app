@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.authentication',
-    'apps.home'  # E
+    'apps.home'  ,
 ]
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
@@ -119,12 +119,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# EMAIL_USE_TLS = True  
+# EMAIL_HOST = 'smtp.gmail.com'  
+# EMAIL_HOST_USER = 'nermeen.iti@gmail.com'  
+# EMAIL_HOST_PASSWORD = 'Nero_iti@984$1'
+# EMAIL_PORT = 587  
+
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_HOST_USER = 'nermeen.iti@gmail.com'  
-EMAIL_HOST_PASSWORD = 'Nero_iti@984$1'
+EMAIL_HOST_USER = 'ahmed.bastawesy97@gmail.com'  
+EMAIL_HOST_PASSWORD = '1551997364'
 EMAIL_PORT = 587  
-
 
 
 # Internationalization

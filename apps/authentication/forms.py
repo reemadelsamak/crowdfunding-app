@@ -112,22 +112,22 @@ class EditProfileForm(forms.ModelForm):
         "placeholder": "Profile Image",
         "class": "form-control"
     }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
+    password = forms.CharField(required=False,widget=forms.PasswordInput(attrs={
         "placeholder": "Password",
         "class": "form-control"
     }))
     #TODO:add regex to password
-    confirmPassword = forms.CharField(label="confirm password", widget=forms.PasswordInput(attrs={
+    confirmPassword = forms.CharField(required=False,label="confirm password", widget=forms.PasswordInput(attrs={
         "placeholder": "Confirm Password",
         "class": "form-control"
     }))
-    country = forms.CharField(validators=[RegexValidator(
+    country = forms.CharField(required=False,validators=[RegexValidator(
         '^[A-Za-z]+$', message="Enter a Valid Country Name")],widget=forms.TextInput(
         attrs={
             "placeholder": "Country",
             "class": "form-control"
         }))
-    birthdate = forms.DateField(
+    birthdate = forms.DateField(required=False,
         widget=NumberInput(
             attrs={
                 'placeholder': 'BirthDate',
@@ -135,7 +135,7 @@ class EditProfileForm(forms.ModelForm):
                 'class': 'form-control'
             }
         ))
-    facebook_profile = forms.URLField( error_messages={'required': 'Please Enter a valid Url'},widget=forms.URLInput(
+    facebook_profile = forms.URLField(required=False, error_messages={'required': 'Please Enter a valid Url'},widget=forms.URLInput(
         attrs={
                 'placeholder': 'Profile Facebook Url',
                 'class': 'form-control'
