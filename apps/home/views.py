@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.db.models import Avg, Sum
 from collections import defaultdict
 from datetime import datetime
-
+import re
 from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Rate, Reply, Tag, Comment_Report
 from apps.home.forms import Project_Form, Report_form, Reply_form, Category_form
 
@@ -65,7 +65,10 @@ def create_new_project(request):
         if request.method == "POST":
             if "tag" in request.POST:
                     if(request.POST['newTag']!= ''):
-                        new_tag=Tag.objects.create(name=request.POST['newTag']).id
+
+                        newTag=re.sub("\s+","_",request.POST['newTag'].strip())
+                        
+                        new_tag=Tag.objects.create(name=newTag).id
                         request.POST = request.POST.copy()
                         request.POST.update({
 	                    "tag":new_tag
