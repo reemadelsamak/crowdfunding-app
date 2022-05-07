@@ -63,7 +63,7 @@ class Project_Form(forms.ModelForm):
         attrs={
             "class": "form-control"
         }
-    ))
+    ),required=False)
 
     class Meta:
         model = Project
