@@ -67,8 +67,9 @@ def create_new_project(request):
             tag_error=''
                     
             if "tag" in request.POST or request.POST['newTag']!="":
-                print('========================================')
+                
                 if(request.POST['newTag']!= ''):
+
                     newTag=re.sub("\s+","_",request.POST['newTag'].strip())
                     new_tag=Tag.objects.create(name=newTag).id
                     request.POST = request.POST.copy()
@@ -110,7 +111,10 @@ def show_project_details(request, project_id):
         comments = project.comment_set.all()
         replies = Reply.objects.all()
         project_images = project.image_set.all()
-        
+        counter=[]
+        for image in project_images:
+            counter.append("1")
+        counter.pop()
         tags = project.tag.all()
         related_projects_tags = []
         for tag in tags:
@@ -135,7 +139,7 @@ def show_project_details(request, project_id):
 
         # return user rating if found
         user_rating = 0
-    
+        
         if 'user_id' in request.session:
             # prev_rating = Project.rate_set.get(user_id=user.id)
             prev_rating=[]
@@ -169,7 +173,8 @@ def show_project_details(request, project_id):
             'rating_range': range(5, 0, -1),
             'average_rating': average_rating,
             
-            'user':user
+            'user':user,
+            'counter':counter
             }
 
         return render(request, "home/project-details.html", context)
