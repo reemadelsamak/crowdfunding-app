@@ -38,6 +38,7 @@ CrowdFunding Web App that allow user:
   ````bash
   > python3 -m pip install --upgrade pip
   ```
+  ````
 
 3- run your mysql server and create new Schema in your DBMS with name "crowdfunding" or change the name at (setting.py) and set your DB Server information [ host name and password ]
 
@@ -55,11 +56,15 @@ CrowdFunding Web App that allow user:
   virtualenv .venv
   ```
 
-  ```bash (win)
+  for win
+
+  ```bash
   .venv\Scripts\activate
   ```
 
-  ```bash (linux)
+  for linux
+
+  ```bash 
   source .venv/bin/activate
   ```
 
