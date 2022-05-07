@@ -35,10 +35,9 @@ CrowdFunding Web App that allow user:
   \*\* must be v.3 or up
 
 - [install and upgrade pip]
-  ````
-  bash > python3 -m pip install --upgrade pip
+  ````bash
+  > python3 -m pip install --upgrade pip
   ```
-  ````
 
 3- run your mysql server and create new Schema in your DBMS with name "crowdfunding" or change the name at (setting.py) and set your DB Server information [ host name and password ]
 
