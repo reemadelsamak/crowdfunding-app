@@ -134,6 +134,9 @@ python3 manage.py createsuperuser
 
 - Email : MANKRA42TEAM@gmail.com
 - Password : Mankra12345
+## Demo
+
+https://user-images.githubusercontent.com/72516521/167317970-c0bfbb76-4342-462c-931c-b21f9f625d39.mp4
 
 ## Authors
 
