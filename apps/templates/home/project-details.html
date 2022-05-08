@@ -78,27 +78,6 @@
                 {% endfor %}
               </div>
 
-              <!-- Rating -->
-              <div class="your_rating d-flex mt-3 ">
-                <p class="mb-0 ">Your Rating : </p>
-                <svg viewBox="0 0 1000 200" class="rating mb-0 mx-2">
-                  <defs>
-                    <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 " />
-
-                    <clipPath id="stars">
-                      <use xlink:href="#star" />
-                      <use xlink:href="#star" x="20%" />
-                      <use xlink:href="#star" x="40%" />
-                      <use xlink:href="#star" x="60%" />
-                      <use xlink:href="#star" x="80%" />
-                    </clipPath>
-                  </defs>
-
-                  <rect class="rating_background" clip-path="url(#stars)"></rect>
-                  <rect width="{{rating}}%" class="rating_value" clip-path="url(#stars)"></rect>
-                </svg>
-              </div>
-
               <hr class="my-4" />
 
               <!-- Related Projects -->
@@ -127,11 +106,11 @@
                 <li class="">
                   <div class="comment d-flex">
                     <div class="col-md-1">
-                      <img class="rounded-circle img-thumbnail" src="{{ comment.user.profile_img.url }}" />
+                      <img class="rounded-circle img-thumbnail" src="{{ comment.user.profile_img.url }}" style="width: 60px;height:60px;"/>
                     </div>
                     <div class="col-md-8 mx-3">
                       <h6 class="comment-header mb-0 d-flex">
-                        {{ comment.user }}
+                        {{ comment.user|title }}
                         <div class="">
                           <!-- Report Comment -->
                           <form action="{% url 'create_comment_report' comment.id %}" method="POST" class="mx-3">
@@ -181,11 +160,11 @@
                           <li class=" mt-1">
                             <div class="comment d-flex">
                               <div class="col-md-1">
-                                <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile_img.url }}" />
+                                <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile_img.url }}"  style="width: 40px;height:40px;" />
                               </div>
                               <div class="col-md-8 mx-3">
                                 <h6 class="comment-header mb-0">
-                                  {{ reply.user }}
+                                  {{ reply.user|title }}
                                 </h6>
                                 <p class="comment-time">
                                   <small><small>{{ reply.created_at }}</small></small>
@@ -225,7 +204,7 @@
 
               <div class="col-lg-10 mx-auto">
                 <h3 class="d-flex align-items-baseline">
-                  {{ donation }} L.E.
+                  {{ donation }} <small> L.E. </small>
                   <span class="text-secondary mx-2">
                     <p>raised of {{ project.total_target }} L.E. goal</p>
                   </span>
