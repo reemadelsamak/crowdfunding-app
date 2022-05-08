@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,14 +6,14 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.db.models import Avg, Sum
-
-
+from collections import defaultdict
 from datetime import datetime
-
+import re
 from apps.home.models import Category, Comment, Donation, Project, Image, Project_Report, Rate, Reply, Tag, Comment_Report
 from apps.home.forms import Project_Form, Report_form, Reply_form, Category_form
-
+from django.forms.utils import ErrorList
 from apps.authentication.models import Register
+NULL={}
 
 def getUser(request):
         user = Register.objects.get(id=request.session['user_id'])
@@ -59,10 +59,32 @@ def create_new_project(request):
         if request.method == 'GET':
 
             form = Project_Form()
+           
+            
             return render(request, "home/create-project.html", context={"form": form, 'images': my_images, "user":user})
 
         if request.method == "POST":
+            tag_error=''
+                    
+            if "tag" in request.POST or request.POST['newTag']!="":
+                
+                if(request.POST['newTag']!= ''):
+
+                    newTag=re.sub("\s+","_",request.POST['newTag'].strip())
+                    new_tag=Tag.objects.create(name=newTag).id
+                    request.POST = request.POST.copy()
+                    request.POST.update({
+	                "tag":new_tag
+                    })
+            else:
+                tag_error="Please add tag"
+            
+                    
             form = Project_Form(request.POST, request.FILES)
+            if tag_error!="":
+                
+               form.add_error('tag',tag_error)
+               
             images = request.FILES.getlist('images')
             if form.is_valid():
                 project = form.save(commit=False)
@@ -89,7 +111,10 @@ def show_project_details(request, project_id):
         comments = project.comment_set.all()
         replies = Reply.objects.all()
         project_images = project.image_set.all()
-        
+        counter=[]
+        for image in project_images:
+            counter.append("1")
+        counter.pop()
         tags = project.tag.all()
         related_projects_tags = []
         for tag in tags:
@@ -114,7 +139,7 @@ def show_project_details(request, project_id):
 
         # return user rating if found
         user_rating = 0
-    
+        
         if 'user_id' in request.session:
             # prev_rating = Project.rate_set.get(user_id=user.id)
             prev_rating=[]
@@ -148,7 +173,8 @@ def show_project_details(request, project_id):
             'rating_range': range(5, 0, -1),
             'average_rating': average_rating,
             
-            'user':user
+            'user':user,
+            'counter':counter
             }
 
         return render(request, "home/project-details.html", context)

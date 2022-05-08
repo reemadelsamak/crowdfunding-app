@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.authentication',
     'apps.home',
+    
 ]
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
@@ -127,8 +128,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_HOST_USER = 'gymlaravel@gmail.com'  
-EMAIL_HOST_PASSWORD = 'gym123456789'
+EMAIL_HOST_USER = 'MANKRA42TEAM@gmail.com'  
+EMAIL_HOST_PASSWORD = 'Mankra12345*'
 EMAIL_PORT = 587  
 
 

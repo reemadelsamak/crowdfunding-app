@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.db import models
 
 from django.db import models
+from pkg_resources import require
 from apps.authentication.models import Register
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -17,7 +18,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -32,7 +33,7 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag,null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
    
 

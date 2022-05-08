@@ -53,7 +53,10 @@
 
 
           <div class="mb-3">
-            <label class="form-label">tag</label>
+            <label class="form-label">Add tag</label>
+            <input type="text" class="inp form-control my-1" maxlength="8" name="newTag" class="form-control"  id="id_tag"/>
+            <span class="show_tag " style="padding: 2px;background-color: rgba(145, 9, 120, 0.61);border-radius: 15%; color: rgb(241, 240, 255);"></span>
+            <p style="margin: 2px; color: black; font-size: small; font-weight: 550;">or choose one : </p>
             {{ form.tag }}
           </div>
           <span class="text-error">{{ form.tag.errors }}</span>
@@ -73,4 +76,18 @@
     </div>
   </div>
 </div>
+<script>
+
+
+// let btnAdd = document.querySelector('button');
+let input = document.querySelector('.inp');
+let show = document.querySelector('.show_tag');
+
+input.addEventListener('keyup', () =>{
+    show.innerText = input.value.replace(/\s+/g,'_').trim()
+
+    
+  
+});
+</script>
 {% endblock content %}
