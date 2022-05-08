@@ -1,50 +1,50 @@
 # Crowd-Funding
 
-CrowdFunding Web App using Python "Django Framwork"
+CrowdFunding Web App using Python "Django Framework"
 
 ## About the web-App:
 
-CrowdFunding Web App that allow user:
+CrowdFunding Web App that allow user to:
 
-- signup and login
+- Signup and login
 - Create and modify his profile data or delete his account
-- Create his projects and also can Delete his projects
-- Can show all projects details
-- Can donate, rate, report, and comment for other projects
-- Show projetcs details and rate projects
+- Create or Delete funding projects
+- show all projects details
+- Donate, Rate, Report, and Comment other projects
+
 
 ## Built With:
 
 - [Django Framwork](https://docs.djangoproject.com/en/)
 - [MySqlClient Database](https://pypi.org/project/mysqlclient/)
-- [HTML,CSS,JS,BootStrap....]
+- [Soft UI Design System](https://github.com/app-generator/django-soft-ui-design)
+- [HTML, CSS, JS, Bootstrap....](https://www.w3.org/)
 
 ## Installation and Run project:
 
 1- Download or Clone the project
 
-2- install python on your machine
+2- Install python on your machine
 
 - [Download from here](https://www.python.org/downloads/windows/)
 - [check your version]
 
   ```bash
-  > python --version
+  python --version
   ```
 
   \*\* must be v.3 or up
 
 - [install and upgrade pip]
+
   ````bash
-  > python3 -m pip install --upgrade pip
-  ```
-  ````
+  python3 -m pip install --upgrade pip
 
 3- run your mysql server and create new Schema in your DBMS with name "crowdfunding" or change the name at (setting.py) and set your DB Server information [ host name and password ]
 
-3- Open the project in vs Code
+4- Open the project in vs Code
 
-3- In a Terminal window run the following >>
+5- In a Terminal window run the following >>
 
 - [install VirtualEnvironment]
   ```bash
@@ -77,24 +77,24 @@ CrowdFunding Web App that allow user:
   pip3 install mysqlclient
   ```
 
-5- Set These Values in "setting.by" file to test Verification using email
+6- Set These Values in "setting.by" file to test Verification using email
 
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_HOST_USER = 'MANKRA42TEAM@gmail.com'  
-EMAIL_HOST_PASSWORD = 'Mankra12345'
+EMAIL_HOST_PASSWORD = 'Mankra12345*'
 EMAIL_PORT = 587
 
 \*\* or you can add your [gmail] but insure that the account security not activated :D
 
-6- put the 'index.py' file to this path '.venv/Lib/site-packages/django/templatetags/'
+7- put the 'index.py' file to this path '.venv/Lib/site-packages/django/templatetags/'
 
-7- go to this path '.venv/Lib/site-packages/django/conf/global_settings.py'
+8- go to this path '.venv/Lib/site-packages/django/conf/global_settings.py'
 
 - search for [PASSWORD_HASHERS] list
 - add this 'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher' in the first of this list
 
-8- Run the following to load Data base
+9- Run the following to load Data base
 
 ```bash
 python3 manage.py makemigrations
@@ -104,7 +104,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
-9- create your superuser [admin] to access [Admin Dashboard]
+10- create your superuser [admin] to access [Admin Dashboard]
 
 ```bash
 python3 manage.py createsuperuser
@@ -113,7 +113,7 @@ python3 manage.py createsuperuser
     > enter password
 ```
 
-10- After All is Finished run server
+11- After All is Finished run server
 
 ```bash
 	python3 manage.py runserver
@@ -130,7 +130,7 @@ python3 manage.py createsuperuser
 - add some categories and tags
 - you can featured projects from here
 
-2- if you create any account in site you need to activate it from this [gamail account] >>
+2- if you create any account in site you need to activate it from this [gmail account] >>
 
 - Email : MANKRA42TEAM@gmail.com
 - Password : Mankra12345
