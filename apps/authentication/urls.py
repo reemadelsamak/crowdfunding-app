@@ -1,14 +1,8 @@
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 from .views import user_login, signup,activate ,user_logout ,EditProfile, profile ,emailPasswordReset ,ResetPasswordLink ,ResetPassword , deleteAccount
-from django.conf.urls.static import static
-from django.conf import settings
 
 
 urlpatterns = [

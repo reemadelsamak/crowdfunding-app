@@ -222,9 +222,9 @@
 
               <div class="col-lg-10 mx-auto">
                 <h3 class="d-flex align-items-baseline">
-                  €{{ donation }}
+                  {{ donation }} L.E.
                   <span class="text-secondary mx-2">
-                    <p>raised of €{{ project.total_target }} goal</p>
+                    <p>raised of {{ project.total_target }} L.E. goal</p>
                   </span>
                 </h3>
                 <!-- {{ donation_average }} -->
@@ -240,16 +240,28 @@
                     <span>Donations</span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-                    <span>{{ average_rating }}</span>
-                    <span>Rating</span>
+                    <span>{{ average_rating|floatformat:1 }}</span>
+                    <span>
+                        <svg viewBox="0 0 1000 200" class="rating m-0">
+                          <defs>
+                            <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 " />                    
+                            <clipPath id="stars">
+                              <use xlink:href="#star" />
+                              <use xlink:href="#star" x="20%" />
+                              <use xlink:href="#star" x="40%" />
+                              <use xlink:href="#star" x="60%" />
+                              <use xlink:href="#star" x="80%" />
+                            </clipPath>
+                          </defs>                    
+                          <rect class="rating_background" clip-path="url(#stars)"></rect>
+                          <rect width="{{rating}}%" class="rating_value" clip-path="url(#stars)"></rect>
+                        </svg>
+                    </span>
                   </div>
                   <div class="d-flex flex-column align-items-center">
-
-                    {% if days < 0 %}
+                    {% if days <= 0 %}
                       <span> 0 </span>
-                    {% elif days == 0 %}
-                      <span> 0 </span>
-                    {% elif days > 0 %}
+                    {% else %}
                       <span> {{ days }} </span>
                     {% endif %}
                       <span>Days to go</span>
