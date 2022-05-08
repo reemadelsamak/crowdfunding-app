@@ -133,7 +133,7 @@ python3 manage.py createsuperuser
 2- if you create any account in site you need to activate it from this [gmail account] >>
 
 - Email : MANKRA42TEAM@gmail.com
-- Password : Mankra12345
+- Password : Mankra12345*
 ## Demo
 
 https://user-images.githubusercontent.com/72516521/167317970-c0bfbb76-4342-462c-931c-b21f9f625d39.mp4
