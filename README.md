@@ -1,6 +1,7 @@
 # Crowd-Funding
 
 CrowdFunding Web App using Python "Django Framework"
+![django](https://user-images.githubusercontent.com/72516521/170875115-a62488fa-21c0-407a-b75a-826e0c30337c.png)
 
 ## About the web-App:
 
@@ -137,6 +138,11 @@ python3 manage.py createsuperuser
 ## Demo
 
 https://user-images.githubusercontent.com/72516521/167317970-c0bfbb76-4342-462c-931c-b21f9f625d39.mp4
+
+![crowdLanding](https://user-images.githubusercontent.com/72516521/170875164-f6118415-525b-485b-a7a8-f6ad764ced2a.png)
+![2](https://user-images.githubusercontent.com/72516521/170875199-f76c64eb-8aaa-4d48-a862-b33b5e84eb55.png)
+![crowdDetails](https://user-images.githubusercontent.com/72516521/170875238-53b9cf31-ae33-4022-921a-c22e2620138e.png)
+![4](https://user-images.githubusercontent.com/72516521/170875230-c173488f-5e3c-41d9-bf9e-ba38aec3020b.png)
 
 ## Authors
 
