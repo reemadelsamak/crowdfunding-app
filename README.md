@@ -1,8 +1,8 @@
 # Crowd-Funding
 
-CrowdFunding Web App using Python "Django Framework"
 ![django](https://user-images.githubusercontent.com/72516521/170875115-a62488fa-21c0-407a-b75a-826e0c30337c.png)
 
+CrowdFunding Web App using Python "Django Framework"
 ## About the web-App:
 
 CrowdFunding Web App that allow user to:
