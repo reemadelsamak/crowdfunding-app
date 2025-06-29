@@ -1,0 +1,70 @@
+{
+  "id": "CrowdfundingTest",
+  "version": "2.0",
+  "name": "CrowdfundingTest",
+  "url": "https://username-yourrepo-8000.app.github.dev",
+  "tests": [
+    {
+      "id": "LoginAddProjectLogout",
+      "name": "LoginAddProjectLogout",
+      "commands": [
+        {
+          "command": "open",
+          "target": "/login/",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=username",
+          "value": "yourusername"
+        },
+        {
+          "command": "type",
+          "target": "id=password",
+          "value": "yourpassword"
+        },
+        {
+          "command": "clickAndWait",
+          "target": "id=login-button",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Add Project",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=title",
+          "value": "Test Project"
+        },
+        {
+          "command": "type",
+          "target": "id=description",
+          "value": "Ini deskripsi proyek pengujian"
+        },
+        {
+          "command": "clickAndWait",
+          "target": "id=submit-button",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Logout",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "MainTestSuite",
+      "name": "MainTestSuite",
+      "persistSession": true,
+      "parallel": false,
+      "timeout": 300,
+      "tests": ["LoginAddProjectLogout"]
+    }
+  ],
+  "plugins": []
+}
