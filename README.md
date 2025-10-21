@@ -152,3 +152,5 @@ https://user-images.githubusercontent.com/72516521/167317970-c0bfbb76-4342-462c-
 - [@Mohamed Hossam ELdeen Alwakiel](https://github.com/Mo7ammed7ossam)
 - [@Nermeen Ismail Shehab](https://github.com/NermeenShehab)
 - [@Reem Adel Bedeer Mahmoud Samak](https://github.com/reemadelsamak)
+# Crowdfunding Platform
+Platform untuk mendukung proyek inovasi mahasiswa. 🚀
